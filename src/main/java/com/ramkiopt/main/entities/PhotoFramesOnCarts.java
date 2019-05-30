@@ -9,6 +9,8 @@ public class PhotoFramesOnCarts {
     private long id;
     private long cartId;
     private long photoFrameId;
+    private Cart cartByCartId;
+    private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -53,5 +55,25 @@ public class PhotoFramesOnCarts {
     @Override
     public int hashCode() {
         return Objects.hash(id, cartId, photoFrameId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
+    public Cart getCartByCartId() {
+        return cartByCartId;
+    }
+
+    public void setCartByCartId(Cart cartByCartId) {
+        this.cartByCartId = cartByCartId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    public PhotoFrames getPhotoFramesByPhotoFrameId() {
+        return photoFramesByPhotoFrameId;
+    }
+
+    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
+        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
     }
 }

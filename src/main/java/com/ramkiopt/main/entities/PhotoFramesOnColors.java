@@ -9,6 +9,8 @@ public class PhotoFramesOnColors {
     private long id;
     private long photoFrameId;
     private long colorId;
+    private PhotoFrames photoFramesByPhotoFrameId;
+    private Colors colorsByColorId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -53,5 +55,25 @@ public class PhotoFramesOnColors {
     @Override
     public int hashCode() {
         return Objects.hash(id, photoFrameId, colorId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    public PhotoFrames getPhotoFramesByPhotoFrameId() {
+        return photoFramesByPhotoFrameId;
+    }
+
+    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
+        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false)
+    public Colors getColorsByColorId() {
+        return colorsByColorId;
+    }
+
+    public void setColorsByColorId(Colors colorsByColorId) {
+        this.colorsByColorId = colorsByColorId;
     }
 }

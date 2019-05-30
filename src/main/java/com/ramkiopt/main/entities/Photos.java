@@ -1,9 +1,7 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +10,8 @@ public class Photos {
     private String photoSrc;
     private String size;
     private long photoFrameId;
+    private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
+    private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -67,5 +67,24 @@ public class Photos {
     @Override
     public int hashCode() {
         return Objects.hash(id, photoSrc, size, photoFrameId);
+    }
+
+    @OneToMany(mappedBy = "photosByPhotoId")
+    public Collection<PhotoFramesOnPhotos> getPhotoFramesOnPhotosById() {
+        return photoFramesOnPhotosById;
+    }
+
+    public void setPhotoFramesOnPhotosById(Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById) {
+        this.photoFramesOnPhotosById = photoFramesOnPhotosById;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    public PhotoFrames getPhotoFramesByPhotoFrameId() {
+        return photoFramesByPhotoFrameId;
+    }
+
+    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
+        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
     }
 }

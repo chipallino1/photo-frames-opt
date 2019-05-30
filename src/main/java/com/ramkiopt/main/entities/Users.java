@@ -1,9 +1,7 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +13,8 @@ public class Users {
     private String phoneNumber;
     private String role;
     private String passwordEncrypted;
+    private Collection<Cart> cartsById;
+    private Collection<PhotoFrames> photoFramesById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -103,5 +103,23 @@ public class Users {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email, phoneNumber, role, passwordEncrypted);
+    }
+
+    @OneToMany(mappedBy = "usersByClientId")
+    public Collection<Cart> getCartsById() {
+        return cartsById;
+    }
+
+    public void setCartsById(Collection<Cart> cartsById) {
+        this.cartsById = cartsById;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<PhotoFrames> getPhotoFramesById() {
+        return photoFramesById;
+    }
+
+    public void setPhotoFramesById(Collection<PhotoFrames> photoFramesById) {
+        this.photoFramesById = photoFramesById;
     }
 }

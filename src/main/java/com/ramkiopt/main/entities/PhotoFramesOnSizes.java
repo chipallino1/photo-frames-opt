@@ -9,6 +9,8 @@ public class PhotoFramesOnSizes {
     private long id;
     private long photoFrameId;
     private long sizeId;
+    private PhotoFrames photoFramesByPhotoFrameId;
+    private Sizes sizesBySizeId;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -53,5 +55,25 @@ public class PhotoFramesOnSizes {
     @Override
     public int hashCode() {
         return Objects.hash(id, photoFrameId, sizeId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    public PhotoFrames getPhotoFramesByPhotoFrameId() {
+        return photoFramesByPhotoFrameId;
+    }
+
+    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
+        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "size_id", referencedColumnName = "id", nullable = false)
+    public Sizes getSizesBySizeId() {
+        return sizesBySizeId;
+    }
+
+    public void setSizesBySizeId(Sizes sizesBySizeId) {
+        this.sizesBySizeId = sizesBySizeId;
     }
 }

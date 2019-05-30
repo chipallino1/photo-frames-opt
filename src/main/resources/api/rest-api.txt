@@ -1,0 +1,16 @@
+photo-frames
+    -- POST createPhotoFrame
+    -- GET getPhotoFrame
+    -- GET getPhotoFrames by page
+    -- GET getPhotoFrames by size
+    -- GET getPhotoFrames by color
+    -- GET getPhotoFrames by cost
+    -- GET getPhotoFrames by vendor code
+    -- PUT updatePhotoFrames
+    -- DELETE deletePhotoFrame
+users
+    -- POST createUser
+    -- GET getUser
+    -- PUT updateUser
+    -- DELETE deleteUser
+
