@@ -27,6 +27,7 @@ public class PhotoFrames {
     private Collection<Photos> photosById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public long getId() {
         return id;
@@ -160,7 +161,8 @@ public class PhotoFrames {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
     }
@@ -170,7 +172,8 @@ public class PhotoFrames {
     }
 
     @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "currency_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public Currency getCurrencyByCurrencyId() {
         return currencyByCurrencyId;
     }

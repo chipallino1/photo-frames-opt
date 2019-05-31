@@ -13,6 +13,7 @@ public class PhotoFramesOnPhotos {
     private Photos photosByPhotoId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public long getId() {
         return id;
@@ -58,7 +59,8 @@ public class PhotoFramesOnPhotos {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }
@@ -68,7 +70,8 @@ public class PhotoFramesOnPhotos {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public Photos getPhotosByPhotoId() {
         return photosByPhotoId;
     }

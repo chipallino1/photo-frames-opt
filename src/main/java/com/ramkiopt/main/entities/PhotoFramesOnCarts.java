@@ -13,6 +13,7 @@ public class PhotoFramesOnCarts {
     private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public long getId() {
         return id;
@@ -58,7 +59,8 @@ public class PhotoFramesOnCarts {
     }
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public Cart getCartByCartId() {
         return cartByCartId;
     }
@@ -68,7 +70,8 @@ public class PhotoFramesOnCarts {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }

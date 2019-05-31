@@ -15,6 +15,7 @@ public class Cart {
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public long getId() {
         return id;
@@ -71,7 +72,8 @@ public class Cart {
     }
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public Users getUsersByClientId() {
         return usersByClientId;
     }

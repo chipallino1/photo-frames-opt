@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PhotoFramesController implements ResponseCustomizationService {
     @PostMapping("/create")
     public Boolean createPhotoFrame() {
-
+        return false;
     }
 }

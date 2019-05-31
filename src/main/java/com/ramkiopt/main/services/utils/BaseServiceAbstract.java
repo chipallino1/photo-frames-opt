@@ -3,19 +3,24 @@ package com.ramkiopt.main.services.utils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 
 public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, EntitiesGetterService<T, Id>,
-        ObjectMapper {
+        ObjectMapper, ReflectionUtilsService {
 
     protected JpaRepository<T, Id> jpaRepository;
+    private final String GET_ID_METHOD = "getId";
+    protected Class<T> tClass;
 
     public JpaRepository<T, Id> getJpaRepository() {
         return jpaRepository;
     }
 
     protected abstract void setJpaRepository(JpaRepository<T, Id> jpaRepository);
+
+    protected abstract void setClass(Class<T> tClass);
 
     @Override
     public T create(T t) {
@@ -59,5 +64,17 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
     public T getById(Id id) {
         Optional<T> optFromDb = jpaRepository.findById(id);
         return optFromDb.orElse(null);
+    }
+
+    protected Boolean tryCreate(Object dto) throws InvocationTargetException, NoSuchMethodException,
+            InstantiationException, IllegalAccessException {
+        T entity = createNewInstance(tClass);
+        mapCustom(dto, entity);
+        create(entity);
+        Object id = invokeMethod(GET_ID_METHOD, tClass);
+        if (id != null) {
+            return true;
+        }
+        return false;
     }
 }

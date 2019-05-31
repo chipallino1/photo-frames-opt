@@ -1,5 +1,6 @@
 package com.ramkiopt.main.repositories;
 
+import com.ramkiopt.main.entities.Currency;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
