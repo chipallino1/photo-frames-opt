@@ -5,8 +5,8 @@ import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.users.UsersService;
 import com.ramkiopt.main.services.utils.BaseServiceAbstract;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
         implements UsersService {
 
-    private final Logger LOGGER = LogManager.getLogger(UsersServiceImpl.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(UsersServiceImpl.class);
     @Autowired
     private UsersRepository usersRepository;
 
