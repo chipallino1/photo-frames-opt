@@ -19,7 +19,7 @@ public class UsersController implements ResponseCustomizationService {
     @Autowired
     private UsersCustomizationService usersCustomizationService;
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity createUser(@RequestBody UsersDto usersDto) {
         Boolean isCreated = usersCustomizationService.createUser(usersDto);
         if (!isCreated) {

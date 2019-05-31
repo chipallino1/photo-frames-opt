@@ -71,7 +71,7 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
         T entity = createNewInstance(tClass);
         mapCustom(dto, entity);
         create(entity);
-        Object id = invokeMethod(GET_ID_METHOD, tClass);
+        Object id = invokeMethod(GET_ID_METHOD, tClass, entity);
         if (id != null) {
             return true;
         }

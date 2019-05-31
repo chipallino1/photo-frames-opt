@@ -9,9 +9,9 @@ public interface ReflectionUtilsService {
         return tClass.getConstructor().newInstance();
     }
 
-    default Object invokeMethod(String methodName, Class tClass, Class... parameterTypes) throws NoSuchMethodException,
-            InvocationTargetException, IllegalAccessException {
+    default Object invokeMethod(String methodName, Class tClass, Object target, Class... parameterTypes) throws
+            NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Method classMethod = tClass.getMethod(methodName, parameterTypes);
-        return classMethod.invoke(parameterTypes);
+        return classMethod.invoke(target, parameterTypes);
     }
 }
