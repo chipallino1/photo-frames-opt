@@ -13,6 +13,7 @@ public class PhotoFramesDto implements Serializable {
     private Integer thickness;
     private Integer cost;
     private String description;
+    private ColorsDto colorsDto;
 
     public PhotoFramesDto(long id, String name, String vendorCode, String borderMaterial,
                           String insideMaterial, Integer borderWidth, Integer thickness,

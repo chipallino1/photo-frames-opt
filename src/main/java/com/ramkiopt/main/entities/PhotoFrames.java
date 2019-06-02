@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "photo_frames", schema = "ramki_opt", catalog = "")
+@Table(name = "photo_frames", schema = "ramki_opt")
 public class PhotoFrames {
     private long id;
     private String name;
@@ -17,9 +17,7 @@ public class PhotoFrames {
     private Integer cost;
     private String description;
     private long userId;
-    private long currencyId;
     private Users usersByUserId;
-    private Currency currencyByCurrencyId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
     private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
     private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
@@ -126,17 +124,6 @@ public class PhotoFrames {
     public void setUserId(long userId) {
         this.userId = userId;
     }
-
-    @Basic
-    @Column(name = "currency_id", nullable = false)
-    public long getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(long currencyId) {
-        this.currencyId = currencyId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -144,7 +131,6 @@ public class PhotoFrames {
         PhotoFrames that = (PhotoFrames) o;
         return id == that.id &&
                 userId == that.userId &&
-                currencyId == that.currencyId &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(vendorCode, that.vendorCode) &&
                 Objects.equals(borderMaterial, that.borderMaterial) &&
@@ -157,7 +143,8 @@ public class PhotoFrames {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, vendorCode, borderMaterial, insideMaterial, borderWidth, thickness, cost, description, userId, currencyId);
+        return Objects.hash(id, name, vendorCode, borderMaterial, insideMaterial, borderWidth, thickness, cost,
+                description, userId);
     }
 
     @ManyToOne
@@ -169,17 +156,6 @@ public class PhotoFrames {
 
     public void setUsersByUserId(Users usersByUserId) {
         this.usersByUserId = usersByUserId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
-    public Currency getCurrencyByCurrencyId() {
-        return currencyByCurrencyId;
-    }
-
-    public void setCurrencyByCurrencyId(Currency currencyByCurrencyId) {
-        this.currencyByCurrencyId = currencyByCurrencyId;
     }
 
     @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
