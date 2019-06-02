@@ -14,6 +14,7 @@ public class PhotoFramesDto implements Serializable {
     private Integer cost;
     private String description;
     private ColorsDto colorsDto;
+    private SizesDto sizesDto;
 
     public PhotoFramesDto(long id, String name, String vendorCode, String borderMaterial,
                           String insideMaterial, Integer borderWidth, Integer thickness,
@@ -107,6 +108,14 @@ public class PhotoFramesDto implements Serializable {
 
     public void setColorsDto(ColorsDto colorsDto) {
         this.colorsDto = colorsDto;
+    }
+
+    public SizesDto getSizesDto() {
+        return sizesDto;
+    }
+
+    public void setSizesDto(SizesDto sizesDto) {
+        this.sizesDto = sizesDto;
     }
 
     @Override

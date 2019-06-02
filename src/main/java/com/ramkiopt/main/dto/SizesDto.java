@@ -4,23 +4,23 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class SizesDto implements Serializable {
-    private long id;
+    private Long id;
     private String format;
     private Integer width;
     private Integer height;
 
-    public SizesDto(long id, String format, Integer width, Integer height) {
+    public SizesDto(Long id, String format, Integer width, Integer height) {
         this.id = id;
         this.format = format;
         this.width = width;
         this.height = height;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
