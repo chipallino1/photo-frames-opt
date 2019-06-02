@@ -1,4 +1,4 @@
 package com.ramkiopt.main.services.app.photoframes;
 
-public interface PhotoFramesService extends PhotoFramesCrudService, PhotoFramesGetterService {
+public interface PhotoFramesService<T> extends PhotoFramesCrudService<T>, PhotoFramesGetterService {
 }

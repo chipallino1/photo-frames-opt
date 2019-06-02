@@ -101,6 +101,14 @@ public class PhotoFramesDto implements Serializable {
         this.description = description;
     }
 
+    public ColorsDto getColorsDto() {
+        return colorsDto;
+    }
+
+    public void setColorsDto(ColorsDto colorsDto) {
+        this.colorsDto = colorsDto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

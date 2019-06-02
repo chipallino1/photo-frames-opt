@@ -1,13 +1,7 @@
 package com.ramkiopt.main.services.app.photoframes;
 
-import com.ramkiopt.main.dto.PhotoFramesDto;
+import com.ramkiopt.main.services.app.base.BaseCrudService;
 
-public interface PhotoFramesCrudService {
-    Boolean createPhotoFrame(PhotoFramesDto dto);
+public interface PhotoFramesCrudService<T> extends BaseCrudService<T> {
 
-    PhotoFramesDto getPhotoFrameDto(Long id);
-
-    Boolean updatePhotoFrame(Long id, PhotoFramesDto dto);
-
-    Boolean deletePhotoFrame(Long id);
 }

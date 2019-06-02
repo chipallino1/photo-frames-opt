@@ -3,8 +3,8 @@ package com.ramkiopt.main.services.app.photoframes.impl;
 import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.entities.PhotoFrames;
 import com.ramkiopt.main.repositories.PhotoFramesRepository;
+import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
-import com.ramkiopt.main.services.utils.BaseServiceAbstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Service
 public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Long>
-        implements PhotoFramesService {
+        implements PhotoFramesService<PhotoFramesDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesServiceImpl.class);
     @Autowired
@@ -26,6 +26,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Lon
     public void init() {
         setJpaRepository(photoFramesRepository);
         setClass(PhotoFrames.class);
+        setClassDto(PhotoFramesDto.class);
     }
 
     @Override
@@ -39,7 +40,12 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Lon
     }
 
     @Override
-    public Boolean createPhotoFrame(PhotoFramesDto dto) {
+    protected void setClassDto(Class dtoClass) {
+        this.dtoClass = dtoClass;
+    }
+
+    @Override
+    public Boolean create(PhotoFramesDto dto) {
         Boolean isCreated = false;
         try {
             isCreated = tryCreate(dto);
@@ -51,17 +57,17 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Lon
     }
 
     @Override
-    public PhotoFramesDto getPhotoFrameDto(Long id) {
+    public PhotoFramesDto get(Long id) {
         return null;
     }
 
     @Override
-    public Boolean updatePhotoFrame(Long id, PhotoFramesDto dto) {
+    public Boolean update(Long id, PhotoFramesDto dto) {
         return null;
     }
 
     @Override
-    public Boolean deletePhotoFrame(Long id) {
+    public Boolean delete(Long id) {
         return null;
     }
 }

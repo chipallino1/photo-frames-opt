@@ -1,13 +1,6 @@
 package com.ramkiopt.main.services.app.users;
 
-import com.ramkiopt.main.dto.UsersDto;
+import com.ramkiopt.main.services.app.base.BaseCrudService;
 
-public interface UsersCrudService {
-    Boolean createUser(UsersDto dto);
-
-    UsersDto getUsersDto(Long id);
-
-    Boolean updateUser(Long id, UsersDto dto);
-
-    Boolean deleteUser(Long id);
+public interface UsersCrudService<T> extends BaseCrudService<T> {
 }

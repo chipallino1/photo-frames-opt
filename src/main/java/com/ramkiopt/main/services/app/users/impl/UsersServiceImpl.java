@@ -3,8 +3,8 @@ package com.ramkiopt.main.services.app.users.impl;
 import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
+import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.users.UsersService;
-import com.ramkiopt.main.services.utils.BaseServiceAbstract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @Service
 public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
-        implements UsersService {
+        implements UsersService<UsersDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UsersServiceImpl.class);
     @Autowired
@@ -26,6 +26,7 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     public void init() {
         setJpaRepository(usersRepository);
         setClass(Users.class);
+        setClassDto(UsersDto.class);
     }
 
     @Override
@@ -39,7 +40,12 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     }
 
     @Override
-    public Boolean createUser(UsersDto dto) {
+    protected void setClassDto(Class dtoClass) {
+        this.dtoClass = dtoClass;
+    }
+
+    @Override
+    public Boolean create(UsersDto dto) {
         Boolean isCreated = false;
         try {
             isCreated = tryCreate(dto);
@@ -53,17 +59,17 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     }
 
     @Override
-    public UsersDto getUsersDto(Long id) {
+    public UsersDto get(Long id) {
         return null;
     }
 
     @Override
-    public Boolean updateUser(Long id, UsersDto dto) {
+    public Boolean update(Long id, UsersDto dto) {
         return null;
     }
 
     @Override
-    public Boolean deleteUser(Long id) {
+    public Boolean delete(Long id) {
         return null;
     }
 }
