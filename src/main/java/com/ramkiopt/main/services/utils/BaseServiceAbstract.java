@@ -70,11 +70,12 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
             InstantiationException, IllegalAccessException {
         T entity = createNewInstance(tClass);
         mapCustom(dto, entity);
-        create(entity);
-        Object id = invokeMethod(GET_ID_METHOD, tClass, entity);
-        if (id != null) {
-            return true;
+        try {
+            create(entity);
+        } catch (Exception ex) {
+            return false;
         }
-        return false;
+        Object id = invokeMethod(GET_ID_METHOD, tClass, entity);
+        return id != null;
     }
 }

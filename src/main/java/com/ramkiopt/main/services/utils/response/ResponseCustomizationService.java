@@ -1,4 +1,4 @@
-package com.ramkiopt.main.services.utils;
+package com.ramkiopt.main.services.utils.response;
 
 import com.ramkiopt.main.dto.InfoDto;
 import org.springframework.http.HttpHeaders;

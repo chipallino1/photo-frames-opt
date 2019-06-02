@@ -2,8 +2,8 @@ package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.services.app.commons.UsersCustomizationService;
-import com.ramkiopt.main.services.utils.ResponseCustomizationService;
-import com.ramkiopt.main.services.utils.StatusMessages;
+import com.ramkiopt.main.services.utils.response.ResponseCustomizationService;
+import com.ramkiopt.main.services.utils.response.UsersStatusMessages;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class UsersController implements ResponseCustomizationService {
     public ResponseEntity createUser(@RequestBody UsersDto usersDto) {
         Boolean isCreated = usersCustomizationService.createUser(usersDto);
         if (!isCreated) {
-            return info(StatusMessages.SERVER_ENTITY_CREATION_ERROR, 500);
+            return info(UsersStatusMessages.PHONE_OR_EMAIL_EXISTS, 500);
         }
         return getResponseEntity(isCreated, null, HttpStatus.OK);
     }
