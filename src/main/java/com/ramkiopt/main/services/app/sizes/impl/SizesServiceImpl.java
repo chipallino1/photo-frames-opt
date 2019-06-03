@@ -5,6 +5,8 @@ import com.ramkiopt.main.entities.Sizes;
 import com.ramkiopt.main.repositories.SizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.sizes.SizesService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 @Service
 public class SizesServiceImpl extends BaseServiceAbstract<Sizes, Long> implements SizesService<SizesDto> {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(SizesServiceImpl.class);
     @Autowired
     private SizesRepository sizesRepository;
 
@@ -41,19 +44,31 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, Long> implement
     }
 
     @Override
-    public Boolean create(SizesDto dto) throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        return tryCreate(dto);
+    public SizesDto create(SizesDto dto) {
+        SizesDto sizesDto = null;
+        try {
+            sizesDto = (SizesDto) tryCreate(dto);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
+                | IllegalAccessException e) {
+            LOGGER.error("Internal exception was generated.");
+        }
+        return sizesDto;
     }
 
     @Override
-    public SizesDto get(Long id) throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        return (SizesDto) tryGetById(id);
+    public SizesDto get(Long id) {
+        SizesDto sizesDto = null;
+        try {
+            sizesDto = (SizesDto) tryGetById(id);
+        } catch (InvocationTargetException | NoSuchMethodException |
+                InstantiationException | IllegalAccessException e) {
+            LOGGER.error("Internal exception was generated.");
+        }
+        return sizesDto;
     }
 
     @Override
-    public Boolean update(Long id, SizesDto dto) {
+    public SizesDto update(Long id, SizesDto dto) {
         return null;
     }
 

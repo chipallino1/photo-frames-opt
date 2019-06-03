@@ -1,6 +1,7 @@
 package com.ramkiopt.main.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public class PhotoFramesDto implements Serializable {
@@ -13,8 +14,8 @@ public class PhotoFramesDto implements Serializable {
     private Integer thickness;
     private Integer cost;
     private String description;
-    private ColorsDto colorsDto;
-    private SizesDto sizesDto;
+    private List<ColorsDto> colorsDtoList;
+    private List<SizesDto> sizesDtoList;
 
     public PhotoFramesDto(long id, String name, String vendorCode, String borderMaterial,
                           String insideMaterial, Integer borderWidth, Integer thickness,
@@ -102,20 +103,20 @@ public class PhotoFramesDto implements Serializable {
         this.description = description;
     }
 
-    public ColorsDto getColorsDto() {
-        return colorsDto;
+    public List<ColorsDto> getColorsDtoList() {
+        return colorsDtoList;
     }
 
-    public void setColorsDto(ColorsDto colorsDto) {
-        this.colorsDto = colorsDto;
+    public void setColorsDtoList(List<ColorsDto> colorsDtoList) {
+        this.colorsDtoList = colorsDtoList;
     }
 
-    public SizesDto getSizesDto() {
-        return sizesDto;
+    public List<SizesDto> getSizesDtoList() {
+        return sizesDtoList;
     }
 
-    public void setSizesDto(SizesDto sizesDto) {
-        this.sizesDto = sizesDto;
+    public void setSizesDtoList(List<SizesDto> sizesDtoList) {
+        this.sizesDtoList = sizesDtoList;
     }
 
     @Override

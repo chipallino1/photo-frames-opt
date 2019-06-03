@@ -45,16 +45,15 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     }
 
     @Override
-    public Boolean create(UsersDto dto) {
-        Boolean isCreated = false;
+    public UsersDto create(UsersDto dto) {
+        UsersDto usersDto = null;
         try {
-            isCreated = tryCreate(dto);
+            usersDto = (UsersDto) tryCreate(dto);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
                 | IllegalAccessException e) {
             LOGGER.error("Internal exception was generated.");
-            return isCreated;
         }
-        return isCreated;
+        return usersDto;
 
     }
 
@@ -64,7 +63,7 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     }
 
     @Override
-    public Boolean update(Long id, UsersDto dto) {
+    public UsersDto update(Long id, UsersDto dto) {
         return null;
     }
 

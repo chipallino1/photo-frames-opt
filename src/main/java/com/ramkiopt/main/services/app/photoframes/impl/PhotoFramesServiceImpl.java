@@ -45,15 +45,15 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Lon
     }
 
     @Override
-    public Boolean create(PhotoFramesDto dto) {
-        Boolean isCreated = false;
+    public PhotoFramesDto create(PhotoFramesDto dto) {
+        PhotoFramesDto photoFramesDto = null;
         try {
-            isCreated = tryCreate(dto);
+            photoFramesDto = (PhotoFramesDto) tryCreate(dto);
         } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
                 | IllegalAccessException e) {
             LOGGER.error("Internal exception was generated.");
         }
-        return isCreated;
+        return photoFramesDto;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Lon
     }
 
     @Override
-    public Boolean update(Long id, PhotoFramesDto dto) {
+    public PhotoFramesDto update(Long id, PhotoFramesDto dto) {
         return null;
     }
 

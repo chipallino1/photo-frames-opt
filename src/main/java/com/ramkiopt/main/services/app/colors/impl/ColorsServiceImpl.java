@@ -5,6 +5,8 @@ import com.ramkiopt.main.entities.Colors;
 import com.ramkiopt.main.repositories.ColorsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.colors.ColorsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 @Service
 public class ColorsServiceImpl extends BaseServiceAbstract<Colors, Long> implements ColorsService<ColorsDto> {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(ColorsServiceImpl.class);
     @Autowired
     private ColorsRepository colorsRepository;
 
@@ -41,19 +44,31 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, Long> impleme
     }
 
     @Override
-    public Boolean create(ColorsDto dto) throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        return tryCreate(dto);
+    public ColorsDto create(ColorsDto dto) {
+        ColorsDto colorsDto = null;
+        try {
+            colorsDto = (ColorsDto) tryCreate(dto);
+        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
+                | IllegalAccessException e) {
+            LOGGER.error("Internal exception was generated.");
+        }
+        return colorsDto;
     }
 
     @Override
-    public ColorsDto get(Long id) throws NoSuchMethodException, InstantiationException,
-            IllegalAccessException, InvocationTargetException {
-        return (ColorsDto) tryGetById(id);
+    public ColorsDto get(Long id) {
+        ColorsDto colorsDto = null;
+        try {
+            colorsDto = (ColorsDto) tryGetById(id);
+        } catch (InvocationTargetException | NoSuchMethodException |
+                InstantiationException | IllegalAccessException e) {
+            LOGGER.error("Internal exception was generated.");
+        }
+        return colorsDto;
     }
 
     @Override
-    public Boolean update(Long id, ColorsDto dto) {
+    public ColorsDto update(Long id, ColorsDto dto) {
         return null;
     }
 

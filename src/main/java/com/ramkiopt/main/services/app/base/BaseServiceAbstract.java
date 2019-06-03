@@ -72,7 +72,7 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
         return optFromDb.orElse(null);
     }
 
-    protected Boolean tryCreate(Object dto) throws InvocationTargetException, NoSuchMethodException,
+    protected Object tryCreate(Object dto) throws InvocationTargetException, NoSuchMethodException,
             InstantiationException, IllegalAccessException {
         T entity = createNewInstance(tClass);
         mapCustom(dto, entity);
@@ -82,7 +82,11 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
             return false;
         }
         Object id = invokeMethod(GET_ID_METHOD, tClass, entity);
-        return id != null;
+        if (id == null) {
+            return null;
+        }
+        mapCustom(entity, dto);
+        return dto;
     }
 
     protected Object tryGetById(Id id) throws InvocationTargetException, NoSuchMethodException,
