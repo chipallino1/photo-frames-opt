@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PhotoFramesDto implements Serializable {
-    private long id;
+    private Long id;
     private String name;
     private String vendorCode;
     private String borderMaterial;
@@ -13,13 +13,14 @@ public class PhotoFramesDto implements Serializable {
     private Integer borderWidth;
     private Integer thickness;
     private Integer cost;
+    private Long userId;
     private String description;
     private List<ColorsDto> colorsDtoList;
     private List<SizesDto> sizesDtoList;
 
-    public PhotoFramesDto(long id, String name, String vendorCode, String borderMaterial,
+    public PhotoFramesDto(Long id, String name, String vendorCode, String borderMaterial,
                           String insideMaterial, Integer borderWidth, Integer thickness,
-                          Integer cost, String description) {
+                          Integer cost, Long userId, String description) {
         this.id = id;
         this.name = name;
         this.vendorCode = vendorCode;
@@ -28,14 +29,15 @@ public class PhotoFramesDto implements Serializable {
         this.borderWidth = borderWidth;
         this.thickness = thickness;
         this.cost = cost;
+        this.userId = userId;
         this.description = description;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -101,6 +103,14 @@ public class PhotoFramesDto implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public List<ColorsDto> getColorsDtoList() {

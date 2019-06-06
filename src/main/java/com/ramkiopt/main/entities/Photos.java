@@ -6,21 +6,21 @@ import java.util.Objects;
 
 @Entity
 public class Photos {
-    private long id;
+    private Long id;
     private String photoSrc;
     private String size;
-    private long photoFrameId;
+    private Long photoFrameId;
     private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
     private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,11 +46,11 @@ public class Photos {
 
     @Basic
     @Column(name = "photo_frame_id", nullable = false)
-    public long getPhotoFrameId() {
+    public Long getPhotoFrameId() {
         return photoFrameId;
     }
 
-    public void setPhotoFrameId(long photoFrameId) {
+    public void setPhotoFrameId(Long photoFrameId) {
         this.photoFrameId = photoFrameId;
     }
 

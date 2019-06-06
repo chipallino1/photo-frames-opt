@@ -6,40 +6,40 @@ import java.util.Objects;
 @Entity
 @Table(name = "photo_frames_on_photos", schema = "ramki_opt", catalog = "")
 public class PhotoFramesOnPhotos {
-    private long id;
-    private long photoFrameId;
-    private long photoId;
+    private Long id;
+    private Long photoFrameId;
+    private Long photoId;
     private PhotoFrames photoFramesByPhotoFrameId;
     private Photos photosByPhotoId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
     @Column(name = "photo_frame_id", nullable = false)
-    public long getPhotoFrameId() {
+    public Long getPhotoFrameId() {
         return photoFrameId;
     }
 
-    public void setPhotoFrameId(long photoFrameId) {
+    public void setPhotoFrameId(Long photoFrameId) {
         this.photoFrameId = photoFrameId;
     }
 
     @Basic
     @Column(name = "photo_id", nullable = false)
-    public long getPhotoId() {
+    public Long getPhotoId() {
         return photoId;
     }
 
-    public void setPhotoId(long photoId) {
+    public void setPhotoId(Long photoId) {
         this.photoId = photoId;
     }
 

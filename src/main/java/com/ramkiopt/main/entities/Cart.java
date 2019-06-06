@@ -7,9 +7,9 @@ import java.util.Objects;
 
 @Entity
 public class Cart {
-    private long id;
+    private Long id;
     private String name;
-    private long clientId;
+    private Long clientId;
     private Date insertAt;
     private Users usersByClientId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
@@ -17,11 +17,11 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class Cart {
 
     @Basic
     @Column(name = "client_id", nullable = false)
-    public long getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 

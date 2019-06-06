@@ -7,7 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "photo_frames", schema = "ramki_opt")
 public class PhotoFrames {
-    private long id;
+    private Long id;
     private String name;
     private String vendorCode;
     private String borderMaterial;
@@ -16,7 +16,7 @@ public class PhotoFrames {
     private Integer thickness;
     private Integer cost;
     private String description;
-    private long userId;
+    private Long userId;
     private Users usersByUserId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
     private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
@@ -27,11 +27,11 @@ public class PhotoFrames {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -117,13 +117,14 @@ public class PhotoFrames {
 
     @Basic
     @Column(name = "user_id", nullable = false)
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

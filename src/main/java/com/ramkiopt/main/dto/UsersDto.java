@@ -3,7 +3,7 @@ package com.ramkiopt.main.dto;
 import java.io.Serializable;
 
 public class UsersDto implements Serializable {
-    private long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,7 +12,7 @@ public class UsersDto implements Serializable {
     private String password;
     private String passwordEncrypted;
 
-    public UsersDto(long id, String firstName, String lastName, String email, String phoneNumber,
+    public UsersDto(Long id, String firstName, String lastName, String email, String phoneNumber,
                     String role, String passwordEncrypted) {
         this.id = id;
         this.firstName = firstName;
@@ -23,11 +23,11 @@ public class UsersDto implements Serializable {
         this.passwordEncrypted = passwordEncrypted;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
