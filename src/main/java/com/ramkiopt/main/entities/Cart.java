@@ -9,7 +9,7 @@ import java.util.Objects;
 public class Cart {
     private Long id;
     private String name;
-    private Long clientId;
+    private Long userId;
     private Date insertAt;
     private Users usersByClientId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
@@ -37,12 +37,12 @@ public class Cart {
 
     @Basic
     @Column(name = "client_id", nullable = false)
-    public Long getClientId() {
-        return clientId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     @Basic
@@ -61,14 +61,14 @@ public class Cart {
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
         return id == cart.id &&
-                clientId == cart.clientId &&
+                userId == cart.userId &&
                 Objects.equals(name, cart.name) &&
                 Objects.equals(insertAt, cart.insertAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, clientId, insertAt);
+        return Objects.hash(id, name, userId, insertAt);
     }
 
     @ManyToOne

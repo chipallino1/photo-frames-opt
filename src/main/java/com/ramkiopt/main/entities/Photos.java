@@ -8,7 +8,8 @@ import java.util.Objects;
 public class Photos {
     private Long id;
     private String photoSrc;
-    private String size;
+    private Integer width;
+    private Integer height;
     private Long photoFrameId;
     private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
     private PhotoFrames photoFramesByPhotoFrameId;
@@ -35,13 +36,23 @@ public class Photos {
     }
 
     @Basic
-    @Column(name = "size", nullable = true, length = 100)
-    public String getSize() {
-        return size;
+    @Column(name = "width", nullable = true)
+    public Integer getWidth() {
+        return width;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    @Basic
+    @Column(name = "height", nullable = true)
+    public Integer getHeight() {
+        return height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     @Basic
@@ -52,22 +63,6 @@ public class Photos {
 
     public void setPhotoFrameId(Long photoFrameId) {
         this.photoFrameId = photoFrameId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Photos photos = (Photos) o;
-        return id == photos.id &&
-                photoFrameId == photos.photoFrameId &&
-                Objects.equals(photoSrc, photos.photoSrc) &&
-                Objects.equals(size, photos.size);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, photoSrc, size, photoFrameId);
     }
 
     @OneToMany(mappedBy = "photosByPhotoId")
@@ -88,5 +83,24 @@ public class Photos {
 
     public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
         this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Photos photos = (Photos) object;
+        return Objects.equals(id, photos.id) &&
+                Objects.equals(photoSrc, photos.photoSrc) &&
+                Objects.equals(width, photos.width) &&
+                Objects.equals(height, photos.height) &&
+                Objects.equals(photoFrameId, photos.photoFrameId) &&
+                Objects.equals(photoFramesOnPhotosById, photos.photoFramesOnPhotosById) &&
+                Objects.equals(photoFramesByPhotoFrameId, photos.photoFramesByPhotoFrameId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, photoSrc, width, height, photoFrameId, photoFramesOnPhotosById, photoFramesByPhotoFrameId);
     }
 }

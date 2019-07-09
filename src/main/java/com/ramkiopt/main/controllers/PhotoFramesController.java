@@ -14,12 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/photo-frames")
 public class PhotoFramesController implements ResponseCustomizationService {
+    private final PhotoFramesCustomizationService photoFramesCustomizationService;
+
     @Autowired
-    private PhotoFramesCustomizationService photoFramesCustomizationService;
+    public PhotoFramesController(PhotoFramesCustomizationService photoFramesCustomizationService) {
+        this.photoFramesCustomizationService = photoFramesCustomizationService;
+    }
 
     @PostMapping("/create")
     public ResponseEntity createPhotoFrame(@RequestBody PhotoFramesDto dto) {
         dto = photoFramesCustomizationService.createPhotoFrame(dto);
-        return getResponseEntity(dto, null, HttpStatus.OK);
+        if (dto == null) {
+            return info("Error: sizes or colors did not set.", 400);
+        }
+        return getResponseEntity(dto, HttpStatus.OK);
     }
 }

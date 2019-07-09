@@ -1,6 +1,7 @@
 package com.ramkiopt.main.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -28,7 +29,8 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "first_name", nullable = true, length = 300)
+    @Column(name = "first_name", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getFirstName() {
         return firstName;
     }
@@ -38,7 +40,8 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "last_name", nullable = true, length = 300)
+    @Column(name = "last_name", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getLastName() {
         return lastName;
     }
@@ -48,7 +51,8 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 300)
+    @Column(name = "email", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getEmail() {
         return email;
     }
@@ -59,6 +63,7 @@ public class Users {
 
     @Basic
     @Column(name = "phone_number", nullable = true, length = 20)
+    @Size(min = 2, max = 20)
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -68,7 +73,8 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "role", nullable = true, length = 300)
+    @Column(name = "role", nullable = true, length = 50)
+    @Size(min = 2, max = 20)
     public String getRole() {
         return role;
     }
@@ -87,25 +93,6 @@ public class Users {
         this.passwordEncrypted = passwordEncrypted;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return id == users.id &&
-                Objects.equals(firstName, users.firstName) &&
-                Objects.equals(lastName, users.lastName) &&
-                Objects.equals(email, users.email) &&
-                Objects.equals(phoneNumber, users.phoneNumber) &&
-                Objects.equals(role, users.role) &&
-                Objects.equals(passwordEncrypted, users.passwordEncrypted);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, phoneNumber, role, passwordEncrypted);
-    }
-
     @OneToMany(mappedBy = "usersByClientId")
     public Collection<Cart> getCartsById() {
         return cartsById;
@@ -122,5 +109,26 @@ public class Users {
 
     public void setPhotoFramesById(Collection<PhotoFrames> photoFramesById) {
         this.photoFramesById = photoFramesById;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Users users = (Users) object;
+        return Objects.equals(id, users.id) &&
+                Objects.equals(firstName, users.firstName) &&
+                Objects.equals(lastName, users.lastName) &&
+                Objects.equals(email, users.email) &&
+                Objects.equals(phoneNumber, users.phoneNumber) &&
+                Objects.equals(role, users.role) &&
+                Objects.equals(passwordEncrypted, users.passwordEncrypted) &&
+                Objects.equals(cartsById, users.cartsById) &&
+                Objects.equals(photoFramesById, users.photoFramesById);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phoneNumber, role, passwordEncrypted, cartsById, photoFramesById);
     }
 }

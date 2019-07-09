@@ -18,12 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsersController implements ResponseCustomizationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UsersController.class);
+    private final UsersCustomizationService usersCustomizationService;
+
     @Autowired
-    private UsersCustomizationService usersCustomizationService;
+    public UsersController(UsersCustomizationService usersCustomizationService) {
+        this.usersCustomizationService = usersCustomizationService;
+    }
 
     @PostMapping("/")
     public ResponseEntity createUser(@RequestBody UsersDto usersDto) {
         usersDto = usersCustomizationService.createUser(usersDto);
-        return getResponseEntity(usersDto, null, HttpStatus.OK);
+        return getResponseEntity(usersDto, HttpStatus.OK);
     }
 }

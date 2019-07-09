@@ -7,24 +7,33 @@ import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
 import com.ramkiopt.main.services.app.photoframesoncolors.PhotoFramesOnColorsService;
 import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnSizesService;
 import com.ramkiopt.main.services.app.sizes.SizesService;
+import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnColorsDtoCreator;
+import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnSizesDtoCreator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Service
 public class PhotoFramesCustomizationServiceImpl implements PhotoFramesCustomizationService {
+    private final PhotoFramesService<PhotoFramesDto> photoFramesService;
+    private final ColorsService<ColorsDto> colorsService;
+    private final SizesService<SizesDto> sizesService;
+    private final PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService;
+    private final PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService;
+    private final PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator;
+    private final PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator;
+
     @Autowired
-    private PhotoFramesService photoFramesService;
-    @Autowired
-    private ColorsService colorsService;
-    @Autowired
-    private SizesService sizesService;
-    @Autowired
-    private PhotoFramesOnSizesService photoFramesOnSizesService;
-    @Autowired
-    private PhotoFramesOnColorsService photoFramesOnColorsService;
+    public PhotoFramesCustomizationServiceImpl(PhotoFramesService<PhotoFramesDto> photoFramesService, ColorsService<ColorsDto> colorsService, SizesService<SizesDto> sizesService, PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService, PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService, PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator, PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator) {
+        this.photoFramesService = photoFramesService;
+        this.colorsService = colorsService;
+        this.sizesService = sizesService;
+        this.photoFramesOnSizesService = photoFramesOnSizesService;
+        this.photoFramesOnColorsService = photoFramesOnColorsService;
+        this.photoFramesOnSizesDtoCreator = photoFramesOnSizesDtoCreator;
+        this.photoFramesOnColorsDtoCreator = photoFramesOnColorsDtoCreator;
+    }
 
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
@@ -33,56 +42,31 @@ public class PhotoFramesCustomizationServiceImpl implements PhotoFramesCustomiza
         if (sizesDtoList == null || colorsDtoList == null) {
             return null;
         }
-        Serializable serializable = dto;
-        PhotoFramesDto testDto = (PhotoFramesDto) serializable;
-        dto = (PhotoFramesDto) photoFramesService.create(dto);
 
-        if (!isSetPhotoFramesOnSizesFromPhotoFramesDto(sizesDtoList, dto.getId()) ||
-                !isSetPhotoFramesOnColorsFromPhotoFramesDto(colorsDtoList, dto.getId())) {
-            return null;
-        }
+        photoFramesService.create(dto);
+        createSizes(dto.getSizesDtoList(), dto.getId());
+        createColors(dto.getColorsDtoList(), dto.getId());
 
         // TODO add setPhotoFramesOnPhotosFromPhotoFramesDto
-
 
         return dto;
     }
 
-    private boolean isSetPhotoFramesOnSizesFromPhotoFramesDto(List<SizesDto> sizesDtoList, Long photoFramesId) {
-        PhotoFramesOnSizesDto photoFramesOnSizesDto = new PhotoFramesOnSizesDto();
-        for (int i = 0; i < sizesDtoList.size(); i++) {
-            SizesDto currentSizesDto = sizesDtoList.get(i);
-            if (currentSizesDto.getId() != null) {
-                SizesDto dtoFromDb = (SizesDto) sizesService.get(currentSizesDto.getId());
-                if (dtoFromDb == null) {
-                    return false;
-                }
-            } else {
-                currentSizesDto = (SizesDto) sizesService.create(currentSizesDto);
+    private void createSizes(List<SizesDto> dtos, Long photoFrameId) {
+        for (SizesDto sizesDto : dtos) {
+            if (sizesDto.getId() == null) {
+                sizesDto = sizesService.create(sizesDto);
             }
-            photoFramesOnSizesDto.setPhotoFrameId(photoFramesId);
-            photoFramesOnSizesDto.setSizeId(currentSizesDto.getId());
-            photoFramesOnSizesService.create(photoFramesOnSizesDto);
+            photoFramesOnSizesService.create(photoFramesOnSizesDtoCreator.createDto(sizesDto.getId(), photoFrameId));
         }
-        return true;
     }
 
-    private boolean isSetPhotoFramesOnColorsFromPhotoFramesDto(List<ColorsDto> colorsDtoList, Long photoFramesId) {
-        PhotoFramesOnColorsDto photoFramesOnColorsDto = new PhotoFramesOnColorsDto();
-        for (int i = 0; i < colorsDtoList.size(); i++) {
-            ColorsDto currentColorsDto = colorsDtoList.get(i);
-            if (currentColorsDto.getId() != null) {
-                ColorsDto dtoFromDb = (ColorsDto) colorsService.get(currentColorsDto.getId());
-                if (dtoFromDb == null) {
-                    return false;
-                }
-            } else {
-                currentColorsDto = (ColorsDto) colorsService.create(currentColorsDto);
+    private void createColors(List<ColorsDto> dtos, Long photoFrameId) {
+        for (ColorsDto colorsDto : dtos) {
+            if (colorsDto.getId() == null) {
+                colorsDto = colorsService.create(colorsDto);
             }
-            photoFramesOnColorsDto.setPhotoFrameId(photoFramesId);
-            photoFramesOnColorsDto.setColorId(currentColorsDto.getId());
-            photoFramesOnColorsService.create(photoFramesOnColorsDto);
+            photoFramesOnColorsService.create(photoFramesOnColorsDtoCreator.createDto(colorsDto.getId(), photoFrameId));
         }
-        return true;
     }
 }

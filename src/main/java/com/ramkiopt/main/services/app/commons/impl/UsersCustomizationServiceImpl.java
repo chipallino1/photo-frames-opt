@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsersCustomizationServiceImpl implements UsersCustomizationService {
 
+    private final UsersService<UsersDto> usersService;
+
     @Autowired
-    private UsersService usersService;
+    public UsersCustomizationServiceImpl(UsersService<UsersDto> usersService) {
+        this.usersService = usersService;
+    }
 
     @Override
     public UsersDto createUser(UsersDto dto) {
-        dto = (UsersDto) usersService.create(dto);
-        return dto;
+        return usersService.create(dto);
     }
 }

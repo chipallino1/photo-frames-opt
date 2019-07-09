@@ -1,6 +1,8 @@
 package com.ramkiopt.main.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -36,7 +38,8 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 300)
+    @Column(name = "name", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getName() {
         return name;
     }
@@ -46,7 +49,8 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "vendor_code", nullable = true, length = 300)
+    @Column(name = "vendor_code", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getVendorCode() {
         return vendorCode;
     }
@@ -56,7 +60,8 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "border_material", nullable = true, length = 300)
+    @Column(name = "border_material", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getBorderMaterial() {
         return borderMaterial;
     }
@@ -66,7 +71,8 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "inside_material", nullable = true, length = 300)
+    @Column(name = "inside_material", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getInsideMaterial() {
         return insideMaterial;
     }
@@ -77,6 +83,7 @@ public class PhotoFrames {
 
     @Basic
     @Column(name = "border_width", nullable = true)
+    @Min(0)
     public Integer getBorderWidth() {
         return borderWidth;
     }
@@ -87,6 +94,7 @@ public class PhotoFrames {
 
     @Basic
     @Column(name = "thickness", nullable = true)
+    @Min(0)
     public Integer getThickness() {
         return thickness;
     }
@@ -97,6 +105,7 @@ public class PhotoFrames {
 
     @Basic
     @Column(name = "cost", nullable = true)
+    @Min(0)
     public Integer getCost() {
         return cost;
     }
@@ -107,6 +116,7 @@ public class PhotoFrames {
 
     @Basic
     @Column(name = "description", nullable = true, length = 300)
+    @Size(max = 300)
     public String getDescription() {
         return description;
     }

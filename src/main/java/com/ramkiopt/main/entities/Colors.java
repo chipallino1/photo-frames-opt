@@ -1,6 +1,7 @@
 package com.ramkiopt.main.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -23,7 +24,8 @@ public class Colors {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 300)
+    @Column(name = "name", nullable = true, length = 100)
+    @Size(min = 2, max = 100)
     public String getName() {
         return name;
     }
@@ -34,6 +36,7 @@ public class Colors {
 
     @Basic
     @Column(name = "rgb", nullable = true, length = 300)
+    @Size(min = 2, max = 15)
     public String getRgb() {
         return rgb;
     }
