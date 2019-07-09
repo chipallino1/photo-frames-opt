@@ -25,7 +25,7 @@ public class UsersController implements ResponseCustomizationService {
         this.usersCustomizationService = usersCustomizationService;
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody UsersDto usersDto) {
         usersDto = usersCustomizationService.createUser(usersDto);
         return getResponseEntity(usersDto, HttpStatus.OK);

@@ -37,12 +37,6 @@ public class PhotoFramesCustomizationServiceImpl implements PhotoFramesCustomiza
 
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
-        List<SizesDto> sizesDtoList = dto.getSizesDtoList();
-        List<ColorsDto> colorsDtoList = dto.getColorsDtoList();
-        if (sizesDtoList == null || colorsDtoList == null) {
-            return null;
-        }
-
         photoFramesService.create(dto);
         createSizes(dto.getSizesDtoList(), dto.getId());
         createColors(dto.getColorsDtoList(), dto.getId());

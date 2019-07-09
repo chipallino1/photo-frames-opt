@@ -1,5 +1,7 @@
 package com.ramkiopt.main.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
@@ -113,6 +115,8 @@ public class PhotoFramesDto implements Serializable {
         this.userId = userId;
     }
 
+    @NotNull
+    @Size(min = 1)
     public List<ColorsDto> getColorsDtoList() {
         return colorsDtoList;
     }
@@ -121,6 +125,8 @@ public class PhotoFramesDto implements Serializable {
         this.colorsDtoList = colorsDtoList;
     }
 
+    @NotNull
+    @Size(min = 1)
     public List<SizesDto> getSizesDtoList() {
         return sizesDtoList;
     }

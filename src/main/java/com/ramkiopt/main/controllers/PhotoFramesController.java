@@ -6,10 +6,9 @@ import com.ramkiopt.main.services.utils.response.ResponseCustomizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/photo-frames")
@@ -22,11 +21,16 @@ public class PhotoFramesController implements ResponseCustomizationService {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createPhotoFrame(@RequestBody PhotoFramesDto dto) {
+    public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto) {
         dto = photoFramesCustomizationService.createPhotoFrame(dto);
         if (dto == null) {
             return info("Error: sizes or colors did not set.", 400);
         }
         return getResponseEntity(dto, HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity updatePhotoFrame() {
+        return null;
     }
 }
