@@ -27,7 +27,7 @@ public class PhotoFramesController implements ResponseCustomizationService {
     @PostMapping("/create")
     public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            List<String> errorMessages = new ArrayList<>();
+            List<String> errorMessages  new ArrayList<>();
             for (ObjectError error : bindingResult.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
             }
