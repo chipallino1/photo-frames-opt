@@ -2,7 +2,7 @@ package com.ramkiopt.main.services.app.commons.impl;
 
 import com.ramkiopt.main.dto.*;
 import com.ramkiopt.main.services.app.colors.ColorsService;
-import com.ramkiopt.main.services.app.commons.PhotoFramesCustomizationService;
+import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
 import com.ramkiopt.main.services.app.photoframesoncolors.PhotoFramesOnColorsService;
 import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnSizesService;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PhotoFramesCustomizationServiceImpl implements PhotoFramesCustomizationService {
+public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureService {
     private final PhotoFramesService<PhotoFramesDto> photoFramesService;
     private final ColorsService<ColorsDto> colorsService;
     private final SizesService<SizesDto> sizesService;
@@ -25,7 +25,14 @@ public class PhotoFramesCustomizationServiceImpl implements PhotoFramesCustomiza
     private final PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator;
 
     @Autowired
-    public PhotoFramesCustomizationServiceImpl(PhotoFramesService<PhotoFramesDto> photoFramesService, ColorsService<ColorsDto> colorsService, SizesService<SizesDto> sizesService, PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService, PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService, PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator, PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator) {
+    public PhotoFramesStructureServiceImpl(
+            PhotoFramesService<PhotoFramesDto> photoFramesService,
+            ColorsService<ColorsDto> colorsService,
+            SizesService<SizesDto> sizesService,
+            PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService,
+            PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService,
+            PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator,
+            PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator) {
         this.photoFramesService = photoFramesService;
         this.colorsService = colorsService;
         this.sizesService = sizesService;

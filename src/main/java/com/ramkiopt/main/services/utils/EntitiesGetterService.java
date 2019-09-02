@@ -8,6 +8,4 @@ public interface EntitiesGetterService<T, Id>{
     List<T> getAll();
 
     List<T> getAll(Pageable pageable);
-
-    T getById(Id id);
 }

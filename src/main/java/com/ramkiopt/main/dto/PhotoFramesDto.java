@@ -134,25 +134,4 @@ public class PhotoFramesDto implements Serializable {
     public void setSizesDtoList(List<SizesDto> sizesDtoList) {
         this.sizesDtoList = sizesDtoList;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PhotoFramesDto)) return false;
-        PhotoFramesDto that = (PhotoFramesDto) o;
-        return id == that.id &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(vendorCode, that.vendorCode) &&
-                Objects.equals(borderMaterial, that.borderMaterial) &&
-                Objects.equals(insideMaterial, that.insideMaterial) &&
-                Objects.equals(borderWidth, that.borderWidth) &&
-                Objects.equals(thickness, that.thickness) &&
-                Objects.equals(cost, that.cost) &&
-                Objects.equals(description, that.description);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, vendorCode, borderMaterial, insideMaterial, borderWidth, thickness, cost, description);
-    }
 }

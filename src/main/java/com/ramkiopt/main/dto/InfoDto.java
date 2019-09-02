@@ -1,17 +1,18 @@
 package com.ramkiopt.main.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class InfoDto implements Serializable {
-    private String message;
+    private List<String> messages;
     private Integer statusCode;
 
-    public String getMessage() {
-        return message;
+    public List<String> getMessages() {
+        return messages;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMessages(List<String> messages) {
+        this.messages = messages;
     }
 
     public Integer getStatusCode() {

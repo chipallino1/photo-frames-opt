@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public interface ObjectMapper {
+public final class ObjectMapper {
 
-    default void mapCustom(Object src, Object dest) throws IllegalAccessException {
+    public static void mapCustom(Object src, Object dest) throws IllegalAccessException {
         Class srcClass = src.getClass();
         Class destClass = dest.getClass();
         Field[] fields = srcClass.getDeclaredFields();
@@ -29,24 +28,24 @@ public interface ObjectMapper {
         }
     }
 
-    default void map(Object src, Object dest) {
+    public static void map(Object src, Object dest) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(src, dest);
     }
 
-    default void map(List src, List dest) {
+    public static void map(List src, List dest) {
         for (int i = 0; i < src.size(); i++) {
             map(src.get(i), dest.get(i));
         }
     }
 
-    default void mapListCustom(List src, List dest) throws IllegalAccessException {
+    public static void mapListCustom(List src, List dest) throws IllegalAccessException {
         for (int i = 0; i < src.size(); i++) {
             mapCustom(src.get(i), dest.get(i));
         }
     }
 
-    default void mapListMapToDto(List<Map<String, Object>> src, List dest, Class dtoClass)
+    public static void mapListMapToDto(List<Map<String, Object>> src, List dest, Class dtoClass)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         for (int i = 0; i < src.size(); i++) {
             Map<String, Object> map = src.get(i);
@@ -81,14 +80,14 @@ public interface ObjectMapper {
         }
     }
 
-    default List prepareAndMapList(List list, Class objectClass) throws InstantiationException, IllegalAccessException {
+    public static List prepareAndMapList(List list, Class objectClass) throws InstantiationException, IllegalAccessException {
         List dtoList = null;
         dtoList = prepareForMap(list.size(), objectClass);
         mapListCustom(list, dtoList);
         return dtoList;
     }
 
-    default List prepareForMap(int size, Class objectClass) throws IllegalAccessException, InstantiationException {
+    public static List prepareForMap(int size, Class objectClass) throws IllegalAccessException, InstantiationException {
         List dtoList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             dtoList.add(objectClass.newInstance());

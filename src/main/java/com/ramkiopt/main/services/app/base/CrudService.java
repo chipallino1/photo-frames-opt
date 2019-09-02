@@ -5,7 +5,7 @@ public interface CrudService<T, Id> {
 
     T updateInDb(Id id, T t);
 
-    T readInDb(Id id);
+    T readFromDb(Id id);
 
     void deleteInDb(Id id);
 }
