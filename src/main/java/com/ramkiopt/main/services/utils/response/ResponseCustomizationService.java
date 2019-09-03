@@ -1,6 +1,7 @@
 package com.ramkiopt.main.services.utils.response;
 
 import com.ramkiopt.main.dto.InfoDto;
+import com.ramkiopt.main.dto.MessageInfoDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +13,7 @@ public interface ResponseCustomizationService {
         return new ResponseEntity<>(body, httpStatus);
     }
 
-    default ResponseEntity info(List<String> messages, Integer statusCode) {
+    default ResponseEntity info(List<MessageInfoDto> messages, Integer statusCode) {
         InfoDto infoDto = new InfoDto();
         infoDto.setMessages(messages);
         infoDto.setStatusCode(statusCode);

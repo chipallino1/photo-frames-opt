@@ -4,7 +4,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 public class PhotoFramesDto implements Serializable {
     private Long id;
@@ -116,7 +115,7 @@ public class PhotoFramesDto implements Serializable {
     }
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1, message = "{validation.photoframes.colorsListSize.message}")
     public List<ColorsDto> getColorsDtoList() {
         return colorsDtoList;
     }
@@ -126,7 +125,7 @@ public class PhotoFramesDto implements Serializable {
     }
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1, message = "{validation.photoframes.sizesListSize.message}")
     public List<SizesDto> getSizesDtoList() {
         return sizesDtoList;
     }

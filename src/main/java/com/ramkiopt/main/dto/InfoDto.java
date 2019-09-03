@@ -4,14 +4,14 @@ import java.io.Serializable;
 import java.util.List;
 
 public class InfoDto implements Serializable {
-    private List<String> messages;
+    private List<MessageInfoDto> messages;
     private Integer statusCode;
 
-    public List<String> getMessages() {
+    public List<MessageInfoDto> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<String> messages) {
+    public void setMessages(List<MessageInfoDto> messages) {
         this.messages = messages;
     }
 
