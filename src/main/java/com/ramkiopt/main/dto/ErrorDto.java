@@ -1,11 +1,8 @@
 package com.ramkiopt.main.dto;
 
-import java.io.Serializable;
-
-public class ErrorDto implements Serializable {
+public class ErrorDto extends NotificationDto {
     private String message;
-    private String objectName;
-    private String fieldName;
+    private String advice;
 
     public String getMessage() {
         return message;
@@ -15,19 +12,11 @@ public class ErrorDto implements Serializable {
         this.message = message;
     }
 
-    public String getObjectName() {
-        return objectName;
+    public String getAdvice() {
+        return advice;
     }
 
-    public void setObjectName(String objectName) {
-        this.objectName = objectName;
-    }
-
-    public String getFieldName() {
-        return fieldName;
-    }
-
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
+    public void setAdvice(String advice) {
+        this.advice = advice;
     }
 }

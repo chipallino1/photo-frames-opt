@@ -5,7 +5,7 @@ create table currency
 (
     id    bigint primary key auto_increment,
     name  varchar(100),
-    icon  nvarchar(5),
+    icon  varchar(5),
     value double
 );
 
@@ -88,7 +88,7 @@ create table cart
 (
     id        bigint primary key auto_increment,
     name      varchar(300),
-    client_id   bigint not null,
+    client_id bigint not null,
     insert_at date
 );
 

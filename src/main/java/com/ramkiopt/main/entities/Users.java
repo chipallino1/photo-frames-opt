@@ -51,7 +51,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 100)
+    @Column(name = "email", nullable = true, length = 100, unique = true)
     @Size(min = 2, max = 100)
     public String getEmail() {
         return email;
@@ -62,7 +62,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "phone_number", nullable = true, length = 20)
+    @Column(name = "phone_number", nullable = true, length = 20, unique = true)
     @Size(min = 2, max = 20)
     public String getPhoneNumber() {
         return phoneNumber;

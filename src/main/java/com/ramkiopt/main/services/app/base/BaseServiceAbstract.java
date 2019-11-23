@@ -14,13 +14,13 @@ public abstract class BaseServiceAbstract<T, Id> implements CrudService<T, Id>, 
 
     protected JpaRepository<T, Id> jpaRepository;
     protected Class<T> tClass;
-    protected Class dtoClass;
+    protected Class<Object> dtoClass;
 
     protected abstract void setJpaRepository(JpaRepository<T, Id> jpaRepository);
 
     protected abstract void setClass(Class<T> tClass);
 
-    protected abstract void setClassDto(Class dtoClass);
+    protected abstract void setClassDto(Class<Object> dtoClass);
 
     @Override
     public T createInDb(T t) {

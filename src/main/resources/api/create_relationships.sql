@@ -1,8 +1,6 @@
 ALTER TABLE photo_frames ADD FOREIGN KEY (user_id) REFERENCES users(id);
 ALTER TABLE photo_frames ADD FOREIGN KEY (currency_id) REFERENCES currency(id);
 
-ALTER TABLE photos ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
-
 ALTER TABLE photo_frames_on_colors ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
 ALTER TABLE photo_frames_on_colors ADD FOREIGN KEY (color_id) REFERENCES colors(id);
 

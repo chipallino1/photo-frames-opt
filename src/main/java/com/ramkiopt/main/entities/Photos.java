@@ -11,7 +11,6 @@ public class Photos {
     private Integer width;
     private Integer height;
     private Long photoFrameId;
-    private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
     private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
@@ -65,15 +64,6 @@ public class Photos {
         this.photoFrameId = photoFrameId;
     }
 
-    @OneToMany(mappedBy = "photosByPhotoId")
-    public Collection<PhotoFramesOnPhotos> getPhotoFramesOnPhotosById() {
-        return photoFramesOnPhotosById;
-    }
-
-    public void setPhotoFramesOnPhotosById(Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById) {
-        this.photoFramesOnPhotosById = photoFramesOnPhotosById;
-    }
-
     @ManyToOne
     @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
             updatable = false)
@@ -95,12 +85,11 @@ public class Photos {
                 Objects.equals(width, photos.width) &&
                 Objects.equals(height, photos.height) &&
                 Objects.equals(photoFrameId, photos.photoFrameId) &&
-                Objects.equals(photoFramesOnPhotosById, photos.photoFramesOnPhotosById) &&
                 Objects.equals(photoFramesByPhotoFrameId, photos.photoFramesByPhotoFrameId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, photoSrc, width, height, photoFrameId, photoFramesOnPhotosById, photoFramesByPhotoFrameId);
+        return Objects.hash(id, photoSrc, width, height, photoFrameId, photoFramesByPhotoFrameId);
     }
 }

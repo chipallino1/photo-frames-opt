@@ -1,18 +1,20 @@
 package com.ramkiopt.main.dto;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class InfoDto implements Serializable {
-    private List<MessageInfoDto> messages;
+    private List<NotificationDto> notificationDtos;
     private Integer statusCode;
+    private Timestamp timestamp;
 
-    public List<MessageInfoDto> getMessages() {
-        return messages;
+    public List<NotificationDto> getNotificationDtos() {
+        return notificationDtos;
     }
 
-    public void setMessages(List<MessageInfoDto> messages) {
-        this.messages = messages;
+    public void setNotificationDtos(List<NotificationDto> notificationDtos) {
+        this.notificationDtos = notificationDtos;
     }
 
     public Integer getStatusCode() {
@@ -21,5 +23,13 @@ public class InfoDto implements Serializable {
 
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -22,7 +22,6 @@ public class PhotoFrames {
     private Users usersByUserId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
     private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
-    private Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById;
     private Collection<PhotoFramesOnSizes> photoFramesOnSizesById;
     private Collection<Photos> photosById;
 
@@ -185,15 +184,6 @@ public class PhotoFrames {
 
     public void setPhotoFramesOnColorsById(Collection<PhotoFramesOnColors> photoFramesOnColorsById) {
         this.photoFramesOnColorsById = photoFramesOnColorsById;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<PhotoFramesOnPhotos> getPhotoFramesOnPhotosById() {
-        return photoFramesOnPhotosById;
-    }
-
-    public void setPhotoFramesOnPhotosById(Collection<PhotoFramesOnPhotos> photoFramesOnPhotosById) {
-        this.photoFramesOnPhotosById = photoFramesOnPhotosById;
     }
 
     @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
