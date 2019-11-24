@@ -38,6 +38,32 @@ public final class ObjectMapper {
         }
     }
 
+    public static void mapCustomWithoutNulls(Object src, Object dest) {
+        if (src == null || dest == null) {
+            return;
+        }
+        Class srcClass = src.getClass();
+        Class destClass = dest.getClass();
+        Field[] fields = srcClass.getDeclaredFields();
+        for (Field field : fields) {
+            Field destField;
+            try {
+                destField = destClass.getDeclaredField(field.getName());
+            } catch (NoSuchFieldException e) {
+                continue;
+            }
+            field.setAccessible(true);
+            destField.setAccessible(true);
+            try {
+                if (field.get(src) != null) {
+                    destField.set(dest, field.get(src));
+                }
+            } catch (IllegalAccessException e) {
+                LOGGER.error(e.getMessage());
+            }
+        }
+    }
+
     public static void map(Object src, Object dest) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(src, dest);

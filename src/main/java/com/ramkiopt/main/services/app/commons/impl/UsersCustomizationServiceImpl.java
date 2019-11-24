@@ -20,4 +20,21 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
     public UsersDto createUser(UsersDto dto) {
         return usersService.create(dto);
     }
+
+    @Override
+    public UsersDto readUser(Long id) {
+        return usersService.get(id);
+    }
+
+    @Override
+    public UsersDto updateUser(Long id, UsersDto usersDto) {
+        return usersService.update(id, usersDto);
+    }
+
+    @Override
+    public Boolean deleteUser(Long id) {
+        return usersService.delete(id);
+    }
+
+
 }

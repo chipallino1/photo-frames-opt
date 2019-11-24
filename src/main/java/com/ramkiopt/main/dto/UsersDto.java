@@ -12,6 +12,9 @@ public class UsersDto implements Serializable {
     private String password;
     private String passwordEncrypted;
 
+    public UsersDto() {
+    }
+
     public UsersDto(Long id, String firstName, String lastName, String email, String phoneNumber,
                     String role, String passwordEncrypted) {
         this.id = id;

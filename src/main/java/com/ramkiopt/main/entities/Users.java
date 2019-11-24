@@ -107,7 +107,7 @@ public class Users {
         this.cartsById = cartsById;
     }
 
-    @OneToMany(mappedBy = "usersByUserId")
+    @OneToMany(mappedBy = "usersByUserId", cascade = CascadeType.PERSIST)
     public Collection<PhotoFrames> getPhotoFramesById() {
         return photoFramesById;
     }

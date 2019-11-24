@@ -38,16 +38,16 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
 
     @Override
     public UsersDto get(Long id) {
-        return null;
+        return readFromDb(id, new UsersDto());
     }
 
     @Override
     public UsersDto update(Long id, UsersDto dto) {
-        return null;
+        return updateInDb(id, dto);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return null;
+        return deleteInDb(id);
     }
 }
