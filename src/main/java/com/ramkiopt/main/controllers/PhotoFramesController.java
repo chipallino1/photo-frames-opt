@@ -19,7 +19,8 @@ public class PhotoFramesController {
     private final BaseResponseService responseService;
 
     @Autowired
-    public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService, BaseResponseService responseService) {
+    public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
+                                 BaseResponseService responseService) {
         this.photoFramesStructureService = photoFramesStructureService;
         this.responseService = responseService;
     }

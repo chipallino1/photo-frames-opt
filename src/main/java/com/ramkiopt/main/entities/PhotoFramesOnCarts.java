@@ -19,6 +19,10 @@ public class PhotoFramesOnCarts {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,6 +33,10 @@ public class PhotoFramesOnCarts {
         return cartId;
     }
 
+    public void setCartId(long cartId) {
+        this.cartId = cartId;
+    }
+
     public void setCartId(Long cartId) {
         this.cartId = cartId;
     }
@@ -37,6 +45,10 @@ public class PhotoFramesOnCarts {
     @Column(name = "photo_frame_id", nullable = false)
     public Long getPhotoFrameId() {
         return photoFrameId;
+    }
+
+    public void setPhotoFrameId(long photoFrameId) {
+        this.photoFrameId = photoFrameId;
     }
 
     public void setPhotoFrameId(Long photoFrameId) {
@@ -59,8 +71,7 @@ public class PhotoFramesOnCarts {
     }
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Cart getCartByCartId() {
         return cartByCartId;
     }

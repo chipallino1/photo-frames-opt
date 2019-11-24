@@ -21,12 +21,16 @@ public class Sizes {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "format", nullable = true, length = 10)
+    @Column(name = "format", nullable = true, length = 300)
     @Size(min = 1, max = 10)
     public String getFormat() {
         return format;

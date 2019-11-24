@@ -12,10 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
+public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
         implements UsersService<UsersDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UsersServiceImpl.class);
@@ -25,8 +24,6 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     @PostConstruct
     public void init() {
         setJpaRepository(usersRepository);
-        setClass(Users.class);
-        setClassDto(UsersDto.class);
     }
 
     @Override
@@ -35,26 +32,8 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, Long>
     }
 
     @Override
-    protected void setClass(Class<Users> usersClass) {
-        this.tClass = usersClass;
-    }
-
-    @Override
-    protected void setClassDto(Class dtoClass) {
-        this.dtoClass = dtoClass;
-    }
-
-    @Override
     public UsersDto create(UsersDto dto) {
-        UsersDto usersDto = null;
-        try {
-            usersDto = (UsersDto) tryCreate(dto);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return usersDto;
-
+        return createInDb(new Users(), dto);
     }
 
     @Override

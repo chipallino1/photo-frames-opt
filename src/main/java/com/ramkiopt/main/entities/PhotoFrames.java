@@ -24,6 +24,11 @@ public class PhotoFrames {
     private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
     private Collection<PhotoFramesOnSizes> photoFramesOnSizesById;
     private Collection<Photos> photosById;
+    private long currencyId;
+    private long photoFramesOnColorsId;
+    private long photoFramesOnSizesId;
+    private long photoFramesOnPhotosId;
+    private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +37,16 @@ public class PhotoFrames {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 100)
+    @Column(name = "name", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getName() {
         return name;
@@ -48,7 +57,7 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "vendor_code", nullable = true, length = 100)
+    @Column(name = "vendor_code", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getVendorCode() {
         return vendorCode;
@@ -59,7 +68,7 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "border_material", nullable = true, length = 100)
+    @Column(name = "border_material", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getBorderMaterial() {
         return borderMaterial;
@@ -70,7 +79,7 @@ public class PhotoFrames {
     }
 
     @Basic
-    @Column(name = "inside_material", nullable = true, length = 100)
+    @Column(name = "inside_material", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getInsideMaterial() {
         return insideMaterial;
@@ -130,6 +139,10 @@ public class PhotoFrames {
         return userId;
     }
 
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
     public void setUserId(Long userId) {
         this.userId = userId;
     }
@@ -158,8 +171,7 @@ public class PhotoFrames {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
     }
@@ -202,5 +214,70 @@ public class PhotoFrames {
 
     public void setPhotosById(Collection<Photos> photosById) {
         this.photosById = photosById;
+    }
+
+    @Basic
+    @Column(name = "currency_id", nullable = false)
+    public long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public void setCurrencyId(long currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    @Basic
+    @Column(name = "photo_frames_on_colors_id", nullable = false)
+    public long getPhotoFramesOnColorsId() {
+        return photoFramesOnColorsId;
+    }
+
+    public void setPhotoFramesOnColorsId(Long photoFramesOnColorsId) {
+        this.photoFramesOnColorsId = photoFramesOnColorsId;
+    }
+
+    public void setPhotoFramesOnColorsId(long photoFramesOnColorsId) {
+        this.photoFramesOnColorsId = photoFramesOnColorsId;
+    }
+
+    @Basic
+    @Column(name = "photo_frames_on_sizes_id", nullable = false)
+    public long getPhotoFramesOnSizesId() {
+        return photoFramesOnSizesId;
+    }
+
+    public void setPhotoFramesOnSizesId(Long photoFramesOnSizesId) {
+        this.photoFramesOnSizesId = photoFramesOnSizesId;
+    }
+
+    public void setPhotoFramesOnSizesId(long photoFramesOnSizesId) {
+        this.photoFramesOnSizesId = photoFramesOnSizesId;
+    }
+
+    @Basic
+    @Column(name = "photo_frames_on_photos_id", nullable = false)
+    public long getPhotoFramesOnPhotosId() {
+        return photoFramesOnPhotosId;
+    }
+
+    public void setPhotoFramesOnPhotosId(Long photoFramesOnPhotosId) {
+        this.photoFramesOnPhotosId = photoFramesOnPhotosId;
+    }
+
+    public void setPhotoFramesOnPhotosId(long photoFramesOnPhotosId) {
+        this.photoFramesOnPhotosId = photoFramesOnPhotosId;
+    }
+
+    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
+    public Collection<PhotoFramesOnOrders> getPhotoFramesOnOrdersById() {
+        return photoFramesOnOrdersById;
+    }
+
+    public void setPhotoFramesOnOrdersById(Collection<PhotoFramesOnOrders> photoFramesOnOrdersById) {
+        this.photoFramesOnOrdersById = photoFramesOnOrdersById;
     }
 }

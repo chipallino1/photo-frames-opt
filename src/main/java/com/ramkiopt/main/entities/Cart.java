@@ -9,16 +9,20 @@ import java.util.Objects;
 public class Cart {
     private Long id;
     private String name;
-    private Long userId;
     private Date insertAt;
     private Users usersByClientId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
+    private Long clientId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     public Long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setId(Long id) {
@@ -33,16 +37,6 @@ public class Cart {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Basic
-    @Column(name = "client_id", nullable = false)
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     @Basic
@@ -61,19 +55,17 @@ public class Cart {
         if (o == null || getClass() != o.getClass()) return false;
         Cart cart = (Cart) o;
         return id == cart.id &&
-                userId == cart.userId &&
                 Objects.equals(name, cart.name) &&
                 Objects.equals(insertAt, cart.insertAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, userId, insertAt);
+        return Objects.hash(id, name, insertAt);
     }
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Users getUsersByClientId() {
         return usersByClientId;
     }
@@ -89,5 +81,15 @@ public class Cart {
 
     public void setPhotoFramesOnCartsById(Collection<PhotoFramesOnCarts> photoFramesOnCartsById) {
         this.photoFramesOnCartsById = photoFramesOnCartsById;
+    }
+
+    @Basic
+    @Column(name = "client_id", nullable = false)
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 }

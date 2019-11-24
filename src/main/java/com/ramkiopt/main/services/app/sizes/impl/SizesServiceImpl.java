@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class SizesServiceImpl extends BaseServiceAbstract<Sizes, Long> implements SizesService<SizesDto> {
+public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> implements SizesService<SizesDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SizesServiceImpl.class);
     @Autowired
@@ -24,8 +24,6 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, Long> implement
     @PostConstruct
     public void init() {
         setJpaRepository(sizesRepository);
-        setClass(Sizes.class);
-        setClassDto(SizesDto.class);
     }
 
     @Override
@@ -34,37 +32,13 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, Long> implement
     }
 
     @Override
-    protected void setClass(Class<Sizes> sizesClass) {
-        this.tClass = sizesClass;
-    }
-
-    @Override
-    protected void setClassDto(Class dtoClass) {
-        this.dtoClass = dtoClass;
-    }
-
-    @Override
     public SizesDto create(SizesDto dto) {
-        SizesDto sizesDto = null;
-        try {
-            sizesDto = (SizesDto) tryCreate(dto);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return sizesDto;
+        return createInDb(new Sizes(), dto);
     }
 
     @Override
     public SizesDto get(Long id) {
-        SizesDto sizesDto = null;
-        try {
-            sizesDto = (SizesDto) tryGetById(id);
-        } catch (InvocationTargetException | NoSuchMethodException |
-                InstantiationException | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return sizesDto;
+        return readFromDb(id, new SizesDto());
     }
 
     @Override

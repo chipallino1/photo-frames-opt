@@ -1,7 +1,6 @@
 package com.ramkiopt.main.entities;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -18,6 +17,10 @@ public class Photos {
     @Column(name = "id", nullable = false)
     public Long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setId(Long id) {
@@ -58,6 +61,10 @@ public class Photos {
     @Column(name = "photo_frame_id", nullable = false)
     public Long getPhotoFrameId() {
         return photoFrameId;
+    }
+
+    public void setPhotoFrameId(long photoFrameId) {
+        this.photoFrameId = photoFrameId;
     }
 
     public void setPhotoFrameId(Long photoFrameId) {

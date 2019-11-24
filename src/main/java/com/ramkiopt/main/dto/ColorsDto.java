@@ -8,6 +8,9 @@ public class ColorsDto implements Serializable {
     private String name;
     private String rgb;
 
+    public ColorsDto() {
+    }
+
     public ColorsDto(String name, String rgb) {
         this.name = name;
         this.rgb = rgb;

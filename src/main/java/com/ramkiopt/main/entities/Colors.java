@@ -19,12 +19,16 @@ public class Colors {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 100)
+    @Column(name = "name", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getName() {
         return name;

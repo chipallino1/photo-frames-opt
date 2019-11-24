@@ -19,6 +19,10 @@ public class PhotoFramesOnSizes {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,6 +33,10 @@ public class PhotoFramesOnSizes {
         return photoFrameId;
     }
 
+    public void setPhotoFrameId(long photoFrameId) {
+        this.photoFrameId = photoFrameId;
+    }
+
     public void setPhotoFrameId(Long photoFrameId) {
         this.photoFrameId = photoFrameId;
     }
@@ -37,6 +45,10 @@ public class PhotoFramesOnSizes {
     @Column(name = "size_id", nullable = false)
     public Long getSizeId() {
         return sizeId;
+    }
+
+    public void setSizeId(long sizeId) {
+        this.sizeId = sizeId;
     }
 
     public void setSizeId(Long sizeId) {
@@ -70,8 +82,7 @@ public class PhotoFramesOnSizes {
     }
 
     @ManyToOne
-    @JoinColumn(name = "size_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "size_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Sizes getSizesBySizeId() {
         return sizesBySizeId;
     }

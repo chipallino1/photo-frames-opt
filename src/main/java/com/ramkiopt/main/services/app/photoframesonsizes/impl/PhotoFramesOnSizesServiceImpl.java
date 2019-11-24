@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFramesOnSizes, Long>
+public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFramesOnSizes, PhotoFramesOnSizesDto>
         implements PhotoFramesOnSizesService<PhotoFramesOnSizesDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesOnSizesServiceImpl.class);
@@ -25,8 +25,6 @@ public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFram
     @PostConstruct
     public void init() {
         setJpaRepository(photoFramesOnSizesRepository);
-        setClass(PhotoFramesOnSizes.class);
-        setClassDto(PhotoFramesOnSizesDto.class);
     }
 
     @Override
@@ -35,25 +33,8 @@ public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFram
     }
 
     @Override
-    protected void setClass(Class<PhotoFramesOnSizes> photoFramesOnSizesClass) {
-        this.tClass = photoFramesOnSizesClass;
-    }
-
-    @Override
-    protected void setClassDto(Class dtoClass) {
-        this.dtoClass = dtoClass;
-    }
-
-    @Override
     public PhotoFramesOnSizesDto create(PhotoFramesOnSizesDto dto) {
-        PhotoFramesOnSizesDto photoFramesOnSizesDto = null;
-        try {
-            photoFramesOnSizesDto = (PhotoFramesOnSizesDto) tryCreate(dto);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return photoFramesOnSizesDto;
+        return createInDb(new PhotoFramesOnSizes(), dto);
     }
 
     @Override

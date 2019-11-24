@@ -15,17 +15,18 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class ColorsServiceImpl extends BaseServiceAbstract<Colors, Long> implements ColorsService<ColorsDto> {
+public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> implements ColorsService<ColorsDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ColorsServiceImpl.class);
-    @Autowired
-    private ColorsRepository colorsRepository;
+    private final ColorsRepository colorsRepository;
+
+    public ColorsServiceImpl(ColorsRepository colorsRepository) {
+        this.colorsRepository = colorsRepository;
+    }
 
     @PostConstruct
     public void init() {
         setJpaRepository(colorsRepository);
-        setClass(Colors.class);
-        setClassDto(ColorsDto.class);
     }
 
     @Override
@@ -34,47 +35,23 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, Long> impleme
     }
 
     @Override
-    protected void setClass(Class<Colors> colorsClass) {
-        this.tClass = colorsClass;
-    }
-
-    @Override
-    protected void setClassDto(Class dtoClass) {
-        this.dtoClass = dtoClass;
-    }
-
-    @Override
     public ColorsDto create(ColorsDto dto) {
-        ColorsDto colorsDto = null;
-        try {
-            colorsDto = (ColorsDto) tryCreate(dto);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return colorsDto;
+        return createInDb(new Colors(), dto);
     }
 
     @Override
     public ColorsDto get(Long id) {
-        ColorsDto colorsDto = null;
-        try {
-            colorsDto = (ColorsDto) tryGetById(id);
-        } catch (InvocationTargetException | NoSuchMethodException |
-                InstantiationException | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return colorsDto;
+        return readFromDb(id, new ColorsDto());
     }
 
     @Override
     public ColorsDto update(Long id, ColorsDto dto) {
-        return null;
+        return updateInDb(id, dto);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return null;
+        return deleteInDb(id);
     }
 
 

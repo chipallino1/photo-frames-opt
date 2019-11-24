@@ -9,6 +9,9 @@ public class SizesDto implements Serializable {
     private Integer width;
     private Integer height;
 
+    public SizesDto() {
+    }
+
     public SizesDto(Long id, String format, Integer width, Integer height) {
         this.id = id;
         this.format = format;

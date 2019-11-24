@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 
 @Service
-public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFramesOnColors, Long>
+public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFramesOnColors, PhotoFramesOnColorsDto>
         implements PhotoFramesOnColorsService<PhotoFramesOnColorsDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesOnColorsServiceImpl.class);
@@ -25,8 +25,6 @@ public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFra
     @PostConstruct
     public void init() {
         setJpaRepository(photoFramesOnColorsRepository);
-        setClass(PhotoFramesOnColors.class);
-        setClassDto(PhotoFramesOnColorsDto.class);
     }
 
     @Override
@@ -35,25 +33,8 @@ public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFra
     }
 
     @Override
-    protected void setClass(Class<PhotoFramesOnColors> photoFramesOnSizesClass) {
-        this.tClass = photoFramesOnSizesClass;
-    }
-
-    @Override
-    protected void setClassDto(Class dtoClass) {
-        this.dtoClass = dtoClass;
-    }
-
-    @Override
     public PhotoFramesOnColorsDto create(PhotoFramesOnColorsDto dto) {
-        PhotoFramesOnColorsDto photoFramesOnColorsDto = null;
-        try {
-            photoFramesOnColorsDto = (PhotoFramesOnColorsDto) tryCreate(dto);
-        } catch (InvocationTargetException | NoSuchMethodException | InstantiationException
-                | IllegalAccessException e) {
-            LOGGER.error("Internal exception was generated.");
-        }
-        return photoFramesOnColorsDto;
+        return createInDb(new PhotoFramesOnColors(), dto);
     }
 
     @Override

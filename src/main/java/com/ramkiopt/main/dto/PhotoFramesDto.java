@@ -16,6 +16,7 @@ public class PhotoFramesDto implements Serializable {
     private Integer cost;
     private Long userId;
     private String description;
+    private List<PhotosDto> photoFramesDto;
     private List<ColorsDto> colorsDtoList;
     private List<SizesDto> sizesDtoList;
 
@@ -114,7 +115,16 @@ public class PhotoFramesDto implements Serializable {
         this.userId = userId;
     }
 
-    @NotNull
+    @Size(min = 1, message = "{validation.photoframes.photosListSize.message}")
+    public List<PhotosDto> getPhotoFramesDto() {
+        return photoFramesDto;
+    }
+
+    public void setPhotoFramesDto(List<PhotosDto> photoFramesDto) {
+        this.photoFramesDto = photoFramesDto;
+    }
+
+    @NotNull(message = "{validation.photoframes.colorsListSize.message}")
     @Size(min = 1, message = "{validation.photoframes.colorsListSize.message}")
     public List<ColorsDto> getColorsDtoList() {
         return colorsDtoList;

@@ -16,6 +16,7 @@ public class Users {
     private String passwordEncrypted;
     private Collection<Cart> cartsById;
     private Collection<PhotoFrames> photoFramesById;
+    private Collection<Orders> ordersById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,12 +25,16 @@ public class Users {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
 
     @Basic
-    @Column(name = "first_name", nullable = true, length = 100)
+    @Column(name = "first_name", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getFirstName() {
         return firstName;
@@ -40,7 +45,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "last_name", nullable = true, length = 100)
+    @Column(name = "last_name", nullable = true, length = 300)
     @Size(min = 2, max = 100)
     public String getLastName() {
         return lastName;
@@ -51,7 +56,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 100, unique = true)
+    @Column(name = "email", nullable = true, length = 300, unique = true)
     @Size(min = 2, max = 100)
     public String getEmail() {
         return email;
@@ -73,7 +78,7 @@ public class Users {
     }
 
     @Basic
-    @Column(name = "role", nullable = true, length = 50)
+    @Column(name = "role", nullable = true, length = 300)
     @Size(min = 2, max = 20)
     public String getRole() {
         return role;
@@ -130,5 +135,14 @@ public class Users {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName, email, phoneNumber, role, passwordEncrypted, cartsById, photoFramesById);
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<Orders> getOrdersById() {
+        return ordersById;
+    }
+
+    public void setOrdersById(Collection<Orders> ordersById) {
+        this.ordersById = ordersById;
     }
 }

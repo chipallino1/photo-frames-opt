@@ -1,11 +1,11 @@
 package com.ramkiopt.main.services.app.base;
 
-public interface CrudService<T, Id> {
-    T createInDb(T t);
+public interface CrudService<T, V> {
+    V createInDb(T t, V v);
 
-    T updateInDb(Id id, T t);
+    V updateInDb(Long id, V v);
 
-    T readFromDb(Id id);
+    V readFromDb(Long id, V v);
 
-    void deleteInDb(Id id);
+    boolean deleteInDb(Long id);
 }

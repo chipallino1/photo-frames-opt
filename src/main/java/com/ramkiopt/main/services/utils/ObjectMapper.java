@@ -1,7 +1,8 @@
 package com.ramkiopt.main.services.utils;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -11,7 +12,12 @@ import java.util.Map;
 
 public final class ObjectMapper {
 
-    public static void mapCustom(Object src, Object dest) throws IllegalAccessException {
+    private final static Logger LOGGER = LoggerFactory.getLogger(ObjectMapper.class);
+
+    public static void mapCustom(Object src, Object dest) {
+        if (src == null || dest == null) {
+            return;
+        }
         Class srcClass = src.getClass();
         Class destClass = dest.getClass();
         Field[] fields = srcClass.getDeclaredFields();
@@ -24,7 +30,11 @@ public final class ObjectMapper {
             }
             field.setAccessible(true);
             destField.setAccessible(true);
-            destField.set(dest, field.get(src));
+            try {
+                destField.set(dest, field.get(src));
+            } catch (IllegalAccessException e) {
+                LOGGER.error(e.getMessage());
+            }
         }
     }
 

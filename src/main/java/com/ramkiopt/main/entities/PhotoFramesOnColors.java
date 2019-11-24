@@ -19,6 +19,10 @@ public class PhotoFramesOnColors {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -29,6 +33,10 @@ public class PhotoFramesOnColors {
         return photoFrameId;
     }
 
+    public void setPhotoFrameId(long photoFrameId) {
+        this.photoFrameId = photoFrameId;
+    }
+
     public void setPhotoFrameId(Long photoFrameId) {
         this.photoFrameId = photoFrameId;
     }
@@ -37,6 +45,10 @@ public class PhotoFramesOnColors {
     @Column(name = "color_id", nullable = false)
     public Long getColorId() {
         return colorId;
+    }
+
+    public void setColorId(long colorId) {
+        this.colorId = colorId;
     }
 
     public void setColorId(Long colorId) {
@@ -70,8 +82,7 @@ public class PhotoFramesOnColors {
     }
 
     @ManyToOne
-    @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Colors getColorsByColorId() {
         return colorsByColorId;
     }
