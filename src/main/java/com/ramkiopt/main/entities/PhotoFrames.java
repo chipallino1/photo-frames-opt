@@ -21,7 +21,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "photo_frames", schema = "ramki_opt")
-public class PhotoFrames {
+public class PhotoFrames implements Identity {
     private Long id;
     private String name;
     private String vendorCode;
@@ -47,6 +47,7 @@ public class PhotoFrames {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Override
     public Long getId() {
         return id;
     }

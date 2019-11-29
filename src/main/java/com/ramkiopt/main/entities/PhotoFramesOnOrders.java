@@ -1,21 +1,28 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "photo_frames_on_orders", schema = "ramki_opt")
-public class PhotoFramesOnOrders {
-    private long id;
-    private long photoFrameId;
-    private int photoFramesCount;
-    private long orderId;
+public class PhotoFramesOnOrders implements Identity {
+    private Long id;
+    private Long photoFrameId;
+    private Integer photoFramesCount;
+    private Long orderId;
     private PhotoFrames photoFramesByPhotoFrameId;
     private Orders ordersByOrderId;
 
     @Id
     @Column(name = "id", nullable = false)
-    public long getId() {
+    @Override
+    public Long getId() {
         return id;
     }
 
@@ -23,13 +30,9 @@ public class PhotoFramesOnOrders {
         this.id = id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     @Basic
     @Column(name = "photo_frame_id", nullable = false)
-    public long getPhotoFrameId() {
+    public Long getPhotoFrameId() {
         return photoFrameId;
     }
 
@@ -37,31 +40,23 @@ public class PhotoFramesOnOrders {
         this.photoFrameId = photoFrameId;
     }
 
-    public void setPhotoFrameId(long photoFrameId) {
-        this.photoFrameId = photoFrameId;
-    }
-
     @Basic
     @Column(name = "photo_frames_count", nullable = false)
-    public int getPhotoFramesCount() {
+    public Integer getPhotoFramesCount() {
         return photoFramesCount;
     }
 
-    public void setPhotoFramesCount(int photoFramesCount) {
+    public void setPhotoFramesCount(Integer photoFramesCount) {
         this.photoFramesCount = photoFramesCount;
     }
 
     @Basic
     @Column(name = "order_id", nullable = false)
-    public long getOrderId() {
+    public Long getOrderId() {
         return orderId;
     }
 
     public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public void setOrderId(long orderId) {
         this.orderId = orderId;
     }
 

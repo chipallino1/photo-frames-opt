@@ -34,7 +34,7 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
 
     @Override
     public UsersDto create(UsersDto dto) {
-        dto.setRowStatus(RowStatus.ENABLE);
+        dto.setStatus(RowStatus.ENABLE);
         return createInDb(new Users(), dto);
     }
 

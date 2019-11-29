@@ -1,9 +1,11 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ColorsDto implements Serializable {
+public class ColorsDto implements Serializable, Identity {
     private Long id;
     private String name;
     private String rgb;
@@ -16,6 +18,7 @@ public class ColorsDto implements Serializable {
         this.rgb = rgb;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

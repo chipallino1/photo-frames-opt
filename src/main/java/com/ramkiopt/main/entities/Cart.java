@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Cart {
+public class Cart implements Identity {
     private Long id;
     private String name;
     private Date insertAt;
@@ -17,6 +17,7 @@ public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Override
     public Long getId() {
         return id;
     }

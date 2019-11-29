@@ -45,7 +45,10 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> imple
 
     @Override
     public SizesDto update(Long id, SizesDto dto) {
-        return null;
+        if (id == null) {
+            return create(dto);
+        }
+        return updateInDb(id, dto);
     }
 
     @Override

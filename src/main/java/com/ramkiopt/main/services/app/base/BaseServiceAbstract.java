@@ -2,7 +2,6 @@ package com.ramkiopt.main.services.app.base;
 
 import com.ramkiopt.main.services.utils.EntitiesGetterService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
-import com.ramkiopt.main.services.utils.ReflectionUtilsService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Colors {
+public class Colors implements Identity {
     private Long id;
     private String name;
     private String rgb;
@@ -15,6 +15,7 @@ public class Colors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Override
     public Long getId() {
         return id;
     }

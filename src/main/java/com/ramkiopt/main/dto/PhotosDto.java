@@ -1,13 +1,16 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 
-public class PhotosDto implements Serializable {
+public class PhotosDto implements Serializable, Identity {
     private Long id;
     private String photoSrc;
     private Integer width;
     private Integer height;
 
+    @Override
     public Long getId() {
         return id;
     }

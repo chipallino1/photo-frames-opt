@@ -17,7 +17,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Users {
+public class Users implements Identity {
     private Long id;
     private String firstName;
     private String lastName;
@@ -33,6 +33,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @Override
     public Long getId() {
         return id;
     }

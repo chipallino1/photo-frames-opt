@@ -1,8 +1,10 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 
-public class PhotoFramesOnColorsDto implements Serializable {
+public class PhotoFramesOnColorsDto implements Serializable, Identity {
     private Long id;
     private Long photoFrameId;
     private Long colorId;
@@ -16,6 +18,7 @@ public class PhotoFramesOnColorsDto implements Serializable {
         this.colorId = colorId;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

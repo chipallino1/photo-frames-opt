@@ -1,25 +1,26 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
 
 import java.io.Serializable;
 
-public class UsersDto implements Serializable {
+public class UsersDto implements Serializable, Identity {
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String role;
+    private RowStatus status;
     private String password;
     private String passwordEncrypted;
-    private RowStatus rowStatus;
 
     public UsersDto() {
     }
 
     public UsersDto(Long id, String firstName, String lastName, String email, String phoneNumber,
-                    String role, String passwordEncrypted, RowStatus rowStatus) {
+                    String role, String passwordEncrypted, RowStatus status) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -27,9 +28,10 @@ public class UsersDto implements Serializable {
         this.phoneNumber = phoneNumber;
         this.role = role;
         this.passwordEncrypted = passwordEncrypted;
-        this.rowStatus = rowStatus;
+        this.status = status;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -94,11 +96,11 @@ public class UsersDto implements Serializable {
         this.passwordEncrypted = passwordEncrypted;
     }
 
-    public RowStatus getRowStatus() {
-        return rowStatus;
+    public RowStatus getStatus() {
+        return status;
     }
 
-    public void setRowStatus(RowStatus rowStatus) {
-        this.rowStatus = rowStatus;
+    public void setStatus(RowStatus status) {
+        this.status = status;
     }
 }

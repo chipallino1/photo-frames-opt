@@ -47,6 +47,9 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> im
 
     @Override
     public ColorsDto update(Long id, ColorsDto dto) {
+        if (id == null) {
+            return create(dto);
+        }
         return updateInDb(id, dto);
     }
 

@@ -1,9 +1,11 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class SizesDto implements Serializable {
+public class SizesDto implements Serializable, Identity {
     private Long id;
     private String format;
     private Integer width;
@@ -19,6 +21,7 @@ public class SizesDto implements Serializable {
         this.height = height;
     }
 
+    @Override
     public Long getId() {
         return id;
     }

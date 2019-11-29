@@ -5,11 +5,11 @@ import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.dto.PhotoFramesOnColorsDto;
 import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import com.ramkiopt.main.dto.SizesDto;
+import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.colors.ColorsService;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
-import com.ramkiopt.main.services.app.photoframesoncolors.PhotoFramesOnColorsService;
-import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnSizesService;
+import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnEntityService;
 import com.ramkiopt.main.services.app.sizes.SizesService;
 import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnColorsDtoCreator;
 import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnSizesDtoCreator;
@@ -24,8 +24,8 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     private final PhotoFramesService<PhotoFramesDto> photoFramesService;
     private final ColorsService<ColorsDto> colorsService;
     private final SizesService<SizesDto> sizesService;
-    private final PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService;
-    private final PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService;
+    private final PhotoFramesOnEntityService<PhotoFramesOnSizesDto> photoFramesOnSizesService;
+    private final PhotoFramesOnEntityService<PhotoFramesOnColorsDto> photoFramesOnColorsService;
     private final PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator;
     private final PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator;
 
@@ -34,8 +34,8 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
             PhotoFramesService<PhotoFramesDto> photoFramesService,
             ColorsService<ColorsDto> colorsService,
             SizesService<SizesDto> sizesService,
-            PhotoFramesOnSizesService<PhotoFramesOnSizesDto> photoFramesOnSizesService,
-            PhotoFramesOnColorsService<PhotoFramesOnColorsDto> photoFramesOnColorsService,
+            PhotoFramesOnEntityService<PhotoFramesOnSizesDto> photoFramesOnSizesService,
+            PhotoFramesOnEntityService<PhotoFramesOnColorsDto> photoFramesOnColorsService,
             PhotoFramesOnSizesDtoCreator photoFramesOnSizesDtoCreator,
             PhotoFramesOnColorsDtoCreator photoFramesOnColorsDtoCreator) {
         this.photoFramesService = photoFramesService;
@@ -50,22 +50,78 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
         photoFramesService.create(dto);
-        createSizes(dto.getSizesDtoList(), dto.getId());
-        createColors(dto.getColorsDtoList(), dto.getId());
+        createSizes(dto.getSizesDtos(), dto.getId());
+        createColors(dto.getColorsDtos(), dto.getId());
         return dto;
     }
 
     @Override
     public PhotoFramesDto readPhotoFrame(Long id) {
         PhotoFramesDto photoFramesDto = photoFramesService.get(id);
-        photoFramesDto.setSizesDtoList(getSizes(id));
-        photoFramesDto.setColorsDtoList(getColors(id));
+        photoFramesDto.setSizesDtos(getSizes(id));
+        photoFramesDto.setColorsDtos(getColors(id));
         return photoFramesDto;
+    }
+
+    @Override
+    public PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto) {
+        List<Identity> colorsIds = getExistingEntities(dto.getColorsDtos());
+        List<Identity> sizesIds = getExistingEntities(dto.getSizesDtos());
+
+        List<ColorsDto> colorsDtos = new ArrayList<>();
+        getNotExistingEntities(colorsIds, dto.getColorsDtos())
+                .forEach(dtoIdentity -> colorsDtos.add((ColorsDto) dtoIdentity));
+        createColors(colorsDtos, id);
+
+        List<SizesDto> sizesDtos = new ArrayList<>();
+        getNotExistingEntities(sizesIds, dto.getSizesDtos())
+                .forEach(dtoIdentity -> sizesDtos.add((SizesDto) dtoIdentity));
+        createSizes(sizesDtos, id);
+
+        dto.setColorsDtos(updateColors(dto.getColorsDtos()));
+        dto.setSizesDtos(updateSizes(dto.getSizesDtos()));
+        dto = photoFramesService.update(id, dto);
+        return dto;
+    }
+
+    private List<Identity> getExistingEntities(List entities) {
+        List<Identity> identities = (List<Identity>) entities;
+        List<Identity> existingIds = new ArrayList<>();
+        identities.forEach(entity -> {
+            if (entity.getId() != null) {
+                existingIds.add(entity);
+            }
+        });
+        return existingIds;
+    }
+
+    private List<Identity> getNotExistingEntities(List entities, List dtos) {
+        List<Identity> dtosIdentity = (List<Identity>) dtos;
+        List<Identity> entitiesIdentity = (List<Identity>) entities;
+        List<Identity> result = new ArrayList<>();
+        dtosIdentity.forEach(dtoIdentity -> {
+            if(entitiesIdentity.)
+        });
+        return dtosIdentity;
+    }
+
+    private List<ColorsDto> updateColors(List<ColorsDto> colorsDtos) {
+        for (ColorsDto dto : colorsDtos) {
+            colorsService.update(dto.getId(), dto);
+        }
+        return colorsDtos;
+    }
+
+    private List<SizesDto> updateSizes(List<SizesDto> sizesDtos) {
+        for (SizesDto dto : sizesDtos) {
+            sizesService.update(dto.getId(), dto);
+        }
+        return sizesDtos;
     }
 
     private List<SizesDto> getSizes(Long photoFrameId) {
         List<PhotoFramesOnSizesDto> photoFramesOnSizesDtos =
-                photoFramesOnSizesService.getSizesByPhotoFrameId(photoFrameId);
+                photoFramesOnSizesService.getEntitiesByPhotoFrameId(photoFrameId);
         List<Long> ids = new ArrayList<>();
         for (PhotoFramesOnSizesDto dto : photoFramesOnSizesDtos) {
             ids.add(dto.getSizeId());
@@ -75,7 +131,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     private List<ColorsDto> getColors(Long photoFrameId) {
         List<PhotoFramesOnColorsDto> photoFramesOnColorsDtos =
-                photoFramesOnColorsService.getColorsByPhotoFrameId(photoFrameId);
+                photoFramesOnColorsService.getEntitiesByPhotoFrameId(photoFrameId);
         List<Long> ids = new ArrayList<>();
         for (PhotoFramesOnColorsDto dto : photoFramesOnColorsDtos) {
             ids.add(dto.getColorId());

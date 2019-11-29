@@ -1,5 +1,6 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
 
 import javax.validation.constraints.NotNull;
@@ -7,7 +8,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-public class PhotoFramesDto implements Serializable {
+public class PhotoFramesDto implements Serializable, Identity {
     private Long id;
     private String name;
     private String vendorCode;
@@ -20,8 +21,8 @@ public class PhotoFramesDto implements Serializable {
     private String description;
     private RowStatus status;
     private List<PhotosDto> photoFramesDto;
-    private List<ColorsDto> colorsDtoList;
-    private List<SizesDto> sizesDtoList;
+    private List<ColorsDto> colorsDtos;
+    private List<SizesDto> sizesDtos;
 
     public PhotoFramesDto() {
     }
@@ -41,6 +42,7 @@ public class PhotoFramesDto implements Serializable {
         this.description = description;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -132,22 +134,22 @@ public class PhotoFramesDto implements Serializable {
 
     @NotNull(message = "{validation.photoframes.colorsListSize.message}")
     @Size(min = 1, message = "{validation.photoframes.colorsListSize.message}")
-    public List<ColorsDto> getColorsDtoList() {
-        return colorsDtoList;
+    public List<ColorsDto> getColorsDtos() {
+        return colorsDtos;
     }
 
-    public void setColorsDtoList(List<ColorsDto> colorsDtoList) {
-        this.colorsDtoList = colorsDtoList;
+    public void setColorsDtos(List<ColorsDto> colorsDtos) {
+        this.colorsDtos = colorsDtos;
     }
 
     @NotNull
     @Size(min = 1, message = "{validation.photoframes.sizesListSize.message}")
-    public List<SizesDto> getSizesDtoList() {
-        return sizesDtoList;
+    public List<SizesDto> getSizesDtos() {
+        return sizesDtos;
     }
 
-    public void setSizesDtoList(List<SizesDto> sizesDtoList) {
-        this.sizesDtoList = sizesDtoList;
+    public void setSizesDtos(List<SizesDto> sizesDtos) {
+        this.sizesDtos = sizesDtos;
     }
 
     public RowStatus getStatus() {

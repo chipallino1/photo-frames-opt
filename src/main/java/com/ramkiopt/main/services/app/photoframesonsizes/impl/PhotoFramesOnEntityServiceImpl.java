@@ -4,7 +4,7 @@ import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import com.ramkiopt.main.entities.PhotoFramesOnSizes;
 import com.ramkiopt.main.repositories.PhotoFramesOnSizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
-import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnSizesService;
+import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnEntityService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFramesOnSizes, PhotoFramesOnSizesDto>
-        implements PhotoFramesOnSizesService<PhotoFramesOnSizesDto> {
+public class PhotoFramesOnEntityServiceImpl extends BaseServiceAbstract<PhotoFramesOnSizes, PhotoFramesOnSizesDto>
+        implements PhotoFramesOnEntityService<PhotoFramesOnSizesDto> {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesOnSizesServiceImpl.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesOnEntityServiceImpl.class);
     @Autowired
     private PhotoFramesOnSizesRepository photoFramesOnSizesRepository;
 
@@ -60,7 +60,7 @@ public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFram
     }
 
     @Override
-    public List<PhotoFramesOnSizesDto> getSizesByPhotoFrameId(Long photoFrameId) {
+    public List<PhotoFramesOnSizesDto> getEntitiesByPhotoFrameId(Long photoFrameId) {
         List<PhotoFramesOnSizes> entities = photoFramesOnSizesRepository.findAllByPhotoFrameId(photoFrameId);
         List<PhotoFramesOnSizesDto> dtos = new ArrayList<>();
         for (int i = 0; i < entities.size(); i++) {

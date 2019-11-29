@@ -2,7 +2,6 @@ package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
-import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,15 +21,12 @@ import javax.validation.Valid;
 @RequestMapping("/photo-frames")
 public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
-    private final PhotoFramesService<PhotoFramesDto> photoFramesService;
     private final BaseResponseService responseService;
 
     @Autowired
     public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
-                                 PhotoFramesService<PhotoFramesDto> photoFramesService,
                                  BaseResponseService responseService) {
         this.photoFramesStructureService = photoFramesStructureService;
-        this.photoFramesService = photoFramesService;
         this.responseService = responseService;
     }
 
@@ -45,8 +41,8 @@ public class PhotoFramesController {
 
     @PutMapping("/update")
     public ResponseEntity updatePhotoFrame(@RequestBody PhotoFramesDto photoFramesDto) {
-        return responseService.createResponseEntity(photoFramesService.update(photoFramesDto.getId(), photoFramesDto),
-                HttpStatus.OK);
+        return responseService.createResponseEntity(photoFramesStructureService.updatePhotoFrame(photoFramesDto.getId(),
+                photoFramesDto), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

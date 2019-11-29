@@ -21,12 +21,13 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
 
     @Override
     public UsersDto createUser(UsersDto dto) {
+        dto.setStatus(RowStatus.ENABLE);
         return usersService.create(dto);
     }
 
     @Override
     public UsersDto readUser(Long id) {
-        if (usersService.get(id).getRowStatus().equals(RowStatus.DELETED)) {
+        if (usersService.get(id) == null || usersService.get(id).getStatus().equals(RowStatus.DELETED)) {
             throw new EntityNotFoundException();
         }
         return usersService.get(id);
