@@ -1,6 +1,14 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
@@ -9,7 +17,7 @@ import java.util.Objects;
 public class Orders {
     private long id;
     private Timestamp orderDate;
-    private String status;
+    private String orderStatus;
     private String comment;
     private Users usersByUserId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
@@ -40,13 +48,13 @@ public class Orders {
     }
 
     @Basic
-    @Column(name = "status", nullable = true, length = 100)
-    public String getStatus() {
-        return status;
+    @Column(name = "order_status", nullable = true, length = 100)
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Basic
@@ -66,13 +74,13 @@ public class Orders {
         Orders orders = (Orders) o;
         return id == orders.id &&
                 Objects.equals(orderDate, orders.orderDate) &&
-                Objects.equals(status, orders.status) &&
+                Objects.equals(orderStatus, orders.orderStatus) &&
                 Objects.equals(comment, orders.comment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, status, comment);
+        return Objects.hash(id, orderDate, orderStatus, comment);
     }
 
     @ManyToOne

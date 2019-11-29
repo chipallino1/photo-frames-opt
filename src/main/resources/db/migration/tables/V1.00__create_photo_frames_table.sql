@@ -9,6 +9,7 @@ create table photo_frames
     thickness                 int,
     cost                      int,
     description               varchar(300),
+    status                    varchar(100),
     user_id                   bigint not null,
     currency_id               bigint not null,
     photo_frames_on_colors_id bigint not null,

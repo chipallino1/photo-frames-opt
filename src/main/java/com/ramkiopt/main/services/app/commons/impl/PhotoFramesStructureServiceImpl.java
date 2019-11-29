@@ -1,6 +1,10 @@
 package com.ramkiopt.main.services.app.commons.impl;
 
-import com.ramkiopt.main.dto.*;
+import com.ramkiopt.main.dto.ColorsDto;
+import com.ramkiopt.main.dto.PhotoFramesDto;
+import com.ramkiopt.main.dto.PhotoFramesOnColorsDto;
+import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
+import com.ramkiopt.main.dto.SizesDto;
 import com.ramkiopt.main.services.app.colors.ColorsService;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
@@ -12,6 +16,7 @@ import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnSizesDtoCreato
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,10 +52,35 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         photoFramesService.create(dto);
         createSizes(dto.getSizesDtoList(), dto.getId());
         createColors(dto.getColorsDtoList(), dto.getId());
-
-        // TODO add setPhotoFramesOnPhotosFromPhotoFramesDto
-
         return dto;
+    }
+
+    @Override
+    public PhotoFramesDto readPhotoFrame(Long id) {
+        PhotoFramesDto photoFramesDto = photoFramesService.get(id);
+        photoFramesDto.setSizesDtoList(getSizes(id));
+        photoFramesDto.setColorsDtoList(getColors(id));
+        return photoFramesDto;
+    }
+
+    private List<SizesDto> getSizes(Long photoFrameId) {
+        List<PhotoFramesOnSizesDto> photoFramesOnSizesDtos =
+                photoFramesOnSizesService.getSizesByPhotoFrameId(photoFrameId);
+        List<Long> ids = new ArrayList<>();
+        for (PhotoFramesOnSizesDto dto : photoFramesOnSizesDtos) {
+            ids.add(dto.getSizeId());
+        }
+        return sizesService.getSizesById(ids);
+    }
+
+    private List<ColorsDto> getColors(Long photoFrameId) {
+        List<PhotoFramesOnColorsDto> photoFramesOnColorsDtos =
+                photoFramesOnColorsService.getColorsByPhotoFrameId(photoFrameId);
+        List<Long> ids = new ArrayList<>();
+        for (PhotoFramesOnColorsDto dto : photoFramesOnColorsDtos) {
+            ids.add(dto.getColorId());
+        }
+        return colorsService.getColorsById(ids);
     }
 
     private void createSizes(List<SizesDto> dtos, Long photoFrameId) {

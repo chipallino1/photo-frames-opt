@@ -1,6 +1,17 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import com.ramkiopt.main.services.app.base.RowStatus;
+
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
@@ -14,6 +25,7 @@ public class Users {
     private String phoneNumber;
     private String role;
     private String passwordEncrypted;
+    private RowStatus status;
     private Collection<Cart> cartsById;
     private Collection<PhotoFrames> photoFramesById;
     private Collection<Orders> ordersById;
@@ -96,6 +108,17 @@ public class Users {
 
     public void setPasswordEncrypted(String passwordEncrypted) {
         this.passwordEncrypted = passwordEncrypted;
+    }
+
+    @Basic
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    public RowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RowStatus status) {
+        this.status = status;
     }
 
     @OneToMany(mappedBy = "usersByClientId")

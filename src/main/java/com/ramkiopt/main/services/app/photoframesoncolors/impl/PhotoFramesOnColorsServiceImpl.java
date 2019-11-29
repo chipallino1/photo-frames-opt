@@ -5,6 +5,7 @@ import com.ramkiopt.main.entities.PhotoFramesOnColors;
 import com.ramkiopt.main.repositories.PhotoFramesOnColorsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframesoncolors.PhotoFramesOnColorsService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +14,19 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFramesOnColors, PhotoFramesOnColorsDto>
         implements PhotoFramesOnColorsService<PhotoFramesOnColorsDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesOnColorsServiceImpl.class);
-    @Autowired
-    private PhotoFramesOnColorsRepository photoFramesOnColorsRepository;
+    private final PhotoFramesOnColorsRepository photoFramesOnColorsRepository;
+
+    public PhotoFramesOnColorsServiceImpl(PhotoFramesOnColorsRepository photoFramesOnColorsRepository) {
+        this.photoFramesOnColorsRepository = photoFramesOnColorsRepository;
+    }
 
     @PostConstruct
     public void init() {
@@ -50,5 +56,21 @@ public class PhotoFramesOnColorsServiceImpl extends BaseServiceAbstract<PhotoFra
     @Override
     public Boolean delete(Long id) {
         return null;
+    }
+
+    @Override
+    public boolean deleteInDb(Long id) {
+        return false;
+    }
+
+    @Override
+    public List<PhotoFramesOnColorsDto> getColorsByPhotoFrameId(Long photoFrameId) {
+        List<PhotoFramesOnColors> entities = photoFramesOnColorsRepository.findAllByPhotoFrameId(photoFrameId);
+        List<PhotoFramesOnColorsDto> dtos = new ArrayList<>();
+        for (int i = 0; i < entities.size(); i++) {
+            dtos.add(new PhotoFramesOnColorsDto());
+        }
+        ObjectMapper.mapListCustom(entities, dtos);
+        return dtos;
     }
 }

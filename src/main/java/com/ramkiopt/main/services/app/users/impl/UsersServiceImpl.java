@@ -4,6 +4,7 @@ import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
+import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.users.UsersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,7 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
 
     @Override
     public UsersDto create(UsersDto dto) {
+        dto.setRowStatus(RowStatus.ENABLE);
         return createInDb(new Users(), dto);
     }
 
@@ -49,5 +51,16 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
     @Override
     public Boolean delete(Long id) {
         return deleteInDb(id);
+    }
+
+    @Override
+    public boolean deleteInDb(Long id) {
+        Users users = jpaRepository.getOne(id);
+        if (users == null) {
+            return false;
+        }
+        users.setStatus(RowStatus.DELETED);
+        jpaRepository.save(users);
+        return true;
     }
 }

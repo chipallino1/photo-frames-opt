@@ -75,7 +75,7 @@ public final class ObjectMapper {
         }
     }
 
-    public static void mapListCustom(List src, List dest) throws IllegalAccessException {
+    public static void mapListCustom(List src, List dest) {
         for (int i = 0; i < src.size(); i++) {
             mapCustom(src.get(i), dest.get(i));
         }

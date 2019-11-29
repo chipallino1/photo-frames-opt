@@ -5,6 +5,7 @@ import com.ramkiopt.main.entities.Sizes;
 import com.ramkiopt.main.repositories.SizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.sizes.SizesService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> implements SizesService<SizesDto> {
@@ -49,5 +51,21 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> imple
     @Override
     public Boolean delete(Long id) {
         return null;
+    }
+
+    @Override
+    public boolean deleteInDb(Long id) {
+        return false;
+    }
+
+    @Override
+    public List<SizesDto> getSizesById(Iterable<Long> ids) {
+        List<Sizes> sizes = sizesRepository.findAllById(ids);
+        List<SizesDto> sizesDtos = new ArrayList<>();
+        for (int i = 0; i < sizes.size(); i++) {
+            sizesDtos.add(new SizesDto());
+        }
+        ObjectMapper.mapListCustom(sizes, sizesDtos);
+        return sizesDtos;
     }
 }

@@ -2,6 +2,7 @@ package com.ramkiopt.main.services.app.base;
 
 import com.ramkiopt.main.services.utils.EntitiesGetterService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
+import com.ramkiopt.main.services.utils.ReflectionUtilsService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 public abstract class BaseServiceAbstract<T /* entity */, V /* dto */> implements CrudService<T, V>,
         EntitiesGetterService<T> {
 
+    private static final String STATUS_FIELD_NAME = "status";
     protected JpaRepository<T, Long> jpaRepository;
 
     protected void setJpaRepository(JpaRepository<T, Long> jpaRepository) {
@@ -47,12 +49,6 @@ public abstract class BaseServiceAbstract<T /* entity */, V /* dto */> implement
         }
         ObjectMapper.mapCustom(entity, v);
         return v;
-    }
-
-    @Override
-    public boolean deleteInDb(Long id) {
-        jpaRepository.findById(id).ifPresent(t -> jpaRepository.delete(t));
-        return !jpaRepository.findById(id).isPresent();
     }
 
     @Override

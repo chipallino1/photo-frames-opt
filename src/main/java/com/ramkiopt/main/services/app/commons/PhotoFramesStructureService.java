@@ -4,4 +4,5 @@ import com.ramkiopt.main.dto.PhotoFramesDto;
 
 public interface PhotoFramesStructureService {
     PhotoFramesDto createPhotoFrame(PhotoFramesDto dto);
+    PhotoFramesDto readPhotoFrame(Long id);
 }

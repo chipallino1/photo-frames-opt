@@ -6,5 +6,6 @@ create table users
     email              varchar(300) unique,
     phone_number       varchar(20) unique,
     role               varchar(300),
-    password_encrypted varchar(400)
+    password_encrypted varchar(400),
+    status             varchar(100)
 );

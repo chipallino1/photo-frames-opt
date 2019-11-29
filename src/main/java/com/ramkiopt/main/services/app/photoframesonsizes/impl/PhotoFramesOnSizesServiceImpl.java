@@ -5,6 +5,7 @@ import com.ramkiopt.main.entities.PhotoFramesOnSizes;
 import com.ramkiopt.main.repositories.PhotoFramesOnSizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnSizesService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFramesOnSizes, PhotoFramesOnSizesDto>
@@ -50,5 +52,21 @@ public class PhotoFramesOnSizesServiceImpl extends BaseServiceAbstract<PhotoFram
     @Override
     public Boolean delete(Long id) {
         return null;
+    }
+
+    @Override
+    public boolean deleteInDb(Long id) {
+        return false;
+    }
+
+    @Override
+    public List<PhotoFramesOnSizesDto> getSizesByPhotoFrameId(Long photoFrameId) {
+        List<PhotoFramesOnSizes> entities = photoFramesOnSizesRepository.findAllByPhotoFrameId(photoFrameId);
+        List<PhotoFramesOnSizesDto> dtos = new ArrayList<>();
+        for (int i = 0; i < entities.size(); i++) {
+            dtos.add(new PhotoFramesOnSizesDto());
+        }
+        ObjectMapper.mapListCustom(entities, dtos);
+        return dtos;
     }
 }

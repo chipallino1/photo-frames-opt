@@ -1,5 +1,7 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.services.app.base.RowStatus;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -16,13 +18,17 @@ public class PhotoFramesDto implements Serializable {
     private Integer cost;
     private Long userId;
     private String description;
+    private RowStatus status;
     private List<PhotosDto> photoFramesDto;
     private List<ColorsDto> colorsDtoList;
     private List<SizesDto> sizesDtoList;
 
+    public PhotoFramesDto() {
+    }
+
     public PhotoFramesDto(Long id, String name, String vendorCode, String borderMaterial,
                           String insideMaterial, Integer borderWidth, Integer thickness,
-                          Integer cost, Long userId, String description) {
+                          Integer cost, Long userId, String description, RowStatus rowStatus) {
         this.id = id;
         this.name = name;
         this.vendorCode = vendorCode;
@@ -142,5 +148,13 @@ public class PhotoFramesDto implements Serializable {
 
     public void setSizesDtoList(List<SizesDto> sizesDtoList) {
         this.sizesDtoList = sizesDtoList;
+    }
+
+    public RowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RowStatus status) {
+        this.status = status;
     }
 }

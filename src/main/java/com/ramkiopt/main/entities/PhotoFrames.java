@@ -1,6 +1,19 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import com.ramkiopt.main.services.app.base.RowStatus;
+
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import java.util.Collection;
@@ -18,6 +31,7 @@ public class PhotoFrames {
     private Integer thickness;
     private Integer cost;
     private String description;
+    private RowStatus status;
     private Long userId;
     private Users usersByUserId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
@@ -139,12 +153,19 @@ public class PhotoFrames {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    @Basic
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    public RowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RowStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -226,10 +247,6 @@ public class PhotoFrames {
         this.currencyId = currencyId;
     }
 
-    public void setCurrencyId(long currencyId) {
-        this.currencyId = currencyId;
-    }
-
     @Basic
     @Column(name = "photo_frames_on_colors_id", nullable = false)
     public long getPhotoFramesOnColorsId() {
@@ -237,10 +254,6 @@ public class PhotoFrames {
     }
 
     public void setPhotoFramesOnColorsId(Long photoFramesOnColorsId) {
-        this.photoFramesOnColorsId = photoFramesOnColorsId;
-    }
-
-    public void setPhotoFramesOnColorsId(long photoFramesOnColorsId) {
         this.photoFramesOnColorsId = photoFramesOnColorsId;
     }
 
@@ -254,10 +267,6 @@ public class PhotoFrames {
         this.photoFramesOnSizesId = photoFramesOnSizesId;
     }
 
-    public void setPhotoFramesOnSizesId(long photoFramesOnSizesId) {
-        this.photoFramesOnSizesId = photoFramesOnSizesId;
-    }
-
     @Basic
     @Column(name = "photo_frames_on_photos_id", nullable = false)
     public long getPhotoFramesOnPhotosId() {
@@ -265,10 +274,6 @@ public class PhotoFrames {
     }
 
     public void setPhotoFramesOnPhotosId(Long photoFramesOnPhotosId) {
-        this.photoFramesOnPhotosId = photoFramesOnPhotosId;
-    }
-
-    public void setPhotoFramesOnPhotosId(long photoFramesOnPhotosId) {
         this.photoFramesOnPhotosId = photoFramesOnPhotosId;
     }
 
