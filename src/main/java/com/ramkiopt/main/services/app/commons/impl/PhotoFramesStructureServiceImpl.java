@@ -100,9 +100,11 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         List<Identity> entitiesIdentity = (List<Identity>) entities;
         List<Identity> result = new ArrayList<>();
         dtosIdentity.forEach(dtoIdentity -> {
-            if(entitiesIdentity.)
+            if(!entitiesIdentity.contains(dtoIdentity)){
+                result.add(dtoIdentity);
+            }
         });
-        return dtosIdentity;
+        return result;
     }
 
     private List<ColorsDto> updateColors(List<ColorsDto> colorsDtos) {
