@@ -6,4 +6,5 @@ public interface PhotoFramesStructureService {
     PhotoFramesDto createPhotoFrame(PhotoFramesDto dto);
     PhotoFramesDto readPhotoFrame(Long id);
     PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto);
+    Boolean deletePhotoFrame(Long id);
 }

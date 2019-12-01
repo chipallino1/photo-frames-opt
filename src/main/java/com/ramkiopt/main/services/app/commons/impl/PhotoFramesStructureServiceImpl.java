@@ -84,6 +84,11 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return dto;
     }
 
+    @Override
+    public Boolean deletePhotoFrame(Long id) {
+        return photoFramesService.delete(id);
+    }
+
     private List<Identity> getExistingEntities(List entities) {
         List<Identity> identities = (List<Identity>) entities;
         List<Identity> existingIds = new ArrayList<>();
