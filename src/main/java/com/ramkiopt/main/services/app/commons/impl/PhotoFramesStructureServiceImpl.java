@@ -14,6 +14,7 @@ import com.ramkiopt.main.services.app.sizes.SizesService;
 import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnColorsDtoCreator;
 import com.ramkiopt.main.services.utils.app.creators.PhotoFramesOnSizesDtoCreator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -64,6 +65,17 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     @Override
+    public List<PhotoFramesDto> readAllByName(String name, Pageable pageable) {
+        List<PhotoFramesDto> f = photoFramesService.getByMaterial("wood", "metal");
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllByName(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
     public PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto) {
         List<Identity> colorsIds = getExistingEntities(dto.getColorsDtos());
         List<Identity> sizesIds = getExistingEntities(dto.getSizesDtos());
@@ -105,7 +117,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         List<Identity> entitiesIdentity = (List<Identity>) entities;
         List<Identity> result = new ArrayList<>();
         dtosIdentity.forEach(dtoIdentity -> {
-            if(!entitiesIdentity.contains(dtoIdentity)){
+            if (!entitiesIdentity.contains(dtoIdentity)) {
                 result.add(dtoIdentity);
             }
         });

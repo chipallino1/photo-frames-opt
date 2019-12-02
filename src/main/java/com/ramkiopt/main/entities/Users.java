@@ -1,6 +1,7 @@
 package com.ramkiopt.main.entities;
 
 import com.ramkiopt.main.services.app.base.RowStatus;
+import com.ramkiopt.main.services.security.UserRole;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -23,7 +24,7 @@ public class Users implements Identity {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private String role;
+    private UserRole role;
     private String passwordEncrypted;
     private RowStatus status;
     private Collection<Cart> cartsById;
@@ -91,13 +92,13 @@ public class Users implements Identity {
     }
 
     @Basic
+    @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = true, length = 300)
-    @Size(min = 2, max = 20)
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 

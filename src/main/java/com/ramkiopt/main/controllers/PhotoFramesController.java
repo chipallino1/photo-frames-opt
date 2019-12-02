@@ -4,6 +4,8 @@ import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/photo-frames")
@@ -49,6 +52,15 @@ public class PhotoFramesController {
     @GetMapping("/{id}")
     public ResponseEntity readPhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.readPhotoFrame(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/allByName")
+    public ResponseEntity readAllPhotoFrames(@PathParam("name") String name,
+                                             @PathParam("pageNumber") Integer pageNumber,
+                                             @PathParam("offset") Integer offset) {
+        Pageable pageable = PageRequest.of(pageNumber, offset);
+        return responseService.createResponseEntity(photoFramesStructureService.readAllByName("%" + name + "%",
+                pageable), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
