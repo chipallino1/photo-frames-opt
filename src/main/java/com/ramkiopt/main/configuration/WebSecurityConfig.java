@@ -1,7 +1,10 @@
 package com.ramkiopt.main.configuration;
 
+import com.ramkiopt.main.entities.Users;
+import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.security.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,10 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
+@EnableOAuth2Sso
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
+
+    public WebSecurityConfig(JwtProvider jwtProvider) {
+        this.jwtProvider = jwtProvider;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -33,12 +40,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable().csrf().disable().sessionManagement()
+        /*http
+                .authorizeRequests()
+                .mvcMatchers("/users/**").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .csrf().disable();*/
+        http
+                .httpBasic().disable().csrf().disable().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/users/create").permitAll()
                 .antMatchers("/products/**").hasAuthority("ADMIN").anyRequest()
-                .authenticated().and().csrf()
+                .authenticated()
+                .and()
+                .oauth2Login().
+                .and().csrf()
                 .disable().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint()).and()
                 .apply(new JwtConfigurer(jwtProvider));
         http.cors();
@@ -69,5 +86,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService mongoUserDetails() {
         return new CustomUserDetailsService();
+    }
+
+    @Bean
+    public PrincipalExtractor principalExtractor(UsersRepository usersRepository) {
+        return map -> {
+            Long id = (Long) map.get("sub");
+
+            Users user = usersRepository.findById(id).orElseGet(() -> {
+                Users newUser = new Users();
+                newUser.setId(id);
+                newUser.setEmail((String) map.get("email"));
+                return newUser;
+            });
+
+            return usersRepository.save(user);
+        };
     }
 }
