@@ -1,32 +1,49 @@
 package com.ramkiopt.main.configuration;
 
-import com.ramkiopt.main.entities.Users;
-import com.ramkiopt.main.repositories.UsersRepository;
+import com.ramkiopt.main.repositories.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ramkiopt.main.services.security.CustomOAuth2UserService;
 import com.ramkiopt.main.services.security.CustomUserDetailsService;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
+import com.ramkiopt.main.services.security.OAuth2AuthenticationFailureHandler;
+import com.ramkiopt.main.services.security.OAuth2AuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
-@EnableOAuth2Sso
+@EnableGlobalMethodSecurity(
+        securedEnabled = true,
+        jsr250Enabled = true,
+        prePostEnabled = true
+)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtProvider jwtProvider;
+
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private OAuth2AuthenticationFailureHandler failureHandler;
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler successHandler;
 
     public WebSecurityConfig(JwtProvider jwtProvider) {
         this.jwtProvider = jwtProvider;
@@ -34,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        UserDetailsService userDetailsService = mongoUserDetails();
+        UserDetailsService userDetailsService = mysqlUserDetails();
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 
@@ -47,23 +64,59 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();*/
         http
-                .httpBasic().disable().csrf().disable().sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                .httpBasic()
+                .disable()
+                .csrf()
+                .disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/users/create").permitAll()
-                .antMatchers("/products/**").hasAuthority("ADMIN").anyRequest()
-                .authenticated()
+                .antMatchers("/products/**").hasAuthority("ADMIN").anyRequest().authenticated()
                 .and()
-                .oauth2Login().
-                .and().csrf()
-                .disable().exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint()).and()
-                .apply(new JwtConfigurer(jwtProvider));
+                .apply(new JwtConfigurer(jwtProvider))
+                .and()
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint())
+                .and()
+                .oauth2Login()
+                .authorizationEndpoint()
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
+                .redirectionEndpoint()
+                .baseUri("/oauth2/callback/*")
+                .and()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .failureHandler(failureHandler)
+                .successHandler(successHandler);
         http.cors();
     }
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        return new InMemoryClientRegistrationRepository(Arrays.asList(CommonOAuth2Provider.GOOGLE.getBuilder("google")
+                .clientId("439082142714-hstf4p7s9msp50hstf7ngr6ol636sssc.apps.googleusercontent.com")
+                .clientSecret("4bIhg9IXKpnoAeY_-BiP4X0B").build()));
+    }
+
+    /*
+      By default, Spring OAuth2 uses HttpSessionOAuth2AuthorizationRequestRepository to save
+      the authorization request. But, since our service is stateless, we can't save it in
+      the session. We'll save the request in a Base64 encoded cookie instead.
+    */
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
     @Bean
@@ -84,23 +137,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public UserDetailsService mongoUserDetails() {
+    public UserDetailsService mysqlUserDetails() {
         return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public PrincipalExtractor principalExtractor(UsersRepository usersRepository) {
-        return map -> {
-            Long id = (Long) map.get("sub");
-
-            Users user = usersRepository.findById(id).orElseGet(() -> {
-                Users newUser = new Users();
-                newUser.setId(id);
-                newUser.setEmail((String) map.get("email"));
-                return newUser;
-            });
-
-            return usersRepository.save(user);
-        };
     }
 }

@@ -24,13 +24,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UsersRepository usersRepository;
 
-    @Autowired
-    private PasswordEncoder bCryptPasswordEncoder;
-
-    public Users findUserByEmail(String email) {
-        return usersRepository.findByEmail(email);
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users user = usersRepository.findByEmail(email);

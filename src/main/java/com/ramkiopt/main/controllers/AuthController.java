@@ -24,8 +24,7 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    final
-    AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     private final JwtProvider jwtProvider;
 
