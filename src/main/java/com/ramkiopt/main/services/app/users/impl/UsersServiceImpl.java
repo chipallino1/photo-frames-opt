@@ -6,6 +6,7 @@ import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.users.UsersService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,16 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
         users.setStatus(RowStatus.DELETED);
         jpaRepository.save(users);
         return true;
+    }
+
+    @Override
+    public UsersDto getByEmail(String email) {
+        Users users = usersRepository.findByEmail(email);
+        if (users == null) {
+            return null;
+        }
+        UsersDto usersDto = new UsersDto();
+        ObjectMapper.mapCustom(users, usersDto);
+        return usersDto;
     }
 }

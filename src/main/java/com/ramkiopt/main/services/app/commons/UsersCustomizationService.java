@@ -7,6 +7,8 @@ public interface UsersCustomizationService {
 
     UsersDto readUser(Long id);
 
+    UsersDto readUserByEmail(String email);
+
     UsersDto updateUser(Long id, UsersDto usersDto);
 
     Boolean deleteUser(Long id);

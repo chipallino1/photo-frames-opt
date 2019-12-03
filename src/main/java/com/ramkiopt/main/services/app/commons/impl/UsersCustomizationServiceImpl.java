@@ -4,6 +4,7 @@ import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.commons.UsersCustomizationService;
 import com.ramkiopt.main.services.app.users.UsersService;
+import com.ramkiopt.main.services.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,9 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
 
     @Override
     public UsersDto createUser(UsersDto dto) {
-        dto.setStatus(RowStatus.ENABLE);
-        dto.setPasswordEncrypted(new BCryptPasswordEncoder().encode(dto.getPassword()));
+        dto.setRole(dto.getRole() == null ? UserRole.USER : dto.getRole());
+        dto.setPasswordEncrypted(dto.getPassword() == null ? null :
+                new BCryptPasswordEncoder().encode(dto.getPassword()));
         return usersService.create(dto);
     }
 
@@ -33,6 +35,11 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
             throw new EntityNotFoundException();
         }
         return usersService.get(id);
+    }
+
+    @Override
+    public UsersDto readUserByEmail(String email) {
+        return usersService.getByEmail(email);
     }
 
     @Override
