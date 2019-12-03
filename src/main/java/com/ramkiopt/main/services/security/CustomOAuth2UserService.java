@@ -33,7 +33,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
 
-        return null;
+        return oAuth2User;
     }
 
     private Users registerNewUser(OAuth2UserRequest oAuth2UserRequest) {

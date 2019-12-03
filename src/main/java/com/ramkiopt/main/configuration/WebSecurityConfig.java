@@ -22,7 +22,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
@@ -75,8 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/users/create").permitAll()
                 .antMatchers("/products/**").hasAuthority("ADMIN").anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwtProvider))
+                //.and()
+               // .apply(new JwtConfigurer(jwtProvider))
                 .and()
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedEntryPoint())
@@ -87,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
                 .redirectionEndpoint()
-                .baseUri("/oauth2/callback/*")
+                .baseUri("/login/oauth2/code/google")
                 .and()
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
@@ -95,6 +97,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(failureHandler)
                 .successHandler(successHandler);
         http.cors();
+
+        http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
@@ -106,7 +110,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(Arrays.asList(CommonOAuth2Provider.GOOGLE.getBuilder("google")
                 .clientId("439082142714-hstf4p7s9msp50hstf7ngr6ol636sssc.apps.googleusercontent.com")
-                .clientSecret("4bIhg9IXKpnoAeY_-BiP4X0B").build()));
+                .clientSecret("4bIhg9IXKpnoAeY_-BiP4X0B")
+                .scope("email", "profile")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .tokenUri("https://accounts.google.com/o/oauth2/token")
+                .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
+                .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+                .redirectUriTemplate("http://localhost:8080/login/oauth2/code/google")
+                .build()));
     }
 
     /*
@@ -117,6 +128,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
+    @Bean
+    public TokenAuthenticationFilter tokenAuthenticationFilter() {
+        return new TokenAuthenticationFilter();
     }
 
     @Bean
