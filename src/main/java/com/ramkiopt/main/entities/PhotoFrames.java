@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "photo_frames", schema = "ramki_opt")
+@Table(name = "photo_frames", schema = "ramki_opt", catalog = "")
 public class PhotoFrames implements Identity {
     private Long id;
     private String name;
@@ -43,6 +43,7 @@ public class PhotoFrames implements Identity {
     private long photoFramesOnSizesId;
     private long photoFramesOnPhotosId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
+    private Collection<Discounts> discountsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -285,5 +286,14 @@ public class PhotoFrames implements Identity {
 
     public void setPhotoFramesOnOrdersById(Collection<PhotoFramesOnOrders> photoFramesOnOrdersById) {
         this.photoFramesOnOrdersById = photoFramesOnOrdersById;
+    }
+
+    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
+    public Collection<Discounts> getDiscountsById() {
+        return discountsById;
+    }
+
+    public void setDiscountsById(Collection<Discounts> discountsById) {
+        this.discountsById = discountsById;
     }
 }

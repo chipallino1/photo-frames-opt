@@ -17,3 +17,5 @@ ALTER TABLE photo_frames_on_orders ADD FOREIGN KEY (order_id) REFERENCES orders(
 ALTER TABLE photo_frames_on_orders ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
 
 ALTER TABLE photos ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
+
+ALTER TABLE discounts ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
