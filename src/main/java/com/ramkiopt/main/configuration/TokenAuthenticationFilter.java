@@ -44,13 +44,14 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
-                response.setContentType("application/json");
-                Map<Object, Object> model = new HashMap<>();
-                model.put("username", username);
-                model.put("token", jwt);
-                response.getOutputStream().print(new Gson().toJson(model));
-                return;
+                if (request.getParameter("token") != null) {
+                    response.setContentType("application/json");
+                    Map<Object, Object> model = new HashMap<>();
+                    model.put("username", username);
+                    model.put("token", jwt);
+                    response.getOutputStream().print(new Gson().toJson(model));
+                    return;
+                }
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
