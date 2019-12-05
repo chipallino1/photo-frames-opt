@@ -5,6 +5,7 @@ import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.repositories.DiscountsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.discounts.DiscountsService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,16 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
     public boolean deleteInDb(Long id) {
         discountsRepository.deleteById(id);
         return !discountsRepository.existsById(id);
+    }
+
+    @Override
+    public DiscountsDto getByPhotoFrameId(Long photoFrameId) {
+        Discounts discounts = discountsRepository.findFirstByPhotoFrameId(photoFrameId);
+        if (discounts == null) {
+            return null;
+        }
+        DiscountsDto discountsDto = new DiscountsDto();
+        ObjectMapper.mapCustom(discounts, discountsDto);
+        return discountsDto;
     }
 }

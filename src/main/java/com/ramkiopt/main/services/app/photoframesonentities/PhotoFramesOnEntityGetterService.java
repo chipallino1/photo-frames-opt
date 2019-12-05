@@ -1,4 +1,4 @@
-package com.ramkiopt.main.services.app.photoframesonsizes;
+package com.ramkiopt.main.services.app.photoframesonentities;
 
 import java.util.List;
 

@@ -14,5 +14,6 @@ create table photo_frames
     currency_id               bigint not null,
     photo_frames_on_colors_id bigint not null,
     photo_frames_on_sizes_id  bigint not null,
-    photo_frames_on_photos_id bigint not null
+    photo_frames_on_photos_id bigint not null,
+    popularity                bigint
 );

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DiscountsRepository extends JpaRepository<Discounts, Long> {
+    Discounts findFirstByPhotoFrameId(Long photoFrameId);
 }

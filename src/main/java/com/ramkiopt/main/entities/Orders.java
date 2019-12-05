@@ -1,8 +1,14 @@
 package com.ramkiopt.main.entities;
 
+import com.ramkiopt.main.services.app.base.RowStatus;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -17,11 +23,18 @@ public class Orders implements Identity {
     private Timestamp orderDate;
     private String orderStatus;
     private String comment;
+    private Integer count;
     private Users usersByUserId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
     private Long userId;
+    private Long photoFrameId;
+    private PhotoFrames photoFramesByPhotoFrameId;
+    private RowStatus status;
+    private String color;
+    private String format;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     @Override
     public Long getId() {
@@ -60,6 +73,16 @@ public class Orders implements Identity {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    @Basic
+    @Column(name = "count")
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 
     @Override
@@ -105,5 +128,56 @@ public class Orders implements Identity {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "photo_frame_id", nullable = true)
+    public Long getPhotoFrameId() {
+        return photoFrameId;
+    }
+
+    public void setPhotoFrameId(Long photoFrameId) {
+        this.photoFrameId = photoFrameId;
+    }
+
+    @Basic
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = true)
+    public RowStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RowStatus status) {
+        this.status = status;
+    }
+
+    @Basic
+    @Column(name = "color")
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Basic
+    @Column(name = "format")
+    public String getFormat() {
+        return format;
+    }
+
+    public void setFormat(String format) {
+        this.format = format;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", insertable = false, updatable = false)
+    public PhotoFrames getPhotoFramesByPhotoFrameId() {
+        return photoFramesByPhotoFrameId;
+    }
+
+    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
+        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
     }
 }

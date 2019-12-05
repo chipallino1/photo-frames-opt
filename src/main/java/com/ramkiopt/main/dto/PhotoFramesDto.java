@@ -23,6 +23,8 @@ public class PhotoFramesDto implements Serializable, Identity {
     private List<PhotosDto> photoFramesDto;
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
+    private DiscountsDto discountsDto;
+    private Long popularity;
 
     public PhotoFramesDto() {
     }
@@ -158,5 +160,21 @@ public class PhotoFramesDto implements Serializable, Identity {
 
     public void setStatus(RowStatus status) {
         this.status = status;
+    }
+
+    public DiscountsDto getDiscountsDto() {
+        return discountsDto;
+    }
+
+    public void setDiscountsDto(DiscountsDto discountsDto) {
+        this.discountsDto = discountsDto;
+    }
+
+    public Long getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Long popularity) {
+        this.popularity = popularity;
     }
 }

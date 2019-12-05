@@ -1,10 +1,10 @@
-package com.ramkiopt.main.services.app.photoframesonsizes.impl;
+package com.ramkiopt.main.services.app.photoframesonentities.impl;
 
 import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import com.ramkiopt.main.entities.PhotoFramesOnSizes;
 import com.ramkiopt.main.repositories.PhotoFramesOnSizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
-import com.ramkiopt.main.services.app.photoframesonsizes.PhotoFramesOnEntityService;
+import com.ramkiopt.main.services.app.photoframesonentities.PhotoFramesOnEntityService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

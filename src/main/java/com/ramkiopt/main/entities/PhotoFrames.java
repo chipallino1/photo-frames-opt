@@ -44,6 +44,8 @@ public class PhotoFrames implements Identity {
     private long photoFramesOnPhotosId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
     private Collection<Discounts> discountsById;
+    private Long popularity;
+    private Collection<Orders> ordersById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -168,6 +170,14 @@ public class PhotoFrames implements Identity {
 
     public void setStatus(RowStatus status) {
         this.status = status;
+    }
+
+    public Long getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Long popularity) {
+        this.popularity = popularity;
     }
 
     @Override
@@ -295,5 +305,14 @@ public class PhotoFrames implements Identity {
 
     public void setDiscountsById(Collection<Discounts> discountsById) {
         this.discountsById = discountsById;
+    }
+
+    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
+    public Collection<Orders> getOrdersById() {
+        return ordersById;
+    }
+
+    public void setOrdersById(Collection<Orders> ordersById) {
+        this.ordersById = ordersById;
     }
 }
