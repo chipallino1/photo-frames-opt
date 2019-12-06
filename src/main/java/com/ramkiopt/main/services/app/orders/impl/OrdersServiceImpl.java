@@ -6,7 +6,6 @@ import com.ramkiopt.main.repositories.OrdersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.orders.OrdersService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,8 +14,11 @@ import javax.persistence.EntityNotFoundException;
 @Service
 public class OrdersServiceImpl extends BaseServiceAbstract<Orders, OrdersDto> implements OrdersService<OrdersDto> {
 
-    @Autowired
-    private OrdersRepository ordersRepository;
+    private final OrdersRepository ordersRepository;
+
+    public OrdersServiceImpl(OrdersRepository ordersRepository) {
+        this.ordersRepository = ordersRepository;
+    }
 
     @PostConstruct
     public void init() {
