@@ -2,6 +2,7 @@ package com.ramkiopt.main.dto;
 
 import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private Long userId;
     private String description;
     private RowStatus status;
+    private MultipartFile file;
     private List<PhotosDto> photosDtos;
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
@@ -125,7 +127,6 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.userId = userId;
     }
 
-    @Size(min = 1, message = "{validation.photoframes.photosListSize.message}")
     public List<PhotosDto> getPhotosDtos() {
         return photosDtos;
     }
@@ -176,5 +177,13 @@ public class PhotoFramesDto implements Serializable, Identity {
 
     public void setPopularity(Long popularity) {
         this.popularity = popularity;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }
