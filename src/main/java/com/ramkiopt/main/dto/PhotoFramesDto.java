@@ -20,7 +20,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private Long userId;
     private String description;
     private RowStatus status;
-    private List<PhotosDto> photoFramesDto;
+    private List<PhotosDto> photosDtos;
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
     private DiscountsDto discountsDto;
@@ -126,12 +126,12 @@ public class PhotoFramesDto implements Serializable, Identity {
     }
 
     @Size(min = 1, message = "{validation.photoframes.photosListSize.message}")
-    public List<PhotosDto> getPhotoFramesDto() {
-        return photoFramesDto;
+    public List<PhotosDto> getPhotosDtos() {
+        return photosDtos;
     }
 
-    public void setPhotoFramesDto(List<PhotosDto> photoFramesDto) {
-        this.photoFramesDto = photoFramesDto;
+    public void setPhotosDtos(List<PhotosDto> photosDtos) {
+        this.photosDtos = photosDtos;
     }
 
     @NotNull(message = "{validation.photoframes.colorsListSize.message}")
