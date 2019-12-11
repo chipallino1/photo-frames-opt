@@ -1,7 +1,9 @@
 package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
+import com.ramkiopt.main.dto.PhotosDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
+import com.ramkiopt.main.services.app.photos.PhotosService;
 import com.ramkiopt.main.services.utils.FileStorageService;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +38,16 @@ import java.io.IOException;
 public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
     private final BaseResponseService responseService;
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
+    private final PhotosService<PhotosDto> photosService;
 
     @Autowired
     public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
-                                 FileStorageService fileStorageService, BaseResponseService responseService) {
+                                 FileStorageService fileStorageService, BaseResponseService responseService, PhotosService<PhotosDto> photosService) {
         this.photoFramesStructureService = photoFramesStructureService;
         this.fileStorageService = fileStorageService;
         this.responseService = responseService;
+        this.photosService = photosService;
     }
 
     @PostMapping(value = "/create")
@@ -58,6 +62,10 @@ public class PhotoFramesController {
     @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) throws IOException {
         String imageSrc = fileStorageService.storeFile(file);
+        PhotosDto dto = new PhotosDto();
+        dto.setPhotoFrameId(id);
+        dto.setPhotoSrc(imageSrc);
+        photosService.create(dto);
         return responseService.createResponseEntity(true, HttpStatus.OK);
     }
 
@@ -75,7 +83,7 @@ public class PhotoFramesController {
         }
 
         // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
+        if (contentType == null) {
             contentType = "application/octet-stream";
         }
 

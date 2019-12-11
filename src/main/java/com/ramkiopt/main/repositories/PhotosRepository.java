@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhotosRepository extends JpaRepository<Photos, Long> {
+    Photos findByPhotoFrameId(Long photoFrameId);
 }

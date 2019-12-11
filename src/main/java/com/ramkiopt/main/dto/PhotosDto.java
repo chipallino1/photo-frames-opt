@@ -9,6 +9,7 @@ public class PhotosDto implements Serializable, Identity {
     private String photoSrc;
     private Integer width;
     private Integer height;
+    private Long photoFrameId;
 
     @Override
     public Long getId() {
@@ -41,5 +42,13 @@ public class PhotosDto implements Serializable, Identity {
 
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public Long getPhotoFrameId() {
+        return photoFrameId;
+    }
+
+    public void setPhotoFrameId(Long photoFrameId) {
+        this.photoFrameId = photoFrameId;
     }
 }

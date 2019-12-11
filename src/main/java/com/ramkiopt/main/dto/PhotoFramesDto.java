@@ -27,6 +27,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private List<SizesDto> sizesDtos;
     private DiscountsDto discountsDto;
     private Long popularity;
+    private String imageSrc;
 
     public PhotoFramesDto() {
     }
@@ -185,5 +186,13 @@ public class PhotoFramesDto implements Serializable, Identity {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+    public String getImageSrc() {
+        return imageSrc;
+    }
+
+    public void setImageSrc(String imageSrc) {
+        this.imageSrc = imageSrc;
     }
 }
