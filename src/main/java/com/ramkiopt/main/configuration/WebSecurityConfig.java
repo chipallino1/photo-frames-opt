@@ -76,7 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/photo-frames/**").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
-                .antMatchers("/photo-frames/create").hasAuthority("MAIN").anyRequest().authenticated()
+                .antMatchers("/photo-frames/create").hasAuthority("MAIN")
                 //.and()
                // .apply(new JwtConfigurer(jwtProvider))
                 .and()

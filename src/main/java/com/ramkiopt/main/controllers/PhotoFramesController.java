@@ -62,7 +62,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/getFile/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
+    public ResponseEntity<Resource> getFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
 
