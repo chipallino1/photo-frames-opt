@@ -2,10 +2,13 @@ package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
+import com.ramkiopt.main.services.utils.FileStorageService;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 
 @CrossOrigin("*")
 @RestController
@@ -31,11 +36,13 @@ import javax.websocket.server.PathParam;
 public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
     private final BaseResponseService responseService;
+    private FileStorageService fileStorageService;
 
     @Autowired
     public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
-                                 BaseResponseService responseService) {
+                                 FileStorageService fileStorageService, BaseResponseService responseService) {
         this.photoFramesStructureService = photoFramesStructureService;
+        this.fileStorageService = fileStorageService;
         this.responseService = responseService;
     }
 
@@ -49,8 +56,33 @@ public class PhotoFramesController {
     }
 
     @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) {
+    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) throws IOException {
+        String imageSrc = fileStorageService.storeFile(file);
         return responseService.createResponseEntity(true, HttpStatus.OK);
+    }
+
+    @GetMapping("/getFile/{fileName}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
+        // Load file as Resource
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
+
+        // Try to determine file's content type
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+        } catch (IOException ex) {
+            System.out.println("Could not determine file type.");
+        }
+
+        // Fallback to the default content type if type could not be determined
+        if(contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
+                .body(resource);
     }
 
     @PutMapping("/update")

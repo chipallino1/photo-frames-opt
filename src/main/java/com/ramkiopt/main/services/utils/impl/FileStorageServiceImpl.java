@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,12 +26,12 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public String storeFile(MultipartFile file, String email) throws Exception {
+    public String storeFile(MultipartFile file) throws IOException {
         String fileName = StringUtils.cleanPath(System.currentTimeMillis() + file.getOriginalFilename());
 
         Path targetLocation = Paths.get(this.fileStorageLocation + "/" + fileName).toAbsolutePath().normalize();
         Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-        return "/image?fileName=" + fileName + "&email=" + email;
+        return "/image?fileName=" + fileName;
     }
 
     @Override
