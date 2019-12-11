@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,10 +25,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
-import java.io.IOException;
 
-@RestController
 @CrossOrigin("*")
+@RestController
 @RequestMapping("/photo-frames")
 public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
@@ -40,9 +40,10 @@ public class PhotoFramesController {
         this.responseService = responseService;
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto,
-                                           BindingResult bindingResult, HttpServletRequest request) throws IOException {
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity createPhotoFrame(@RequestParam MultipartFile file, HttpServletRequest request) {
+        PhotoFramesDto dto = new PhotoFramesDto();
+        BindingResult bindingResult = null;
         if (bindingResult.hasErrors()) {
             return responseService.createErrorInfo(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
