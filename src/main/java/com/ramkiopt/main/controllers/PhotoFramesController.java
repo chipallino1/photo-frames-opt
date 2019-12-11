@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
@@ -40,15 +39,18 @@ public class PhotoFramesController {
         this.responseService = responseService;
     }
 
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity createPhotoFrame(@RequestParam MultipartFile file, HttpServletRequest request) {
-        PhotoFramesDto dto = new PhotoFramesDto();
-        BindingResult bindingResult = null;
+    @PostMapping(value = "/create")
+    public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return responseService.createErrorInfo(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
         }
         dto = photoFramesStructureService.createPhotoFrame(dto);
         return responseService.createResponseEntity(dto, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) {
+        return responseService.createResponseEntity(true, HttpStatus.OK);
     }
 
     @PutMapping("/update")
