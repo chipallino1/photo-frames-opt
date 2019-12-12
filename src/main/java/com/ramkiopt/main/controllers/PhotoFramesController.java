@@ -96,7 +96,7 @@ public class PhotoFramesController {
     @PutMapping("/update")
     public ResponseEntity updatePhotoFrame(@RequestBody PhotoFramesDto photoFramesDto) {
         return responseService.createResponseEntity(photoFramesStructureService.updatePhotoFrame(photoFramesDto.getId(),
-                photoFramesDto), HttpStatus.OK);regr
+                photoFramesDto), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
