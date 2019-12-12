@@ -59,4 +59,14 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
         ObjectMapper.mapCustom(discounts, discountsDto);
         return discountsDto;
     }
+
+    @Override
+    public Boolean deleteByPhotoFrameId(Long id) {
+        Discounts discounts = discountsRepository.findFirstByPhotoFrameId(id);
+        if (discounts == null) {
+            return true;
+        }
+        discountsRepository.delete(discounts);
+        return true;
+    }
 }

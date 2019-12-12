@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -120,6 +121,19 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
                     .forEach(dtoIdentity -> sizesDtos.add((SizesDto) dtoIdentity));
             createSizes(sizesDtos, id);
             dto.setSizesDtos(updateSizes(dto.getSizesDtos()));
+        }
+        if (dto.getDiscountsDto() != null) {
+            if (dto.getDiscountsDto().getPercentCount() == 0 || dto.getDiscountsDto().getEndDate().after(new Date())) {
+                discountsService.deleteByPhotoFrameId(dto.getId());
+            } else {
+                DiscountsDto discountsDto = discountsService.getByPhotoFrameId(dto.getId());
+                if (discountsDto != null) {
+                    discountsService.update(discountsDto.getId(), dto.getDiscountsDto());
+                } else {
+                    dto.getDiscountsDto().setPhotoFrameId(dto.getId());
+                    discountsService.create(dto.getDiscountsDto());
+                }
+            }
         }
         dto = photoFramesService.update(id, dto);
         return dto;
