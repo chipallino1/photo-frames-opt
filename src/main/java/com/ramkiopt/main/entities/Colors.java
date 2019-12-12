@@ -41,7 +41,6 @@ public class Colors implements Identity {
 
     @Basic
     @Column(name = "rgb", nullable = true, length = 300)
-    @Size(min = 2, max = 15)
     public String getRgb() {
         return rgb;
     }

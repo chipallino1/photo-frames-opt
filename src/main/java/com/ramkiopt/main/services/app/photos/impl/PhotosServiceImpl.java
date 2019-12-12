@@ -24,7 +24,12 @@ public class PhotosServiceImpl extends BaseServiceAbstract<Photos, PhotosDto> im
 
     @Override
     public boolean deleteInDb(Long id) {
-        return false;
+        Photos photos = photosRepository.findByPhotoFrameId(id);
+        if (photos == null) {
+            return true;
+        }
+        photosRepository.delete(photos);
+        return true;
     }
 
     @Override
@@ -44,7 +49,7 @@ public class PhotosServiceImpl extends BaseServiceAbstract<Photos, PhotosDto> im
 
     @Override
     public Boolean delete(Long id) {
-        return null;
+        return deleteInDb(id);
     }
 
     @Override

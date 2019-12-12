@@ -61,6 +61,7 @@ public class PhotoFramesController {
 
     @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) throws IOException {
+        photosService.delete(id);
         String imageSrc = fileStorageService.storeFile(file);
         PhotosDto dto = new PhotosDto();
         dto.setPhotoFrameId(id);

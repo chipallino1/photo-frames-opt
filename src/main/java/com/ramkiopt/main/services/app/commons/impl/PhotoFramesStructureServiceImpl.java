@@ -105,21 +105,22 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     @Override
     public PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto) {
-        List<Identity> colorsIds = getExistingEntities(dto.getColorsDtos());
-        List<Identity> sizesIds = getExistingEntities(dto.getSizesDtos());
-
-        List<ColorsDto> colorsDtos = new ArrayList<>();
-        getNotExistingEntities(colorsIds, dto.getColorsDtos())
-                .forEach(dtoIdentity -> colorsDtos.add((ColorsDto) dtoIdentity));
-        createColors(colorsDtos, id);
-
-        List<SizesDto> sizesDtos = new ArrayList<>();
-        getNotExistingEntities(sizesIds, dto.getSizesDtos())
-                .forEach(dtoIdentity -> sizesDtos.add((SizesDto) dtoIdentity));
-        createSizes(sizesDtos, id);
-
-        dto.setColorsDtos(updateColors(dto.getColorsDtos()));
-        dto.setSizesDtos(updateSizes(dto.getSizesDtos()));
+        if (dto.getColorsDtos() != null) {
+            List<Identity> colorsIds = getExistingEntities(dto.getColorsDtos());
+            List<ColorsDto> colorsDtos = new ArrayList<>();
+            getNotExistingEntities(colorsIds, dto.getColorsDtos())
+                    .forEach(dtoIdentity -> colorsDtos.add((ColorsDto) dtoIdentity));
+            createColors(colorsDtos, id);
+            dto.setColorsDtos(updateColors(dto.getColorsDtos()));
+        }
+        if (dto.getSizesDtos() != null) {
+            List<Identity> sizesIds = getExistingEntities(dto.getSizesDtos());
+            List<SizesDto> sizesDtos = new ArrayList<>();
+            getNotExistingEntities(sizesIds, dto.getSizesDtos())
+                    .forEach(dtoIdentity -> sizesDtos.add((SizesDto) dtoIdentity));
+            createSizes(sizesDtos, id);
+            dto.setSizesDtos(updateSizes(dto.getSizesDtos()));
+        }
         dto = photoFramesService.update(id, dto);
         return dto;
     }
