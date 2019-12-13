@@ -122,6 +122,14 @@ public class PhotoFramesController {
                 readAllByColor(color, pageNumber, offset), HttpStatus.OK);
     }
 
+    @GetMapping("/allBySize")
+    public ResponseEntity readAllBySize(@PathParam("size") String size,
+                                         @PathParam("pageNumber") Integer pageNumber,
+                                         @PathParam("offset") Integer offset) {
+        return responseService.createResponseEntity(photoFramesStructureService.
+                readAllBySize(size, pageNumber, offset), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deletePhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.deletePhotoFrame(id), HttpStatus.OK);

@@ -106,6 +106,18 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return photoFramesDtos;
     }
 
+    @Override
+    public List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getBySize(size, pageNum, pageSize);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
     private PhotoFramesDto setUpPhotoFramesDto(PhotoFramesDto photoFramesDto) {
         photoFramesDto.setSizesDtos(getSizes(photoFramesDto.getId()));
         photoFramesDto.setColorsDtos(getColors(photoFramesDto.getId()));

@@ -3,6 +3,8 @@ package com.ramkiopt.main.repositories;
 import com.ramkiopt.main.entities.Colors;
 import com.ramkiopt.main.entities.PhotoFrames;
 import com.ramkiopt.main.entities.PhotoFramesOnColors;
+import com.ramkiopt.main.entities.PhotoFramesOnSizes;
+import com.ramkiopt.main.entities.Sizes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -48,6 +50,20 @@ public class PhotoFramesCriteriaRepository {
         Join<PhotoFrames, PhotoFramesOnColors> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnColorsById");
         Join<PhotoFramesOnColors, Colors> colorsJoin = photoFramesOnColorsJoin.join("colorsByColorId");
         Predicate colorPredicate = cb.like(colorsJoin.get("name"), "%" + colorName + "%");
+        cq.where(colorPredicate);
+        TypedQuery query = entityManager.createQuery(cq);
+        query.setFirstResult(pageNumber * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
+
+    public List<PhotoFrames> findBySize(String size, Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
+        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
+        Join<PhotoFrames, PhotoFramesOnSizes> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnSizesById");
+        Join<PhotoFramesOnSizes, Sizes> colorsJoin = photoFramesOnColorsJoin.join("sizesBySizeId");
+        Predicate colorPredicate = cb.like(colorsJoin.get("format"), "%" + size + "%");
         cq.where(colorPredicate);
         TypedQuery query = entityManager.createQuery(cq);
         query.setFirstResult(pageNumber * pageSize);

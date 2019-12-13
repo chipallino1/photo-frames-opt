@@ -14,6 +14,8 @@ public interface PhotoFramesStructureService {
 
     List<PhotoFramesDto> readAllByColor(String color, Integer pageNum, Integer pageSize);
 
+    List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize);
+
     PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto);
 
     Boolean deletePhotoFrame(Long id);

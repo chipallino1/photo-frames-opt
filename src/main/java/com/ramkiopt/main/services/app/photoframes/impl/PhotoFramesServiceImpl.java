@@ -110,4 +110,15 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
         ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
         return photoFramesDtos;
     }
+
+    @Override
+    public List<PhotoFramesDto> getBySize(String size, Integer pageNum, Integer pageSize) {
+        List<PhotoFrames> photoFrames = photoFramesCriteriaRepository.findBySize(size, pageNum, pageSize);
+        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
+        for (int i = 0; i < photoFrames.size(); i++) {
+            photoFramesDtos.add(new PhotoFramesDto());
+        }
+        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
+        return photoFramesDtos;
+    }
 }
