@@ -24,6 +24,7 @@ public class Orders implements Identity {
     private String orderStatus;
     private String comment;
     private Integer count;
+    private Integer totalCost;
     private Users usersByUserId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
     private Long userId;
@@ -83,6 +84,16 @@ public class Orders implements Identity {
 
     public void setCount(Integer count) {
         this.count = count;
+    }
+
+    @Basic
+    @Column(name = "total_cost")
+    public Integer getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Integer totalCost) {
+        this.totalCost = totalCost;
     }
 
     @Override

@@ -5,6 +5,7 @@ create table orders
     order_date     timestamp not null,
     order_status   varchar(100),
     count          int,
+    total_cost     int,
     comment        varchar(300),
     photo_frame_id bigint,
     status         varchar (100),

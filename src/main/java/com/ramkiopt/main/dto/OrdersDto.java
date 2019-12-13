@@ -11,6 +11,7 @@ public class OrdersDto implements Serializable {
     private String orderStatus;
     private String comment;
     private Integer count;
+    private Integer totalCost;
     private Long userId;
     private Long photoFrameId;
     private RowStatus status;
@@ -95,5 +96,13 @@ public class OrdersDto implements Serializable {
 
     public void setFormat(String format) {
         this.format = format;
+    }
+
+    public Integer getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(Integer totalCost) {
+        this.totalCost = totalCost;
     }
 }
