@@ -118,6 +118,30 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     @Override
+    public List<PhotoFramesDto> readAllOrderByCostDesc(String name, Pageable pageable) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllOrderByCostDesc(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllOrderByCost(String name, Pageable pageable) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllOrderByCost(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
     public List<PhotoFramesDto> readAllByColor(String color, Integer pageNum, Integer pageSize) {
         List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByColor(color, pageNum, pageSize);
         for (PhotoFramesDto dto : photoFramesDtos) {

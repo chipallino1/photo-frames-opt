@@ -18,6 +18,10 @@ public interface PhotoFramesRepository extends JpaRepository<PhotoFrames, Long> 
 
     Page<PhotoFrames> findAllByNameLikeAndStatusOrderByPopularityDesc(String name, RowStatus status, Pageable pageable);
 
+    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByCostDesc(String name, RowStatus status, Pageable pageable);
+
+    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByCost(String name, RowStatus status, Pageable pageable);
+
     Page<PhotoFrames> findAllByBorderMaterialLikeAndStatus(String borderMaterial, RowStatus status, Pageable pageable);
 
    /* @Query(value = "SELECT pf.id, c.id FROM photo_frames pf" +

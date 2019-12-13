@@ -16,6 +16,10 @@ public interface PhotoFramesStructureService {
 
     List<PhotoFramesDto> readAllWithDiscounts(Integer pageNum, Integer pageSize);
 
+    List<PhotoFramesDto> readAllOrderByCostDesc(String name, Pageable pageable);
+
+    List<PhotoFramesDto> readAllOrderByCost(String name, Pageable pageable);
+
     List<PhotoFramesDto> readAllByColor(String color, Integer pageNum, Integer pageSize);
 
     List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize);

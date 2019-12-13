@@ -114,6 +114,24 @@ public class PhotoFramesController {
                 pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/allOrderByCost")
+    public ResponseEntity readAllOrderByCost(@PathParam("name") String name,
+                                             @PathParam("pageNumber") Integer pageNumber,
+                                             @PathParam("offset") Integer offset) {
+        Pageable pageable = PageRequest.of(pageNumber, offset);
+        return responseService.createResponseEntity(photoFramesStructureService.readAllOrderByCost("%" + name + "%",
+                pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/allOrderByCostDesc")
+    public ResponseEntity readAllOrderByCostDesc(@PathParam("name") String name,
+                                                 @PathParam("pageNumber") Integer pageNumber,
+                                                 @PathParam("offset") Integer offset) {
+        Pageable pageable = PageRequest.of(pageNumber, offset);
+        return responseService.createResponseEntity(photoFramesStructureService.readAllOrderByCostDesc("%" + name + "%",
+                pageable), HttpStatus.OK);
+    }
+
     @GetMapping("/allByNameOrderPopular")
     public ResponseEntity readAllPhotoFramesOrderByPopularity(@PathParam("name") String name,
                                                               @PathParam("pageNumber") Integer pageNumber,
@@ -147,6 +165,7 @@ public class PhotoFramesController {
         return responseService.createResponseEntity(photoFramesStructureService.
                 readAllBySize(size, pageNumber, offset), HttpStatus.OK);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity deletePhotoFrame(@PathVariable("id") Long id) {
