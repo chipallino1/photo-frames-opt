@@ -121,4 +121,28 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
         ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
         return photoFramesDtos;
     }
+
+    @Override
+    public List<PhotoFramesDto> getAllByNameOrderByPopularityDesc(String name, Pageable pageable) {
+        Page<PhotoFrames> photoFramesPage =
+                photoFramesRepository.findAllByNameLikeAndStatusOrderByPopularityDesc(name, RowStatus.ENABLE, pageable);
+        List<PhotoFrames> photoFrames = photoFramesPage.getContent();
+        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
+        for (int i = 0; i < photoFrames.size(); i++) {
+            photoFramesDtos.add(new PhotoFramesDto());
+        }
+        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
+        return photoFramesDtos;
+    }
+
+    @Override
+    public List<PhotoFramesDto> getAllWithDiscounts(Integer pageNum, Integer pageSize) {
+        List<PhotoFrames> photoFrames = photoFramesCriteriaRepository.findWithDiscounts(pageNum, pageSize);
+        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
+        for (int i = 0; i < photoFrames.size(); i++) {
+            photoFramesDtos.add(new PhotoFramesDto());
+        }
+        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
+        return photoFramesDtos;
+    }
 }

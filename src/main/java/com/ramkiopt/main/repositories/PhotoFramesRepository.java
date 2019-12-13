@@ -16,6 +16,8 @@ import java.util.Map;
 public interface PhotoFramesRepository extends JpaRepository<PhotoFrames, Long> {
     Page<PhotoFrames> findAllByNameLikeAndStatus(String name, RowStatus status, Pageable pageable);
 
+    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByPopularityDesc(String name, RowStatus status, Pageable pageable);
+
     Page<PhotoFrames> findAllByBorderMaterialLikeAndStatus(String borderMaterial, RowStatus status, Pageable pageable);
 
    /* @Query(value = "SELECT pf.id, c.id FROM photo_frames pf" +

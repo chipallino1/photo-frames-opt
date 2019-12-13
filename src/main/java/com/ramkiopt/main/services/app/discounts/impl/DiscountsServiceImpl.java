@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.Date;
 
 @Service
 public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, DiscountsDto>
@@ -53,6 +54,10 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
     public DiscountsDto getByPhotoFrameId(Long photoFrameId) {
         Discounts discounts = discountsRepository.findFirstByPhotoFrameId(photoFrameId);
         if (discounts == null) {
+            return null;
+        }
+        if (discounts.getEndDate().before(new Date())) {
+            discountsRepository.deleteById(discounts.getId());
             return null;
         }
         DiscountsDto discountsDto = new DiscountsDto();

@@ -1,6 +1,7 @@
 package com.ramkiopt.main.repositories;
 
 import com.ramkiopt.main.entities.Colors;
+import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.entities.PhotoFrames;
 import com.ramkiopt.main.entities.PhotoFramesOnColors;
 import com.ramkiopt.main.entities.PhotoFramesOnSizes;
@@ -16,6 +17,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -68,6 +70,20 @@ public class PhotoFramesCriteriaRepository {
         Predicate statusPredicate = cb.equal(photoFramesRoot.get("status"), cb.literal(RowStatus.ENABLE));
         Predicate colorPredicate = cb.like(colorsJoin.get("format"), "%" + size + "%");
         cq.where(statusPredicate, colorPredicate);
+        TypedQuery query = entityManager.createQuery(cq);
+        query.setFirstResult(pageNumber * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
+
+    public List<PhotoFrames> findWithDiscounts(Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
+        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
+        Join<PhotoFrames, Discounts> photoFramesDiscountsJoin = photoFramesRoot.join("discountsById");
+        Predicate statusPredicate = cb.equal(photoFramesRoot.get("status"), cb.literal(RowStatus.ENABLE));
+        Predicate endDatePredicate = cb.greaterThan(photoFramesDiscountsJoin.get("endDate"), new Date());
+        cq.where(statusPredicate, endDatePredicate);
         TypedQuery query = entityManager.createQuery(cq);
         query.setFirstResult(pageNumber * pageSize);
         query.setMaxResults(pageSize);

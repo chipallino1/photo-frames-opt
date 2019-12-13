@@ -74,17 +74,40 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public PhotoFramesDto readPhotoFrame(Long id) {
         PhotoFramesDto photoFramesDto = photoFramesService.get(id);
-        setUpPhotoFramesDto(photoFramesDto);
-
         Long popularity = photoFramesDto.getPopularity();
         photoFramesDto.setPopularity(popularity == null ? 1 : popularity + 1);
         photoFramesService.update(id, photoFramesDto);
+        setUpPhotoFramesDto(photoFramesDto);
         return photoFramesDto;
     }
 
     @Override
     public List<PhotoFramesDto> readAllByName(String name, Pageable pageable) {
         List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllByName(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllByNameOrderByPopularityDesc(String name, Pageable pageable) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllByNameOrderByPopularityDesc(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllWithDiscounts(Integer pageNum, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllWithDiscounts(pageNum, pageSize);
         for (PhotoFramesDto dto : photoFramesDtos) {
             setUpPhotoFramesDto(dto);
             /*dto.setSizesDtos(getSizes(dto.getId()));
@@ -146,7 +169,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
             dto.setSizesDtos(updateSizes(dto.getSizesDtos()));
         }
         if (dto.getDiscountsDto() != null) {
-            if (dto.getDiscountsDto().getPercentCount() == 0 || dto.getDiscountsDto().getEndDate().after(new Date())) {
+            if (dto.getDiscountsDto().getPercentCount() == 0 || dto.getDiscountsDto().getEndDate().before(new Date())) {
                 discountsService.deleteByPhotoFrameId(dto.getId());
             } else {
                 DiscountsDto discountsDto = discountsService.getByPhotoFrameId(dto.getId());

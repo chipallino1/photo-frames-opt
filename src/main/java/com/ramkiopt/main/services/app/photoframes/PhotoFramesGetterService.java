@@ -9,4 +9,6 @@ public interface PhotoFramesGetterService<T> {
     List<T> getByMaterial(String borderMaterial, String insideMaterial);
     List<T> getByColor(String color, Integer pageNum, Integer pageSize);
     List<T> getBySize(String size, Integer pageNum, Integer pageSize);
+    List<T> getAllByNameOrderByPopularityDesc(String name, Pageable pageable);
+    List<T> getAllWithDiscounts(Integer pageNum, Integer pageSize);
 }
