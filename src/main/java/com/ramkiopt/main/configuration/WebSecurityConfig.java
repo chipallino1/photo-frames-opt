@@ -76,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/photo-frames/**").permitAll()
                 .antMatchers("/sizes/**").permitAll()
                 .antMatchers("/colors/**").permitAll()
+                .antMatchers("/mail/**").permitAll()
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
                 .antMatchers("/photo-frames/create").hasAuthority("MAIN").anyRequest().authenticated()
