@@ -114,6 +114,14 @@ public class PhotoFramesController {
                 pageable), HttpStatus.OK);
     }
 
+    @GetMapping("/allByColor")
+    public ResponseEntity readAllByColor(@PathParam("color") String color,
+                                         @PathParam("pageNumber") Integer pageNumber,
+                                         @PathParam("offset") Integer offset) {
+        return responseService.createResponseEntity(photoFramesStructureService.
+                readAllByColor(color, pageNumber, offset), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity deletePhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.deletePhotoFrame(id), HttpStatus.OK);

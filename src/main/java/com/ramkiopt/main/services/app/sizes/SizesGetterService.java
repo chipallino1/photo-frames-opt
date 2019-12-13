@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SizesGetterService {
     List<SizesDto> getSizesById(Iterable<Long> ids);
+    List<String> getAllFormatsDistinct();
 }

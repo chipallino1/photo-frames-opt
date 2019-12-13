@@ -74,4 +74,9 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> im
         ObjectMapper.mapListCustom(colors, colorsDtos);
         return colorsDtos;
     }
+
+    @Override
+    public List<String> getAllColorNamesDistinct() {
+        return colorsRepository.findAllColorsNamesDistinct();
+    }
 }

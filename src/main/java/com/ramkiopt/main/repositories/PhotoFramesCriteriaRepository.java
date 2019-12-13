@@ -40,4 +40,18 @@ public class PhotoFramesCriteriaRepository {
         TypedQuery query = entityManager.createQuery(cq);
         return null;
     }
+
+    public List<PhotoFrames> findByColor(String colorName, Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
+        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
+        Join<PhotoFrames, PhotoFramesOnColors> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnColorsById");
+        Join<PhotoFramesOnColors, Colors> colorsJoin = photoFramesOnColorsJoin.join("colorsByColorId");
+        Predicate colorPredicate = cb.like(colorsJoin.get("name"), "%" + colorName + "%");
+        cq.where(colorPredicate);
+        TypedQuery query = entityManager.createQuery(cq);
+        query.setFirstResult(pageNumber * pageSize);
+        query.setMaxResults(pageSize);
+        return query.getResultList();
+    }
 }

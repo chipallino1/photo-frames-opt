@@ -71,4 +71,9 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> imple
         ObjectMapper.mapListCustom(sizes, sizesDtos);
         return sizesDtos;
     }
+
+    @Override
+    public List<String> getAllFormatsDistinct() {
+        return sizesRepository.findAllDistinctFormat();
+    }
 }

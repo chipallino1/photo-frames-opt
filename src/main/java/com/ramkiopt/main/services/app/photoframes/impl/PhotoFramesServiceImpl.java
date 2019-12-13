@@ -96,7 +96,18 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public List<PhotoFramesDto> getByMaterial(String borderMaterial, String insideMaterial) {
         List<PhotoFrames> photoFrames =
-                photoFramesCriteriaRepository.findBooksByAuthorNameAndTitle(borderMaterial, insideMaterial, 0, 1000, 0, 1000,"red");
+                photoFramesCriteriaRepository.findBooksByAuthorNameAndTitle(borderMaterial, insideMaterial, 0, 1000, 0, 1000, "red");
         return null;
+    }
+
+    @Override
+    public List<PhotoFramesDto> getByColor(String color, Integer pageNum, Integer pageSize) {
+        List<PhotoFrames> photoFrames = photoFramesCriteriaRepository.findByColor(color, pageNum, pageSize);
+        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
+        for (int i = 0; i < photoFrames.size(); i++) {
+            photoFramesDtos.add(new PhotoFramesDto());
+        }
+        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
+        return photoFramesDtos;
     }
 }

@@ -84,8 +84,19 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     @Override
     public List<PhotoFramesDto> readAllByName(String name, Pageable pageable) {
-        List<PhotoFramesDto> f = photoFramesService.getByMaterial("wood", "metal");
         List<PhotoFramesDto> photoFramesDtos = photoFramesService.getAllByName(name, pageable);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+            /*dto.setSizesDtos(getSizes(dto.getId()));
+            dto.setColorsDtos(getColors(dto.getId()));
+            dto.setDiscountsDto(discountsService.getByPhotoFrameId(dto.getId()));*/
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllByColor(String color, Integer pageNum, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByColor(color, pageNum, pageSize);
         for (PhotoFramesDto dto : photoFramesDtos) {
             setUpPhotoFramesDto(dto);
             /*dto.setSizesDtos(getSizes(dto.getId()));
