@@ -77,8 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/sizes/**").permitAll()
                 .antMatchers("/colors/**").permitAll()
                 .antMatchers("/mail/**").permitAll()
-                .antMatchers("/auth/**", "/oauth2/**")
-                .permitAll()
+                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/auth/**", "/oauth2/**").permitAll()
                 .antMatchers("/photo-frames/create").hasAuthority("MAIN").anyRequest().authenticated()
                 //.and()
                 //.apply(new JwtConfigurer(jwtProvider))
@@ -106,7 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/webjars/**");
     }
 
     @Bean
