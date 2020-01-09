@@ -10,6 +10,4 @@ public interface FileStorageService {
     String storeFile(MultipartFile file) throws IOException;
 
     Resource loadFileAsResource(String fileName) throws Exception;
-
-    String updateFilePath(String avatarPath, String newEmail);
 }

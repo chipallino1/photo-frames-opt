@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/mail")
 public class MailController {
     private final MailSender mailSender;
@@ -28,10 +28,8 @@ public class MailController {
     private final UsersService<UsersDto> usersService;
     private final OrdersService<OrdersDto> ordersService;
 
-    public MailController(MailSender mailSender,
-                          BaseResponseService responseService,
-                          UsersService<UsersDto> usersService,
-                          OrdersService<OrdersDto> ordersService) {
+    public MailController(MailSender mailSender, BaseResponseService responseService,
+                          UsersService<UsersDto> usersService, OrdersService<OrdersDto> ordersService) {
         this.mailSender = mailSender;
         this.responseService = responseService;
         this.usersService = usersService;

@@ -6,7 +6,6 @@ import com.ramkiopt.main.repositories.DiscountsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.discounts.DiscountsService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -16,11 +15,10 @@ import java.util.Date;
 public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, DiscountsDto>
         implements DiscountsService<DiscountsDto> {
 
-    @Autowired
-    private DiscountsRepository discountsRepository;
+    private final DiscountsRepository discountsRepository;
 
-    @PostConstruct
-    public void init() {
+    public DiscountsServiceImpl(DiscountsRepository discountsRepository) {
+        this.discountsRepository = discountsRepository;
         setJpaRepository(discountsRepository);
     }
 

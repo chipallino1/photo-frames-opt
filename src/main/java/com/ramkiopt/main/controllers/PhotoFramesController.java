@@ -5,6 +5,7 @@ import com.ramkiopt.main.dto.PhotosDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.photos.PhotosService;
 import com.ramkiopt.main.services.utils.FileStorageService;
+import com.ramkiopt.main.services.utils.FilesUtils;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -32,8 +33,8 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 
-@CrossOrigin("*")
 @RestController
+@CrossOrigin("http://localhost:3000")
 @RequestMapping("/photo-frames")
 public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
@@ -43,7 +44,8 @@ public class PhotoFramesController {
 
     @Autowired
     public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
-                                 FileStorageService fileStorageService, BaseResponseService responseService, PhotosService<PhotosDto> photosService) {
+                                 FileStorageService fileStorageService, BaseResponseService responseService,
+                                 PhotosService<PhotosDto> photosService) {
         this.photoFramesStructureService = photoFramesStructureService;
         this.fileStorageService = fileStorageService;
         this.responseService = responseService;
@@ -74,22 +76,8 @@ public class PhotoFramesController {
     public ResponseEntity<Resource> getFile(@PathVariable String fileName, HttpServletRequest request) throws Exception {
         // Load file as Resource
         Resource resource = fileStorageService.loadFileAsResource(fileName);
-
-        // Try to determine file's content type
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-            System.out.println("Could not determine file type.");
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
         return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
+                .contentType(MediaType.parseMediaType(FilesUtils.getContentType(request.getServletContext(), resource)))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }

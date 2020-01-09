@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,14 +21,15 @@ import java.util.Date;
 @Service
 public class JwtProvider {
 
+    private final CustomUserDetailsService userDetailsService;
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey = "secret";
-
     @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000; // 1h
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    public JwtProvider(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @PostConstruct
     protected void init() {
@@ -49,16 +49,16 @@ public class JwtProvider {
                 .compact();
     }
 
-    public Authentication getAuthentication(String token) {
+    Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    String getUsername(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest req) {
+    String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
@@ -66,7 +66,7 @@ public class JwtProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
+    boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
