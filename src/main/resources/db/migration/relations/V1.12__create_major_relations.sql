@@ -11,12 +11,12 @@ ALTER TABLE photo_frames_on_sizes ADD FOREIGN KEY (size_id) REFERENCES sizes(id)
 
 ALTER TABLE cart ADD FOREIGN KEY (client_id) REFERENCES users(id);
 
-ALTER TABLE orders ADD FOREIGN KEY (user_id) REFERENCES users(id);
+ALTER TABLE orders ADD FOREIGN KEY (client_id) REFERENCES users(id);
 ALTER TABLE orders ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
 
 ALTER TABLE photo_frames_on_orders ADD FOREIGN KEY (order_id) REFERENCES orders(id);
 ALTER TABLE photo_frames_on_orders ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
 
-ALTER TABLE photos ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
+ALTER TABLE photo_frames_common ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
 
 ALTER TABLE discounts ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);

@@ -37,30 +37,30 @@ public class UsersController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity getCurrentUser(Principal principal) {
+    public ResponseEntity<Object> getCurrentUser(Principal principal) {
         return responseService.createResponseEntity(usersCustomizationService.readUserByEmail(principal.getName()),
                 HttpStatus.OK);
     }
 
     @PostMapping("/create")
-    public ResponseEntity createUser(@RequestBody UsersDto usersDto) {
+    public ResponseEntity<Object> createUser(@RequestBody UsersDto usersDto) {
         usersDto = usersCustomizationService.createUser(usersDto);
         return responseService.createResponseEntity(usersDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity readUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> readUser(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(usersCustomizationService.readUser(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}/update")
-    public ResponseEntity updateUser(@PathVariable("id") Long id, @RequestBody UsersDto usersDto) {
+    public ResponseEntity<Object> updateUser(@PathVariable("id") Long id, @RequestBody UsersDto usersDto) {
         return responseService.createResponseEntity(usersCustomizationService.updateUser(id, usersDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(usersCustomizationService.deleteUser(id), HttpStatus.OK);
     }
 }

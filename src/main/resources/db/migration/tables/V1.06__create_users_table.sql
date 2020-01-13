@@ -5,7 +5,6 @@ create table users
     last_name          varchar(300),
     email              varchar(300) unique,
     phone_number       varchar(20) unique,
-    role               varchar(300),
     password_encrypted varchar(400),
     status             varchar(100)
 );
