@@ -1,7 +1,5 @@
 package com.ramkiopt.main.dto;
 
-import com.ramkiopt.main.entities.Identity;
-
 import java.io.Serializable;
 
 public class PhotosDto implements Serializable, Identity {

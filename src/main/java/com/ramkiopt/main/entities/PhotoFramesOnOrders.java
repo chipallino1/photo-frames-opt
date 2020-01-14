@@ -10,18 +10,17 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "photo_frames_on_orders", schema = "ramki_opt")
-public class PhotoFramesOnOrders implements Identity {
+@Table(name = "photo_frames_on_orders", schema = "ramki_opt", catalog = "")
+public class PhotoFramesOnOrders {
     private Long id;
     private Long photoFrameId;
-    private Integer photoFramesCount;
+    private int photoFramesCount;
     private Long orderId;
     private PhotoFrames photoFramesByPhotoFrameId;
     private Orders ordersByOrderId;
 
     @Id
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -31,7 +30,7 @@ public class PhotoFramesOnOrders implements Identity {
     }
 
     @Basic
-    @Column(name = "photo_frame_id", nullable = false)
+    @Column(name = "photo_frame_id")
     public Long getPhotoFrameId() {
         return photoFrameId;
     }
@@ -41,17 +40,17 @@ public class PhotoFramesOnOrders implements Identity {
     }
 
     @Basic
-    @Column(name = "photo_frames_count", nullable = false)
-    public Integer getPhotoFramesCount() {
+    @Column(name = "photo_frames_count")
+    public int getPhotoFramesCount() {
         return photoFramesCount;
     }
 
-    public void setPhotoFramesCount(Integer photoFramesCount) {
+    public void setPhotoFramesCount(int photoFramesCount) {
         this.photoFramesCount = photoFramesCount;
     }
 
     @Basic
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "order_id")
     public Long getOrderId() {
         return orderId;
     }
@@ -65,10 +64,10 @@ public class PhotoFramesOnOrders implements Identity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PhotoFramesOnOrders that = (PhotoFramesOnOrders) o;
-        return id == that.id &&
-                photoFrameId == that.photoFrameId &&
-                photoFramesCount == that.photoFramesCount &&
-                orderId == that.orderId;
+        return photoFramesCount == that.photoFramesCount &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(photoFrameId, that.photoFrameId) &&
+                Objects.equals(orderId, that.orderId);
     }
 
     @Override
@@ -77,8 +76,7 @@ public class PhotoFramesOnOrders implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }
@@ -88,7 +86,7 @@ public class PhotoFramesOnOrders implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
     public Orders getOrdersByOrderId() {
         return ordersByOrderId;
     }

@@ -1,7 +1,6 @@
 package com.ramkiopt.main.services.app.photoframesonentities.impl;
 
 import com.ramkiopt.main.dto.PhotoFramesOnOrdersDto;
-import com.ramkiopt.main.entities.PhotoFramesOnOrders;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframesonentities.PhotoFramesOnEntityService;
 import org.springframework.stereotype.Service;

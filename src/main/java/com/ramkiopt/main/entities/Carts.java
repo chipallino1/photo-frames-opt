@@ -1,29 +1,29 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Cart implements Identity {
+public class Carts {
     private Long id;
     private String name;
+    private Long clientId;
     private Date insertAt;
     private Users usersByClientId;
     private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
-    private Long clientId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -31,7 +31,7 @@ public class Cart implements Identity {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 300)
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -41,7 +41,17 @@ public class Cart implements Identity {
     }
 
     @Basic
-    @Column(name = "insert_at", nullable = true)
+    @Column(name = "client_id")
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    @Basic
+    @Column(name = "insert_at")
     public Date getInsertAt() {
         return insertAt;
     }
@@ -54,19 +64,20 @@ public class Cart implements Identity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cart cart = (Cart) o;
-        return id == cart.id &&
-                Objects.equals(name, cart.name) &&
-                Objects.equals(insertAt, cart.insertAt);
+        Carts carts = (Carts) o;
+        return Objects.equals(id, carts.id) &&
+                Objects.equals(name, carts.name) &&
+                Objects.equals(clientId, carts.clientId) &&
+                Objects.equals(insertAt, carts.insertAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, insertAt);
+        return Objects.hash(id, name, clientId, insertAt);
     }
 
     @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     public Users getUsersByClientId() {
         return usersByClientId;
     }
@@ -75,22 +86,12 @@ public class Cart implements Identity {
         this.usersByClientId = usersByClientId;
     }
 
-    @OneToMany(mappedBy = "cartByCartId")
+    @OneToMany(mappedBy = "cartsByCartId")
     public Collection<PhotoFramesOnCarts> getPhotoFramesOnCartsById() {
         return photoFramesOnCartsById;
     }
 
     public void setPhotoFramesOnCartsById(Collection<PhotoFramesOnCarts> photoFramesOnCartsById) {
         this.photoFramesOnCartsById = photoFramesOnCartsById;
-    }
-
-    @Basic
-    @Column(name = "client_id", nullable = false)
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
     }
 }

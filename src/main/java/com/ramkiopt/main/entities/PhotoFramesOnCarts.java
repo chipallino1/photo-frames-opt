@@ -1,27 +1,27 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
 @Table(name = "photo_frames_on_carts", schema = "ramki_opt", catalog = "")
-public class PhotoFramesOnCarts implements Identity {
+public class PhotoFramesOnCarts {
     private Long id;
     private Long cartId;
     private Long photoFrameId;
-    private Cart cartByCartId;
+    private Carts cartsByCartId;
     private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -29,13 +29,9 @@ public class PhotoFramesOnCarts implements Identity {
     }
 
     @Basic
-    @Column(name = "cart_id", nullable = false)
+    @Column(name = "cart_id")
     public Long getCartId() {
         return cartId;
-    }
-
-    public void setCartId(long cartId) {
-        this.cartId = cartId;
     }
 
     public void setCartId(Long cartId) {
@@ -43,13 +39,9 @@ public class PhotoFramesOnCarts implements Identity {
     }
 
     @Basic
-    @Column(name = "photo_frame_id", nullable = false)
+    @Column(name = "photo_frame_id")
     public Long getPhotoFrameId() {
         return photoFrameId;
-    }
-
-    public void setPhotoFrameId(long photoFrameId) {
-        this.photoFrameId = photoFrameId;
     }
 
     public void setPhotoFrameId(Long photoFrameId) {
@@ -61,9 +53,9 @@ public class PhotoFramesOnCarts implements Identity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PhotoFramesOnCarts that = (PhotoFramesOnCarts) o;
-        return id == that.id &&
-                cartId == that.cartId &&
-                photoFrameId == that.photoFrameId;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(cartId, that.cartId) &&
+                Objects.equals(photoFrameId, that.photoFrameId);
     }
 
     @Override
@@ -72,18 +64,17 @@ public class PhotoFramesOnCarts implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public Cart getCartByCartId() {
-        return cartByCartId;
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
+    public Carts getCartsByCartId() {
+        return cartsByCartId;
     }
 
-    public void setCartByCartId(Cart cartByCartId) {
-        this.cartByCartId = cartByCartId;
+    public void setCartsByCartId(Carts cartsByCartId) {
+        this.cartsByCartId = cartsByCartId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
-            updatable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }

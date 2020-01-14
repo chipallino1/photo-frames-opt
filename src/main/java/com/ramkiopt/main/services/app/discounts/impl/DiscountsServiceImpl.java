@@ -1,14 +1,12 @@
 package com.ramkiopt.main.services.app.discounts.impl;
 
 import com.ramkiopt.main.dto.DiscountsDto;
-import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.repositories.DiscountsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.discounts.DiscountsService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.Date;
 
 @Service

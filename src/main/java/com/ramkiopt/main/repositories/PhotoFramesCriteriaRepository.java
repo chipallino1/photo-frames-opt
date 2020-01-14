@@ -3,90 +3,58 @@ package com.ramkiopt.main.repositories;
 import com.ramkiopt.main.entities.Colors;
 import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.entities.PhotoFrames;
-import com.ramkiopt.main.entities.PhotoFramesOnColors;
-import com.ramkiopt.main.entities.PhotoFramesOnSizes;
+import com.ramkiopt.main.entities.PhotoFramesCommon;
 import com.ramkiopt.main.entities.Sizes;
-import com.ramkiopt.main.services.app.base.RowStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public class PhotoFramesCriteriaRepository {
-    @Autowired
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
-    public List<PhotoFrames> findBooksByAuthorNameAndTitle(String borderMaterial, String insideMaterial,
-                                                           Integer minCost,
-                                                           Integer maxCost,
-                                                           Integer minBorderWidth,
-                                                           Integer maxBorderWidth,
-                                                           String colorName) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
-        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
-        Join<PhotoFrames, PhotoFramesOnColors> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnColorsById");
-        Join<PhotoFramesOnColors, Colors> colorsJoin = photoFramesOnColorsJoin.join("colorsByColorId");
-        Predicate costPredicate = cb.between(photoFramesRoot.get("cost"), minCost, maxCost);
-        Predicate borderWidthPredicate = cb.between(photoFramesRoot.get("borderWidth"), minBorderWidth, maxBorderWidth);
-        Predicate insideMaterialPredicate = cb.like(photoFramesRoot.get("insideMaterial"), "%" + insideMaterial + "%");
-        Predicate borderMaterialPredicate = cb.like(photoFramesRoot.get("borderMaterial"), "%" + borderMaterial + "%");
-        Predicate colorPredicate = cb.like(colorsJoin.get("name"), "%" + colorName + "%");
-        cq.where(insideMaterialPredicate, borderMaterialPredicate, costPredicate, borderWidthPredicate, colorPredicate);
-        TypedQuery query = entityManager.createQuery(cq);
-        return null;
+    public PhotoFramesCriteriaRepository(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public List<PhotoFrames> findByColor(String colorName, Integer pageNumber, Integer pageSize) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
-        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
-        Join<PhotoFrames, PhotoFramesOnColors> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnColorsById");
-        Join<PhotoFramesOnColors, Colors> colorsJoin = photoFramesOnColorsJoin.join("colorsByColorId");
-        Predicate statusPredicate = cb.equal(photoFramesRoot.get("status"), cb.literal(RowStatus.ENABLE));
-        Predicate colorPredicate = cb.like(colorsJoin.get("name"), "%" + colorName + "%");
-        cq.where(statusPredicate, colorPredicate);
-        TypedQuery query = entityManager.createQuery(cq);
-        query.setFirstResult(pageNumber * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
+    public List<PhotoFramesCommon> findByColor(String color, Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
+        Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
+        Join<PhotoFramesCommon, Colors> join = root.join(Colors.class.getTypeName());
+        query.select(root).where(criteriaBuilder.equal(join.get("name"), color));
+        return entityManager.createQuery(query)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 
-    public List<PhotoFrames> findBySize(String size, Integer pageNumber, Integer pageSize) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
-        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
-        Join<PhotoFrames, PhotoFramesOnSizes> photoFramesOnColorsJoin = photoFramesRoot.join("photoFramesOnSizesById");
-        Join<PhotoFramesOnSizes, Sizes> colorsJoin = photoFramesOnColorsJoin.join("sizesBySizeId");
-        Predicate statusPredicate = cb.equal(photoFramesRoot.get("status"), cb.literal(RowStatus.ENABLE));
-        Predicate colorPredicate = cb.like(colorsJoin.get("format"), "%" + size + "%");
-        cq.where(statusPredicate, colorPredicate);
-        TypedQuery query = entityManager.createQuery(cq);
-        query.setFirstResult(pageNumber * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
+    public List<PhotoFramesCommon> findBySize(String size, Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
+        Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
+        Join<PhotoFramesCommon, Sizes> join = root.join(Sizes.class.getTypeName());
+        query.select(root).where(criteriaBuilder.equal(join.get("format"), size));
+        return entityManager.createQuery(query)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 
     public List<PhotoFrames> findWithDiscounts(Integer pageNumber, Integer pageSize) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<PhotoFrames> cq = cb.createQuery(PhotoFrames.class);
-        Root<PhotoFrames> photoFramesRoot = cq.from(PhotoFrames.class);
-        Join<PhotoFrames, Discounts> photoFramesDiscountsJoin = photoFramesRoot.join("discountsById");
-        Predicate statusPredicate = cb.equal(photoFramesRoot.get("status"), cb.literal(RowStatus.ENABLE));
-        Predicate endDatePredicate = cb.greaterThan(photoFramesDiscountsJoin.get("endDate"), new Date());
-        cq.where(statusPredicate, endDatePredicate);
-        TypedQuery query = entityManager.createQuery(cq);
-        query.setFirstResult(pageNumber * pageSize);
-        query.setMaxResults(pageSize);
-        return query.getResultList();
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFrames> query = criteriaBuilder.createQuery(PhotoFrames.class);
+        Root<PhotoFrames> root = query.from(PhotoFrames.class);
+        root.join(Discounts.class.getTypeName());
+        query.select(root);
+        return entityManager.createQuery(query)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
     }
 }

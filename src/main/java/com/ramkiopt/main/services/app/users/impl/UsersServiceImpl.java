@@ -1,7 +1,6 @@
 package com.ramkiopt.main.services.app.users.impl;
 
 import com.ramkiopt.main.dto.UsersDto;
-import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;

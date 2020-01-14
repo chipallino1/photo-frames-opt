@@ -7,21 +7,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-@Table(name = "photo_frames", schema = "ramki_opt", catalog = "")
-public class PhotoFrames implements Identity {
+@Table(name = "photo_frames", schema = "ramki_opt")
+public class PhotoFrames {
     private Long id;
     private String name;
     private String vendorCode;
@@ -31,32 +27,18 @@ public class PhotoFrames implements Identity {
     private Integer thickness;
     private Integer cost;
     private String description;
-    private RowStatus status;
+    private RowStatus rowStatus;
     private Long userId;
-    private Users usersByUserId;
-    private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
-    private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
-    private Collection<PhotoFramesOnSizes> photoFramesOnSizesById;
-    private Collection<Photos> photosById;
-    private long currencyId;
-    private long photoFramesOnColorsId;
-    private long photoFramesOnSizesId;
-    private long photoFramesOnPhotosId;
-    private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
-    private Collection<Discounts> discountsById;
     private Long popularity;
-    private Collection<Orders> ordersById;
+    private Users usersByUserId;
+    private Collection<PhotoFramesCommon> photoFramesCommonsById;
+    private Collection<PhotoFramesOnCarts> photoFramesOnCartsById;
+    private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -64,8 +46,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -75,8 +56,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "vendor_code", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "vendor_code")
     public String getVendorCode() {
         return vendorCode;
     }
@@ -86,8 +66,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "border_material", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "border_material")
     public String getBorderMaterial() {
         return borderMaterial;
     }
@@ -97,8 +76,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "inside_material", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "inside_material")
     public String getInsideMaterial() {
         return insideMaterial;
     }
@@ -108,8 +86,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "border_width", nullable = true)
-    @Min(0)
+    @Column(name = "border_width")
     public Integer getBorderWidth() {
         return borderWidth;
     }
@@ -119,8 +96,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "thickness", nullable = true)
-    @Min(0)
+    @Column(name = "thickness")
     public Integer getThickness() {
         return thickness;
     }
@@ -130,8 +106,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "cost", nullable = true)
-    @Min(0)
+    @Column(name = "cost")
     public Integer getCost() {
         return cost;
     }
@@ -141,8 +116,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "description", nullable = true, length = 300)
-    @Size(max = 300)
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }
@@ -152,7 +126,18 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Column(name = "user_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "row_status")
+    public RowStatus getRowStatus() {
+        return rowStatus;
+    }
+
+    public void setRowStatus(RowStatus rowStatus) {
+        this.rowStatus = rowStatus;
+    }
+
+    @Basic
+    @Column(name = "user_id")
     public Long getUserId() {
         return userId;
     }
@@ -162,16 +147,7 @@ public class PhotoFrames implements Identity {
     }
 
     @Basic
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    public RowStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(RowStatus status) {
-        this.status = status;
-    }
-
+    @Column(name = "popularity")
     public Long getPopularity() {
         return popularity;
     }
@@ -185,8 +161,7 @@ public class PhotoFrames implements Identity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PhotoFrames that = (PhotoFrames) o;
-        return id == that.id &&
-                userId == that.userId &&
+        return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(vendorCode, that.vendorCode) &&
                 Objects.equals(borderMaterial, that.borderMaterial) &&
@@ -194,23 +169,34 @@ public class PhotoFrames implements Identity {
                 Objects.equals(borderWidth, that.borderWidth) &&
                 Objects.equals(thickness, that.thickness) &&
                 Objects.equals(cost, that.cost) &&
-                Objects.equals(description, that.description);
+                Objects.equals(description, that.description) &&
+                Objects.equals(rowStatus, that.rowStatus) &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(popularity, that.popularity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, vendorCode, borderMaterial, insideMaterial, borderWidth, thickness, cost,
-                description, userId);
+        return Objects.hash(id, name, vendorCode, borderMaterial, insideMaterial, borderWidth, thickness, cost, description, rowStatus, userId, popularity);
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     public Users getUsersByUserId() {
         return usersByUserId;
     }
 
     public void setUsersByUserId(Users usersByUserId) {
         this.usersByUserId = usersByUserId;
+    }
+
+    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
+    public Collection<PhotoFramesCommon> getPhotoFramesCommonsById() {
+        return photoFramesCommonsById;
+    }
+
+    public void setPhotoFramesCommonsById(Collection<PhotoFramesCommon> photoFramesCommonsById) {
+        this.photoFramesCommonsById = photoFramesCommonsById;
     }
 
     @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
@@ -223,96 +209,11 @@ public class PhotoFrames implements Identity {
     }
 
     @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<PhotoFramesOnColors> getPhotoFramesOnColorsById() {
-        return photoFramesOnColorsById;
-    }
-
-    public void setPhotoFramesOnColorsById(Collection<PhotoFramesOnColors> photoFramesOnColorsById) {
-        this.photoFramesOnColorsById = photoFramesOnColorsById;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<PhotoFramesOnSizes> getPhotoFramesOnSizesById() {
-        return photoFramesOnSizesById;
-    }
-
-    public void setPhotoFramesOnSizesById(Collection<PhotoFramesOnSizes> photoFramesOnSizesById) {
-        this.photoFramesOnSizesById = photoFramesOnSizesById;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<Photos> getPhotosById() {
-        return photosById;
-    }
-
-    public void setPhotosById(Collection<Photos> photosById) {
-        this.photosById = photosById;
-    }
-
-    @Basic
-    @Column(name = "currency_id", nullable = false)
-    public long getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Long currencyId) {
-        this.currencyId = currencyId;
-    }
-
-    @Basic
-    @Column(name = "photo_frames_on_colors_id", nullable = false)
-    public long getPhotoFramesOnColorsId() {
-        return photoFramesOnColorsId;
-    }
-
-    public void setPhotoFramesOnColorsId(Long photoFramesOnColorsId) {
-        this.photoFramesOnColorsId = photoFramesOnColorsId;
-    }
-
-    @Basic
-    @Column(name = "photo_frames_on_sizes_id", nullable = false)
-    public long getPhotoFramesOnSizesId() {
-        return photoFramesOnSizesId;
-    }
-
-    public void setPhotoFramesOnSizesId(Long photoFramesOnSizesId) {
-        this.photoFramesOnSizesId = photoFramesOnSizesId;
-    }
-
-    @Basic
-    @Column(name = "photo_frames_on_photos_id", nullable = false)
-    public long getPhotoFramesOnPhotosId() {
-        return photoFramesOnPhotosId;
-    }
-
-    public void setPhotoFramesOnPhotosId(Long photoFramesOnPhotosId) {
-        this.photoFramesOnPhotosId = photoFramesOnPhotosId;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
     public Collection<PhotoFramesOnOrders> getPhotoFramesOnOrdersById() {
         return photoFramesOnOrdersById;
     }
 
     public void setPhotoFramesOnOrdersById(Collection<PhotoFramesOnOrders> photoFramesOnOrdersById) {
         this.photoFramesOnOrdersById = photoFramesOnOrdersById;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<Discounts> getDiscountsById() {
-        return discountsById;
-    }
-
-    public void setDiscountsById(Collection<Discounts> discountsById) {
-        this.discountsById = discountsById;
-    }
-
-    @OneToMany(mappedBy = "photoFramesByPhotoFrameId")
-    public Collection<Orders> getOrdersById() {
-        return ordersById;
-    }
-
-    public void setOrdersById(Collection<Orders> ordersById) {
-        this.ordersById = ordersById;
     }
 }

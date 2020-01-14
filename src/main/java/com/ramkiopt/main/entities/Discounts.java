@@ -3,11 +3,7 @@ package com.ramkiopt.main.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -18,11 +14,9 @@ public class Discounts {
     private Timestamp startDate;
     private Timestamp endDate;
     private Long photoFrameId;
-    private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -32,7 +26,7 @@ public class Discounts {
     }
 
     @Basic
-    @Column(name = "percent_count", nullable = true)
+    @Column(name = "percent_count")
     public Integer getPercentCount() {
         return percentCount;
     }
@@ -42,7 +36,7 @@ public class Discounts {
     }
 
     @Basic
-    @Column(name = "start_date", nullable = true)
+    @Column(name = "start_date")
     public Timestamp getStartDate() {
         return startDate;
     }
@@ -52,7 +46,7 @@ public class Discounts {
     }
 
     @Basic
-    @Column(name = "end_date", nullable = true)
+    @Column(name = "end_date")
     public Timestamp getEndDate() {
         return endDate;
     }
@@ -62,7 +56,7 @@ public class Discounts {
     }
 
     @Basic
-    @Column(name = "photo_frame_id", nullable = true)
+    @Column(name = "photo_frame_id")
     public Long getPhotoFrameId() {
         return photoFrameId;
     }
@@ -86,15 +80,5 @@ public class Discounts {
     @Override
     public int hashCode() {
         return Objects.hash(id, percentCount, startDate, endDate, photoFrameId);
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", insertable = false, updatable = false)
-    public PhotoFrames getPhotoFramesByPhotoFrameId() {
-        return photoFramesByPhotoFrameId;
-    }
-
-    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
-        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
     }
 }

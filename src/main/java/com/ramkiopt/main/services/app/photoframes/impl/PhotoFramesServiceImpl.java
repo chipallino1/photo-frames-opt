@@ -2,11 +2,13 @@ package com.ramkiopt.main.services.app.photoframes.impl;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.entities.PhotoFrames;
+import com.ramkiopt.main.entities.PhotoFramesCommon;
 import com.ramkiopt.main.repositories.PhotoFramesCriteriaRepository;
 import com.ramkiopt.main.repositories.PhotoFramesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
+import com.ramkiopt.main.services.utils.JpaCollections;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,10 +74,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public boolean deleteInDb(Long id) {
         PhotoFrames photoFrames = jpaRepository.getOne(id);
-        if (photoFrames == null) {
-            return false;
-        }
-        photoFrames.setStatus(RowStatus.DELETED);
+        photoFrames.setRowStatus(RowStatus.DELETED);
         jpaRepository.save(photoFrames);
         return true;
     }
@@ -94,26 +93,18 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     }
 
     @Override
-    public List<PhotoFramesDto> getByMaterial(String borderMaterial, String insideMaterial) {
-        List<PhotoFrames> photoFrames =
-                photoFramesCriteriaRepository.findBooksByAuthorNameAndTitle(borderMaterial, insideMaterial, 0, 1000, 0, 1000, "red");
-        return null;
-    }
-
-    @Override
     public List<PhotoFramesDto> getByColor(String color, Integer pageNum, Integer pageSize) {
-        List<PhotoFrames> photoFrames = photoFramesCriteriaRepository.findByColor(color, pageNum, pageSize);
-        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
-        for (int i = 0; i < photoFrames.size(); i++) {
-            photoFramesDtos.add(new PhotoFramesDto());
-        }
-        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
-        return photoFramesDtos;
+        return getAllByIds(photoFramesCriteriaRepository.findByColor(color, pageNum, pageSize));
     }
 
     @Override
     public List<PhotoFramesDto> getBySize(String size, Integer pageNum, Integer pageSize) {
-        List<PhotoFrames> photoFrames = photoFramesCriteriaRepository.findBySize(size, pageNum, pageSize);
+        return getAllByIds(photoFramesCriteriaRepository.findBySize(size, pageNum, pageSize));
+    }
+
+    private List<PhotoFramesDto> getAllByIds(List<PhotoFramesCommon> photoFramesCommon) {
+        List<PhotoFrames> photoFrames =
+                photoFramesRepository.findAllById(JpaCollections.getIterableById(photoFramesCommon));
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
         for (int i = 0; i < photoFrames.size(); i++) {
             photoFramesDtos.add(new PhotoFramesDto());

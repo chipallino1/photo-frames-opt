@@ -1,27 +1,24 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Colors implements Identity {
+public class Colors {
     private Long id;
     private String name;
     private String rgb;
-    private Collection<PhotoFramesOnColors> photoFramesOnColorsById;
+    private Collection<PhotoFramesCommon> photoFramesCommonsById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -29,8 +26,7 @@ public class Colors implements Identity {
     }
 
     @Basic
-    @Column(name = "name", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -40,7 +36,7 @@ public class Colors implements Identity {
     }
 
     @Basic
-    @Column(name = "rgb", nullable = true, length = 300)
+    @Column(name = "rgb")
     public String getRgb() {
         return rgb;
     }
@@ -54,7 +50,7 @@ public class Colors implements Identity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Colors colors = (Colors) o;
-        return id == colors.id &&
+        return Objects.equals(id, colors.id) &&
                 Objects.equals(name, colors.name) &&
                 Objects.equals(rgb, colors.rgb);
     }
@@ -65,11 +61,11 @@ public class Colors implements Identity {
     }
 
     @OneToMany(mappedBy = "colorsByColorId")
-    public Collection<PhotoFramesOnColors> getPhotoFramesOnColorsById() {
-        return photoFramesOnColorsById;
+    public Collection<PhotoFramesCommon> getPhotoFramesCommonsById() {
+        return photoFramesCommonsById;
     }
 
-    public void setPhotoFramesOnColorsById(Collection<PhotoFramesOnColors> photoFramesOnColorsById) {
-        this.photoFramesOnColorsById = photoFramesOnColorsById;
+    public void setPhotoFramesCommonsById(Collection<PhotoFramesCommon> photoFramesCommonsById) {
+        this.photoFramesCommonsById = photoFramesCommonsById;
     }
 }

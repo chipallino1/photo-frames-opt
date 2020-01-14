@@ -6,6 +6,5 @@ create table orders
     order_status   varchar(100),
     total_cost     int,
     comment        varchar(300),
-    photo_frame_id bigint,
     row_status     varchar(100)
 );

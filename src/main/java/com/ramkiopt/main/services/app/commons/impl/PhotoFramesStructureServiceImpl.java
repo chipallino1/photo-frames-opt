@@ -7,7 +7,6 @@ import com.ramkiopt.main.dto.PhotoFramesOnColorsDto;
 import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import com.ramkiopt.main.dto.PhotosDto;
 import com.ramkiopt.main.dto.SizesDto;
-import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.colors.ColorsService;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.discounts.DiscountsService;

@@ -1,8 +1,6 @@
 package com.ramkiopt.main.services.app.photos.impl;
 
 import com.ramkiopt.main.dto.PhotosDto;
-import com.ramkiopt.main.entities.Photos;
-import com.ramkiopt.main.repositories.PhotosRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photos.PhotosService;
 import com.ramkiopt.main.services.utils.ObjectMapper;

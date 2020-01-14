@@ -1,46 +1,30 @@
 package com.ramkiopt.main.entities;
 
-import com.ramkiopt.main.services.app.base.RowStatus;
-import com.ramkiopt.main.services.security.UserRole;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Users implements Identity {
+public class Users {
     private Long id;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
-    private UserRole role;
     private String passwordEncrypted;
-    private RowStatus status;
-    private Collection<Cart> cartsById;
-    private Collection<PhotoFrames> photoFramesById;
+    private String status;
+    private Collection<Carts> cartsById;
     private Collection<Orders> ordersById;
+    private Collection<PhotoFrames> photoFramesById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -48,8 +32,7 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Column(name = "first_name", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "first_name")
     public String getFirstName() {
         return firstName;
     }
@@ -59,8 +42,7 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Column(name = "last_name", nullable = true, length = 300)
-    @Size(min = 2, max = 100)
+    @Column(name = "last_name")
     public String getLastName() {
         return lastName;
     }
@@ -70,8 +52,7 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Column(name = "email", nullable = true, length = 300, unique = true)
-    @Size(min = 2, max = 100)
+    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -81,8 +62,7 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Column(name = "phone_number", nullable = true, length = 20, unique = true)
-    @Size(min = 2, max = 20)
+    @Column(name = "phone_number")
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -92,18 +72,7 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = true, length = 300)
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    @Basic
-    @Column(name = "password_encrypted", nullable = true, length = 400)
+    @Column(name = "password_encrypted")
     public String getPasswordEncrypted() {
         return passwordEncrypted;
     }
@@ -113,61 +82,58 @@ public class Users implements Identity {
     }
 
     @Basic
-    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    public RowStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(RowStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    @OneToMany(mappedBy = "usersByClientId")
-    public Collection<Cart> getCartsById() {
-        return cartsById;
-    }
-
-    public void setCartsById(Collection<Cart> cartsById) {
-        this.cartsById = cartsById;
-    }
-
-    @OneToMany(mappedBy = "usersByUserId", cascade = CascadeType.PERSIST)
-    public Collection<PhotoFrames> getPhotoFramesById() {
-        return photoFramesById;
-    }
-
-    public void setPhotoFramesById(Collection<PhotoFrames> photoFramesById) {
-        this.photoFramesById = photoFramesById;
-    }
-
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Users users = (Users) object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
         return Objects.equals(id, users.id) &&
                 Objects.equals(firstName, users.firstName) &&
                 Objects.equals(lastName, users.lastName) &&
                 Objects.equals(email, users.email) &&
                 Objects.equals(phoneNumber, users.phoneNumber) &&
-                Objects.equals(role, users.role) &&
                 Objects.equals(passwordEncrypted, users.passwordEncrypted) &&
-                Objects.equals(cartsById, users.cartsById) &&
-                Objects.equals(photoFramesById, users.photoFramesById);
+                Objects.equals(status, users.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, email, phoneNumber, role, passwordEncrypted, cartsById, photoFramesById);
+        return Objects.hash(id, firstName, lastName, email, phoneNumber, passwordEncrypted, status);
     }
 
-    @OneToMany(mappedBy = "usersByUserId")
+    @OneToMany(mappedBy = "usersByClientId")
+    public Collection<Carts> getCartsById() {
+        return cartsById;
+    }
+
+    public void setCartsById(Collection<Carts> cartsById) {
+        this.cartsById = cartsById;
+    }
+
+    @OneToMany(mappedBy = "usersByClientId")
     public Collection<Orders> getOrdersById() {
         return ordersById;
     }
 
     public void setOrdersById(Collection<Orders> ordersById) {
         this.ordersById = ordersById;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<PhotoFrames> getPhotoFramesById() {
+        return photoFramesById;
+    }
+
+    public void setPhotoFramesById(Collection<PhotoFrames> photoFramesById) {
+        this.photoFramesById = photoFramesById;
     }
 }

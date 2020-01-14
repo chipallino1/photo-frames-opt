@@ -1,6 +1,5 @@
 package com.ramkiopt.main.services.security;
 
-import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

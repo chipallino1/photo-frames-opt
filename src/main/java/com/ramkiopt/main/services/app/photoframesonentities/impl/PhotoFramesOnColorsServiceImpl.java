@@ -1,8 +1,6 @@
 package com.ramkiopt.main.services.app.photoframesonentities.impl;
 
 import com.ramkiopt.main.dto.PhotoFramesOnColorsDto;
-import com.ramkiopt.main.entities.PhotoFramesOnColors;
-import com.ramkiopt.main.repositories.PhotoFramesOnColorsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframesonentities.PhotoFramesOnEntityService;
 import com.ramkiopt.main.services.utils.ObjectMapper;

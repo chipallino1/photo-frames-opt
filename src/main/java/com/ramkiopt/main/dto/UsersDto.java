@@ -1,6 +1,5 @@
 package com.ramkiopt.main.dto;
 
-import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.security.UserRole;
 

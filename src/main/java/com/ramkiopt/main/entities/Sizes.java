@@ -1,29 +1,25 @@
 package com.ramkiopt.main.entities;
 
-import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Sizes implements Identity {
+public class Sizes {
     private Long id;
     private String format;
     private Integer width;
     private Integer height;
-    private Collection<PhotoFramesOnSizes> photoFramesOnSizesById;
+    private Collection<PhotoFramesCommon> photoFramesCommonsById;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setId(Long id) {
@@ -31,8 +27,7 @@ public class Sizes implements Identity {
     }
 
     @Basic
-    @Column(name = "format", nullable = true, length = 300)
-    @Size(min = 1, max = 10)
+    @Column(name = "format")
     public String getFormat() {
         return format;
     }
@@ -42,8 +37,7 @@ public class Sizes implements Identity {
     }
 
     @Basic
-    @Column(name = "width", nullable = true)
-    @Min(0)
+    @Column(name = "width")
     public Integer getWidth() {
         return width;
     }
@@ -53,8 +47,7 @@ public class Sizes implements Identity {
     }
 
     @Basic
-    @Column(name = "height", nullable = true)
-    @Min(0)
+    @Column(name = "height")
     public Integer getHeight() {
         return height;
     }
@@ -63,29 +56,28 @@ public class Sizes implements Identity {
         this.height = height;
     }
 
-    @OneToMany(mappedBy = "sizesBySizeId")
-    public Collection<PhotoFramesOnSizes> getPhotoFramesOnSizesById() {
-        return photoFramesOnSizesById;
-    }
-
-    public void setPhotoFramesOnSizesById(Collection<PhotoFramesOnSizes> photoFramesOnSizesById) {
-        this.photoFramesOnSizesById = photoFramesOnSizesById;
-    }
-
     @Override
-    public boolean equals(Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        Sizes sizes = (Sizes) object;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Sizes sizes = (Sizes) o;
         return Objects.equals(id, sizes.id) &&
                 Objects.equals(format, sizes.format) &&
                 Objects.equals(width, sizes.width) &&
-                Objects.equals(height, sizes.height) &&
-                Objects.equals(photoFramesOnSizesById, sizes.photoFramesOnSizesById);
+                Objects.equals(height, sizes.height);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, format, width, height, photoFramesOnSizesById);
+        return Objects.hash(id, format, width, height);
+    }
+
+    @OneToMany(mappedBy = "sizesBySizeId")
+    public Collection<PhotoFramesCommon> getPhotoFramesCommonsById() {
+        return photoFramesCommonsById;
+    }
+
+    public void setPhotoFramesCommonsById(Collection<PhotoFramesCommon> photoFramesCommonsById) {
+        this.photoFramesCommonsById = photoFramesCommonsById;
     }
 }

@@ -1,14 +1,8 @@
 package com.ramkiopt.main.entities;
 
-import com.ramkiopt.main.services.app.base.RowStatus;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,26 +12,19 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Orders implements Identity {
+public class Orders {
     private Long id;
+    private Long clientId;
     private Timestamp orderDate;
     private String orderStatus;
-    private String comment;
-    private Integer count;
     private Integer totalCost;
-    private Users usersByUserId;
+    private String comment;
+    private String rowStatus;
+    private Users usersByClientId;
     private Collection<PhotoFramesOnOrders> photoFramesOnOrdersById;
-    private Long userId;
-    private Long photoFrameId;
-    private PhotoFrames photoFramesByPhotoFrameId;
-    private RowStatus status;
-    private String color;
-    private String format;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    @Override
+    @Column(name = "id")
     public Long getId() {
         return id;
     }
@@ -47,7 +34,17 @@ public class Orders implements Identity {
     }
 
     @Basic
-    @Column(name = "order_date", nullable = false)
+    @Column(name = "client_id")
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    @Basic
+    @Column(name = "order_date")
     public Timestamp getOrderDate() {
         return orderDate;
     }
@@ -57,33 +54,13 @@ public class Orders implements Identity {
     }
 
     @Basic
-    @Column(name = "order_status", nullable = true, length = 100)
+    @Column(name = "order_status")
     public String getOrderStatus() {
         return orderStatus;
     }
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
-    }
-
-    @Basic
-    @Column(name = "comment", nullable = true, length = 300)
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    @Basic
-    @Column(name = "count")
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
     }
 
     @Basic
@@ -96,30 +73,53 @@ public class Orders implements Identity {
         this.totalCost = totalCost;
     }
 
+    @Basic
+    @Column(name = "comment")
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    @Basic
+    @Column(name = "row_status")
+    public String getRowStatus() {
+        return rowStatus;
+    }
+
+    public void setRowStatus(String rowStatus) {
+        this.rowStatus = rowStatus;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Orders orders = (Orders) o;
-        return id == orders.id &&
+        return Objects.equals(id, orders.id) &&
+                Objects.equals(clientId, orders.clientId) &&
                 Objects.equals(orderDate, orders.orderDate) &&
                 Objects.equals(orderStatus, orders.orderStatus) &&
-                Objects.equals(comment, orders.comment);
+                Objects.equals(totalCost, orders.totalCost) &&
+                Objects.equals(comment, orders.comment) &&
+                Objects.equals(rowStatus, orders.rowStatus);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, orderDate, orderStatus, comment);
+        return Objects.hash(id, clientId, orderDate, orderStatus, totalCost, comment, rowStatus);
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public Users getUsersByUserId() {
-        return usersByUserId;
+    @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
+    public Users getUsersByClientId() {
+        return usersByClientId;
     }
 
-    public void setUsersByUserId(Users usersByUserId) {
-        this.usersByUserId = usersByUserId;
+    public void setUsersByClientId(Users usersByClientId) {
+        this.usersByClientId = usersByClientId;
     }
 
     @OneToMany(mappedBy = "ordersByOrderId")
@@ -129,66 +129,5 @@ public class Orders implements Identity {
 
     public void setPhotoFramesOnOrdersById(Collection<PhotoFramesOnOrders> photoFramesOnOrdersById) {
         this.photoFramesOnOrdersById = photoFramesOnOrdersById;
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = false)
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "photo_frame_id", nullable = true)
-    public Long getPhotoFrameId() {
-        return photoFrameId;
-    }
-
-    public void setPhotoFrameId(Long photoFrameId) {
-        this.photoFrameId = photoFrameId;
-    }
-
-    @Basic
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = true)
-    public RowStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(RowStatus status) {
-        this.status = status;
-    }
-
-    @Basic
-    @Column(name = "color")
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    @Basic
-    @Column(name = "format")
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", insertable = false, updatable = false)
-    public PhotoFrames getPhotoFramesByPhotoFrameId() {
-        return photoFramesByPhotoFrameId;
-    }
-
-    public void setPhotoFramesByPhotoFrameId(PhotoFrames photoFramesByPhotoFrameId) {
-        this.photoFramesByPhotoFrameId = photoFramesByPhotoFrameId;
     }
 }
