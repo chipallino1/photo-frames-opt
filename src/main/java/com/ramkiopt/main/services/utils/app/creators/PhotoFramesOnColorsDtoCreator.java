@@ -1,6 +1,5 @@
 package com.ramkiopt.main.services.utils.app.creators;
 
-import com.ramkiopt.main.dto.PhotoFramesOnColorsDto;
 import org.springframework.stereotype.Service;
 
 @Service

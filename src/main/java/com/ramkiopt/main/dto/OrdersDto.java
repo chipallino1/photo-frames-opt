@@ -1,11 +1,12 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class OrdersDto implements Serializable {
+public class OrdersDto implements Serializable, Identity {
     private Long id;
     private Timestamp orderDate;
     private String orderStatus;

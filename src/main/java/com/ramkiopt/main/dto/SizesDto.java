@@ -1,5 +1,7 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 import java.util.Objects;
 

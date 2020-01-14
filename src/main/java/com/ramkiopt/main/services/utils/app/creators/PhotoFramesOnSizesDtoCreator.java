@@ -1,6 +1,5 @@
 package com.ramkiopt.main.services.utils.app.creators;
 
-import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,7 +1,6 @@
 package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
-import com.ramkiopt.main.dto.PhotosDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.app.photos.PhotosService;
 import com.ramkiopt.main.services.utils.FileStorageService;

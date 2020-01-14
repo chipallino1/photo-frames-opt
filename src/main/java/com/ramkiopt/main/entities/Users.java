@@ -20,6 +20,7 @@ public class Users {
     private Collection<Carts> cartsById;
     private Collection<Orders> ordersById;
     private Collection<PhotoFrames> photoFramesById;
+    private Collection<UsersOnRoles> usersOnRolesById;
 
     @Id
     @Column(name = "id")
@@ -135,5 +136,14 @@ public class Users {
 
     public void setPhotoFramesById(Collection<PhotoFrames> photoFramesById) {
         this.photoFramesById = photoFramesById;
+    }
+
+    @OneToMany(mappedBy = "usersByUserId")
+    public Collection<UsersOnRoles> getUsersOnRolesById() {
+        return usersOnRolesById;
+    }
+
+    public void setUsersOnRolesById(Collection<UsersOnRoles> usersOnRolesById) {
+        this.usersOnRolesById = usersOnRolesById;
     }
 }

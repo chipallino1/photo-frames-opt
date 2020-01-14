@@ -1,6 +1,5 @@
 package com.ramkiopt.main.services.app.photoframesonentities.impl;
 
-import com.ramkiopt.main.dto.PhotoFramesOnSizesDto;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframesonentities.PhotoFramesOnEntityService;
 import com.ramkiopt.main.services.utils.ObjectMapper;

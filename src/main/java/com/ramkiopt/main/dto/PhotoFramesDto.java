@@ -1,5 +1,6 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +22,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private String description;
     private RowStatus status;
     private MultipartFile file;
-    private List<PhotosDto> photosDtos;
+    private List<String> photosSrcs;
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
     private DiscountsDto discountsDto;
@@ -29,21 +30,6 @@ public class PhotoFramesDto implements Serializable, Identity {
     private String imageSrc;
 
     public PhotoFramesDto() {
-    }
-
-    public PhotoFramesDto(Long id, String name, String vendorCode, String borderMaterial,
-                          String insideMaterial, Integer borderWidth, Integer thickness,
-                          Integer cost, Long userId, String description, RowStatus rowStatus) {
-        this.id = id;
-        this.name = name;
-        this.vendorCode = vendorCode;
-        this.borderMaterial = borderMaterial;
-        this.insideMaterial = insideMaterial;
-        this.borderWidth = borderWidth;
-        this.thickness = thickness;
-        this.cost = cost;
-        this.userId = userId;
-        this.description = description;
     }
 
     @Override
@@ -127,12 +113,12 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.userId = userId;
     }
 
-    public List<PhotosDto> getPhotosDtos() {
-        return photosDtos;
+    public List<String> getPhotosSrcs() {
+        return photosSrcs;
     }
 
-    public void setPhotosDtos(List<PhotosDto> photosDtos) {
-        this.photosDtos = photosDtos;
+    public void setPhotosSrcs(List<String> photosSrcs) {
+        this.photosSrcs = photosSrcs;
     }
 
     @NotNull(message = "{validation.photoframes.colorsListSize.message}")
