@@ -2,7 +2,6 @@ package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
-import com.ramkiopt.main.services.app.photos.PhotosService;
 import com.ramkiopt.main.services.utils.FileStorageService;
 import com.ramkiopt.main.services.utils.FilesUtils;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
@@ -39,16 +38,13 @@ public class PhotoFramesController {
     private final PhotoFramesStructureService photoFramesStructureService;
     private final BaseResponseService responseService;
     private final FileStorageService fileStorageService;
-    private final PhotosService<PhotosDto> photosService;
 
     @Autowired
     public PhotoFramesController(PhotoFramesStructureService photoFramesStructureService,
-                                 FileStorageService fileStorageService, BaseResponseService responseService,
-                                 PhotosService<PhotosDto> photosService) {
+                                 FileStorageService fileStorageService, BaseResponseService responseService) {
         this.photoFramesStructureService = photoFramesStructureService;
         this.fileStorageService = fileStorageService;
         this.responseService = responseService;
-        this.photosService = photosService;
     }
 
     @PostMapping(value = "/create")
@@ -61,13 +57,12 @@ public class PhotoFramesController {
     }
 
     @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) throws IOException {
-        photosService.delete(id);
-        String imageSrc = fileStorageService.storeFile(file);
-        PhotosDto dto = new PhotosDto();
-        dto.setPhotoFrameId(id);
-        dto.setPhotoSrc(imageSrc);
-        photosService.create(dto);
+    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) {
+        try {
+            String imageSrc = fileStorageService.storeFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return responseService.createResponseEntity(true, HttpStatus.OK);
     }
 

@@ -1,6 +1,8 @@
 package com.ramkiopt.main.services.app.users.impl;
 
 import com.ramkiopt.main.dto.UsersDto;
+import com.ramkiopt.main.entities.Users;
+import com.ramkiopt.main.repositories.UsersOnRolesCriteriaRepository;
 import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
@@ -8,22 +10,23 @@ import com.ramkiopt.main.services.app.users.UsersService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Service
 public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
         implements UsersService<UsersDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UsersServiceImpl.class);
-    @Autowired
-    private UsersRepository usersRepository;
+    private final UsersRepository usersRepository;
+    private final UsersOnRolesCriteriaRepository usersOnRolesCriteriaRepository;
 
-    @PostConstruct
-    public void init() {
+    public UsersServiceImpl(UsersRepository usersRepository,
+                            UsersOnRolesCriteriaRepository usersOnRolesCriteriaRepository) {
+        this.usersRepository = usersRepository;
+        this.usersOnRolesCriteriaRepository = usersOnRolesCriteriaRepository;
         setJpaRepository(usersRepository);
     }
 
@@ -73,5 +76,10 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
         UsersDto usersDto = new UsersDto();
         ObjectMapper.mapCustom(users, usersDto);
         return usersDto;
+    }
+
+    @Override
+    public List<String> getRoles(String username) {
+        return usersOnRolesCriteriaRepository.getRoles(username,0,1);
     }
 }

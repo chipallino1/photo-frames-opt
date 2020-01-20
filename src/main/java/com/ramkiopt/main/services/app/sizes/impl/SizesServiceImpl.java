@@ -1,6 +1,7 @@
 package com.ramkiopt.main.services.app.sizes.impl;
 
 import com.ramkiopt.main.dto.SizesDto;
+import com.ramkiopt.main.entities.Sizes;
 import com.ramkiopt.main.repositories.SizesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.sizes.SizesService;

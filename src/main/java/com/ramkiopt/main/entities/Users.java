@@ -1,8 +1,12 @@
 package com.ramkiopt.main.entities;
 
+import com.ramkiopt.main.services.app.base.RowStatus;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Collection;
@@ -16,7 +20,7 @@ public class Users {
     private String email;
     private String phoneNumber;
     private String passwordEncrypted;
-    private String status;
+    private RowStatus status;
     private Collection<Carts> cartsById;
     private Collection<Orders> ordersById;
     private Collection<PhotoFrames> photoFramesById;
@@ -83,12 +87,13 @@ public class Users {
     }
 
     @Basic
+    @Enumerated
     @Column(name = "status")
-    public String getStatus() {
+    public RowStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(RowStatus status) {
         this.status = status;
     }
 

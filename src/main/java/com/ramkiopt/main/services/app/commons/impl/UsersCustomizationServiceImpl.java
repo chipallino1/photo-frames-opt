@@ -6,26 +6,28 @@ import com.ramkiopt.main.services.app.commons.UsersCustomizationService;
 import com.ramkiopt.main.services.app.users.UsersService;
 import com.ramkiopt.main.services.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Collections;
 
 @Service
 public class UsersCustomizationServiceImpl implements UsersCustomizationService {
 
     private final UsersService<UsersDto> usersService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersCustomizationServiceImpl(UsersService<UsersDto> usersService) {
+    public UsersCustomizationServiceImpl(UsersService<UsersDto> usersService, PasswordEncoder passwordEncoder) {
         this.usersService = usersService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UsersDto createUser(UsersDto dto) {
-        dto.setRole(dto.getRole() == null ? UserRole.USER : dto.getRole());
-        dto.setPasswordEncrypted(dto.getPassword() == null ? null :
-                new BCryptPasswordEncoder().encode(dto.getPassword()));
+        dto.setRoles(dto.getRoles() == null ? Collections.singletonList(UserRole.USER) : dto.getRoles());
+        dto.setPasswordEncrypted(dto.getPassword() == null ? null : passwordEncoder.encode(dto.getPassword()));
         return usersService.create(dto);
     }
 

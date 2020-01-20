@@ -2,7 +2,9 @@ package com.ramkiopt.main.controllers;
 
 import com.ramkiopt.main.configuration.JwtProvider;
 import com.ramkiopt.main.dto.AuthBodyDto;
-import com.ramkiopt.main.repositories.UsersRepository;
+import com.ramkiopt.main.dto.UsersDto;
+import com.ramkiopt.main.services.app.users.UsersService;
+import com.ramkiopt.main.services.security.UserRole;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,19 +27,16 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-
     private final JwtProvider jwtProvider;
-
-    private final UsersRepository usersRepository;
-
     private final BaseResponseService responseService;
+    private final UsersService<UsersDto> usersService;
 
     public AuthController(AuthenticationManager authenticationManager, JwtProvider jwtProvider,
-                          UsersRepository usersRepository, BaseResponseService responseService) {
+                          BaseResponseService responseService, UsersService<UsersDto> usersService) {
         this.authenticationManager = authenticationManager;
         this.jwtProvider = jwtProvider;
-        this.usersRepository = usersRepository;
         this.responseService = responseService;
+        this.usersService = usersService;
     }
 
     @PostMapping("/login")
@@ -48,7 +47,7 @@ public class AuthController {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email/password supplied");
         }
-        String token = jwtProvider.createToken(username, usersRepository.findByEmail(username).getRole());
+        String token = jwtProvider.createToken(username, UserRole.valueOf(usersService.getRoles(username).get(0)));
         return responseService.createResponseEntity(createResponseTokenDto(username, token), HttpStatus.OK);
     }
 
