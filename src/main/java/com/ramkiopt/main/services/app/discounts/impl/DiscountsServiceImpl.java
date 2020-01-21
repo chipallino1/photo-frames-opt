@@ -1,6 +1,7 @@
 package com.ramkiopt.main.services.app.discounts.impl;
 
 import com.ramkiopt.main.dto.DiscountsDto;
+import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.repositories.DiscountsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.discounts.DiscountsService;

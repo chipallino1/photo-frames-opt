@@ -1,6 +1,7 @@
 package com.ramkiopt.main.services.app.orders.impl;
 
 import com.ramkiopt.main.dto.OrdersDto;
+import com.ramkiopt.main.entities.Orders;
 import com.ramkiopt.main.repositories.OrdersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
@@ -55,7 +56,7 @@ public class OrdersServiceImpl extends BaseServiceAbstract<Orders, OrdersDto> im
         if (orders == null) {
             return false;
         }
-        orders.setStatus(RowStatus.DELETED);
+        orders.setRowStatus(RowStatus.DELETED.name());
         jpaRepository.save(orders);
         return true;
     }

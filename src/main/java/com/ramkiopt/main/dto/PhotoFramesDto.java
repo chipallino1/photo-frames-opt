@@ -23,6 +23,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private RowStatus status;
     private MultipartFile file;
     private List<String> photosSrcs;
+    private List<Integer> costs;
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
     private DiscountsDto discountsDto;
@@ -119,6 +120,14 @@ public class PhotoFramesDto implements Serializable, Identity {
 
     public void setPhotosSrcs(List<String> photosSrcs) {
         this.photosSrcs = photosSrcs;
+    }
+
+    public List<Integer> getCosts() {
+        return costs;
+    }
+
+    public void setCosts(List<Integer> costs) {
+        this.costs = costs;
     }
 
     @NotNull(message = "{validation.photoframes.colorsListSize.message}")

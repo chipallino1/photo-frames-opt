@@ -1,6 +1,7 @@
 package com.ramkiopt.main.services.app.colors.impl;
 
 import com.ramkiopt.main.dto.ColorsDto;
+import com.ramkiopt.main.entities.Colors;
 import com.ramkiopt.main.repositories.ColorsRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.colors.ColorsService;
