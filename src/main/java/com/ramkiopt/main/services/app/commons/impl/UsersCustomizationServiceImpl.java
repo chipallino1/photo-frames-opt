@@ -1,6 +1,9 @@
 package com.ramkiopt.main.services.app.commons.impl;
 
 import com.ramkiopt.main.dto.UsersDto;
+import com.ramkiopt.main.entities.UsersOnRoles;
+import com.ramkiopt.main.repositories.RolesRepository;
+import com.ramkiopt.main.repositories.UsersOnRolesRepository;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.commons.UsersCustomizationService;
 import com.ramkiopt.main.services.app.users.UsersService;
@@ -8,27 +11,40 @@ import com.ramkiopt.main.services.security.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UsersCustomizationServiceImpl implements UsersCustomizationService {
 
     private final UsersService<UsersDto> usersService;
+    private final UsersOnRolesRepository usersOnRolesRepository;
+    private final RolesRepository rolesRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UsersCustomizationServiceImpl(UsersService<UsersDto> usersService, PasswordEncoder passwordEncoder) {
+    public UsersCustomizationServiceImpl(UsersService<UsersDto> usersService,
+                                         UsersOnRolesRepository usersOnRolesRepository,
+                                         RolesRepository rolesRepository,
+                                         PasswordEncoder passwordEncoder) {
         this.usersService = usersService;
+        this.usersOnRolesRepository = usersOnRolesRepository;
+        this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
+    @Transactional
     public UsersDto createUser(UsersDto dto) {
         dto.setRoles(dto.getRoles() == null ? Collections.singletonList(UserRole.USER) : dto.getRoles());
         dto.setPasswordEncrypted(dto.getPassword() == null ? null : passwordEncoder.encode(dto.getPassword()));
-        return usersService.create(dto);
+        dto = usersService.create(dto);
+        createUsersOnRoles(getRoles(), dto.getId());
+        return dto;
     }
 
     @Override
@@ -38,6 +54,24 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
         }
         return usersService.get(id);
     }
+
+    private List<Long> getRoles() {
+        return rolesRepository.findAll().parallelStream().collect(ArrayList::new,
+                (list, item) -> list.add(item.getId()), ArrayList::addAll);
+    }
+
+    private void createUsersOnRoles(List<Long> rolesIds, Long userId) {
+        usersOnRolesRepository.saveAll(rolesIds.parallelStream().collect(ArrayList::new,
+                (list, roleId) -> list.add(createUsersOnRoles(roleId, userId)), ArrayList::addAll));
+    }
+
+    private UsersOnRoles createUsersOnRoles(Long roleId, Long userId) {
+        UsersOnRoles usersOnRoles = new UsersOnRoles();
+        usersOnRoles.setRoleId(roleId);
+        usersOnRoles.setUserId(userId);
+        return usersOnRoles;
+    }
+
 
     @Override
     public UsersDto readUserByEmail(String email) {

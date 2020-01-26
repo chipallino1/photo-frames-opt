@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PhotoFramesRepository extends JpaRepository<PhotoFrames, Long> {
-    Page<PhotoFrames> findAllByNameLikeAndStatus(String name, RowStatus status, Pageable pageable);
+    Page<PhotoFrames> findAllByNameLikeAndRowStatus(String name, RowStatus status, Pageable pageable);
 
-    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByPopularityDesc(String name, RowStatus status, Pageable pageable);
+    Page<PhotoFrames> findAllByNameLikeAndRowStatusOrderByPopularityDesc(String name, RowStatus status, Pageable pageable);
 
-    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByCostDesc(String name, RowStatus status, Pageable pageable);
+    Page<PhotoFrames> findAllByNameLikeAndRowStatusOrderByCostDesc(String name, RowStatus status, Pageable pageable);
 
-    Page<PhotoFrames> findAllByNameLikeAndStatusOrderByCost(String name, RowStatus status, Pageable pageable);
+    Page<PhotoFrames> findAllByNameLikeAndRowStatusOrderByCost(String name, RowStatus status, Pageable pageable);
 
-    Page<PhotoFrames> findAllByBorderMaterialLikeAndStatus(String borderMaterial, RowStatus status, Pageable pageable);
+    Page<PhotoFrames> findAllByBorderMaterialLikeAndRowStatus(String borderMaterial, RowStatus status, Pageable pageable);
 }

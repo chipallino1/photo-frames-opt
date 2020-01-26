@@ -81,7 +81,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
 
     @Override
     public List<PhotoFramesDto> getAllByName(String name, Pageable pageable) {
-        Page<PhotoFrames> photoFramesPage = photoFramesRepository.findAllByNameLikeAndStatus(name, RowStatus.ENABLE,
+        Page<PhotoFrames> photoFramesPage = photoFramesRepository.findAllByNameLikeAndRowStatus(name, RowStatus.ENABLE,
                 pageable);
         List<PhotoFrames> photoFrames = photoFramesPage.getContent();
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
@@ -116,7 +116,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public List<PhotoFramesDto> getAllByNameOrderByPopularityDesc(String name, Pageable pageable) {
         Page<PhotoFrames> photoFramesPage =
-                photoFramesRepository.findAllByNameLikeAndStatusOrderByPopularityDesc(name, RowStatus.ENABLE, pageable);
+                photoFramesRepository.findAllByNameLikeAndRowStatusOrderByPopularityDesc(name, RowStatus.ENABLE, pageable);
         List<PhotoFrames> photoFrames = photoFramesPage.getContent();
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
         for (int i = 0; i < photoFrames.size(); i++) {
@@ -140,7 +140,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public List<PhotoFramesDto> getAllOrderByCostDesc(String name, Pageable pageable) {
         Page<PhotoFrames> photoFramesPage =
-                photoFramesRepository.findAllByNameLikeAndStatusOrderByCostDesc(name, RowStatus.ENABLE, pageable);
+                photoFramesRepository.findAllByNameLikeAndRowStatusOrderByCostDesc(name, RowStatus.ENABLE, pageable);
         List<PhotoFrames> photoFrames = photoFramesPage.getContent();
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
         for (int i = 0; i < photoFrames.size(); i++) {
@@ -153,7 +153,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public List<PhotoFramesDto> getAllOrderByCost(String name, Pageable pageable) {
         Page<PhotoFrames> photoFramesPage =
-                photoFramesRepository.findAllByNameLikeAndStatusOrderByCost(name, RowStatus.ENABLE, pageable);
+                photoFramesRepository.findAllByNameLikeAndRowStatusOrderByCost(name, RowStatus.ENABLE, pageable);
         List<PhotoFrames> photoFrames = photoFramesPage.getContent();
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
         for (int i = 0; i < photoFrames.size(); i++) {

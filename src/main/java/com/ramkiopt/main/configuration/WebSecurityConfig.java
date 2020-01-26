@@ -1,6 +1,9 @@
 package com.ramkiopt.main.configuration;
 
+import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.repositories.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.ramkiopt.main.repositories.UsersRepository;
+import com.ramkiopt.main.services.app.users.UsersService;
 import com.ramkiopt.main.services.security.CustomOAuth2UserService;
 import com.ramkiopt.main.services.security.CustomUserDetailsService;
 import com.ramkiopt.main.services.security.OAuth2AuthenticationFailureHandler;
@@ -38,18 +41,12 @@ import java.util.Arrays;
 )
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtProvider jwtProvider;
-
     @Autowired
     private CustomOAuth2UserService customOAuth2UserService;
     @Autowired
     private OAuth2AuthenticationFailureHandler failureHandler;
     @Autowired
     private OAuth2AuthenticationSuccessHandler successHandler;
-
-    public WebSecurityConfig(JwtProvider jwtProvider) {
-        this.jwtProvider = jwtProvider;
-    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -106,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**","/webjars/**");
+        web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**", "/webjars/**");
     }
 
     @Bean

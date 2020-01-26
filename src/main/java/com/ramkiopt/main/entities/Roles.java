@@ -3,6 +3,8 @@ package com.ramkiopt.main.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Collection;
@@ -15,6 +17,7 @@ public class Roles {
     private Collection<UsersOnRoles> usersOnRolesById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public long getId() {
         return id;

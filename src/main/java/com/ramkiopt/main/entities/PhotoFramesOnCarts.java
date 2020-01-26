@@ -3,6 +3,8 @@ package com.ramkiopt.main.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,7 +12,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "photo_frames_on_carts", schema = "ramki_opt", catalog = "")
+@Table(name = "photo_frames_on_carts", schema = "ramki_opt")
 public class PhotoFramesOnCarts {
     private Long id;
     private Long cartId;
@@ -19,6 +21,7 @@ public class PhotoFramesOnCarts {
     private PhotoFrames photoFramesByPhotoFrameId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -64,7 +67,7 @@ public class PhotoFramesOnCarts {
     }
 
     @ManyToOne
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Carts getCartsByCartId() {
         return cartsByCartId;
     }
@@ -74,7 +77,8 @@ public class PhotoFramesOnCarts {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }

@@ -3,6 +3,8 @@ package com.ramkiopt.main.entities;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -23,6 +25,7 @@ public class PhotoFramesCommon implements Identity {
     private Colors colorsByColorId;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -101,7 +104,8 @@ public class PhotoFramesCommon implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "photo_frame_id", referencedColumnName = "id", nullable = false, insertable = false,
+            updatable = false)
     public PhotoFrames getPhotoFramesByPhotoFrameId() {
         return photoFramesByPhotoFrameId;
     }
@@ -111,7 +115,7 @@ public class PhotoFramesCommon implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "size_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "size_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Sizes getSizesBySizeId() {
         return sizesBySizeId;
     }
@@ -121,7 +125,7 @@ public class PhotoFramesCommon implements Identity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "color_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Colors getColorsByColorId() {
         return colorsByColorId;
     }

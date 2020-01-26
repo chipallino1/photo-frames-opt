@@ -1,7 +1,7 @@
 ALTER TABLE photo_frames ADD FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE photo_frames_on_carts ADD FOREIGN KEY (photo_frame_id) REFERENCES photo_frames(id);
-ALTER TABLE photo_frames_on_carts ADD FOREIGN KEY (cart_id) REFERENCES cart(id);
+ALTER TABLE photo_frames_on_carts ADD FOREIGN KEY (cart_id) REFERENCES carts(id);
 
 ALTER TABLE carts ADD FOREIGN KEY (client_id) REFERENCES users(id);
 

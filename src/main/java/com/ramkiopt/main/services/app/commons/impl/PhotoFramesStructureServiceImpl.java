@@ -145,8 +145,6 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         photoFramesDto.setSizesDtos(getSizes(photoFramesDto.getId()));
         photoFramesDto.setColorsDtos(getColors(photoFramesDto.getId()));
         photoFramesDto.setDiscountsDto(discountsService.getByPhotoFrameId(photoFramesDto.getId()));
-        PhotosDto photosDto = photosService.getByPhotoFrameId(photoFramesDto.getId());
-        photoFramesDto.setImageSrc(photosDto != null ? photosDto.getPhotoSrc() : null);
     }
 
     @Override

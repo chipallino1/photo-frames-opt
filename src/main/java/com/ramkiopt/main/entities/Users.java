@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.util.Collection;
@@ -27,6 +29,7 @@ public class Users {
     private Collection<UsersOnRoles> usersOnRolesById;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Long getId() {
         return id;
@@ -87,7 +90,7 @@ public class Users {
     }
 
     @Basic
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     public RowStatus getStatus() {
         return status;

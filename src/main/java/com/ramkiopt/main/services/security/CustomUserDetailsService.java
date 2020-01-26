@@ -1,7 +1,9 @@
 package com.ramkiopt.main.services.security;
 
+import com.ramkiopt.main.dto.UsersDto;
 import com.ramkiopt.main.entities.Users;
 import com.ramkiopt.main.repositories.UsersRepository;
+import com.ramkiopt.main.services.app.users.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,12 +23,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private UsersService<UsersDto> usersService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Users user = usersRepository.findByEmail(email);
         if (user != null) {
-            List<GrantedAuthority> authorities = getUserAuthority(user.getRole());
+            List<GrantedAuthority> authorities = getUserAuthority(UserRole.valueOf(usersService.getRoles(email).get(0)));
             return buildUserForAuthentication(user, authorities);
         } else {
             throw new UsernameNotFoundException("username not found");

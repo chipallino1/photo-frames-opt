@@ -44,7 +44,10 @@ public class UsersController {
 
     @PostMapping("/create")
     public ResponseEntity<Object> createUser(@RequestBody UsersDto usersDto) {
+        long startTime = System.currentTimeMillis();
         usersDto = usersCustomizationService.createUser(usersDto);
+        long endTime = System.currentTimeMillis();
+        LOGGER.info( "Execution time: " + (endTime - startTime));
         return responseService.createResponseEntity(usersDto, HttpStatus.OK);
     }
 
