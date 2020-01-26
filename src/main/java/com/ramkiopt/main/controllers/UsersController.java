@@ -52,7 +52,7 @@ public class UsersController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Object> readUser(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(usersCustomizationService.readUser(id), HttpStatus.OK);
     }
