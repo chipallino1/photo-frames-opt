@@ -30,31 +30,26 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private CustomUserDetailsService customUserDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
-            jwt = request.getParameter("token") == null ? jwt : request.getParameter("token");
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                String username = tokenProvider.getUsername(jwt);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        String jwt = getJwtFromRequest(request);
+        jwt = request.getParameter("token") == null ? jwt : request.getParameter("token");
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            String username = tokenProvider.getUsername(jwt);
 
-                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication
-                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authentication
+                    = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                if (request.getParameter("token") != null) {
-                    response.setContentType("application/json");
-                    Map<Object, Object> model = new HashMap<>();
-                    model.put("username", username);
-                    model.put("token", jwt);
-                    response.getOutputStream().print(new Gson().toJson(model));
-                    return;
-                }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            if (request.getParameter("token") != null) {
+                response.setContentType("application/json");
+                Map<Object, Object> model = new HashMap<>();
+                model.put("username", username);
+                model.put("token", jwt);
+                response.getOutputStream().print(new Gson().toJson(model));
+                return;
             }
-        } catch (Exception ex) {
-            logger.error("Could not set user authentication in security context", ex);
         }
 
         filterChain.doFilter(request, response);

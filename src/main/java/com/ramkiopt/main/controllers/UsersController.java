@@ -47,7 +47,7 @@ public class UsersController {
         long startTime = System.currentTimeMillis();
         usersDto = usersCustomizationService.createUser(usersDto);
         long endTime = System.currentTimeMillis();
-        LOGGER.info( "Execution time: " + (endTime - startTime));
+        LOGGER.info("Execution time: " + (endTime - startTime));
         return responseService.createResponseEntity(usersDto, HttpStatus.OK);
     }
 

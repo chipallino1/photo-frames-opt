@@ -50,8 +50,8 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
         if (dto.getDiscountsDto() != null) {
             dto.getDiscountsDto().setPhotoFrameId(dto.getId());
+            discountsService.create(dto.getDiscountsDto());
         }
-        discountsService.create(dto.getDiscountsDto());
         return dto;
     }
 
@@ -142,8 +142,12 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     private void setUpPhotoFramesDto(PhotoFramesDto photoFramesDto) {
-        photoFramesDto.setSizesDtos(getSizes(photoFramesDto.getId()));
-        photoFramesDto.setColorsDtos(getColors(photoFramesDto.getId()));
+        List<PhotoFramesCommonDto> commonDtos =
+                photoFramesCommonService.getEntitiesByPhotoFrameId(photoFramesDto.getId());
+        photoFramesDto.setPhotosSrcs(getPhotosSrcs(commonDtos));
+        photoFramesDto.setCosts(getCosts(commonDtos));
+        photoFramesDto.setSizesDtos(getSizes(commonDtos));
+        photoFramesDto.setColorsDtos(getColors(commonDtos));
         photoFramesDto.setDiscountsDto(discountsService.getByPhotoFrameId(photoFramesDto.getId()));
     }
 
@@ -231,9 +235,23 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return dtos;
     }
 
-    private List<SizesDto> getSizes(Long photoFrameId) {
-        List<PhotoFramesCommonDto> commonDtos =
-                photoFramesCommonService.getEntitiesByPhotoFrameId(photoFrameId);
+    private List<String> getPhotosSrcs(List<PhotoFramesCommonDto> commonDtos) {
+        List<String> photosSrcs = new ArrayList<>();
+        for (PhotoFramesCommonDto dto : commonDtos) {
+            photosSrcs.add(dto.getPhotoSrc());
+        }
+        return photosSrcs;
+    }
+
+    private List<Integer> getCosts(List<PhotoFramesCommonDto> commonDtos) {
+        List<Integer> costs = new ArrayList<>();
+        for (PhotoFramesCommonDto dto : commonDtos) {
+            costs.add(dto.getCost());
+        }
+        return costs;
+    }
+
+    private List<SizesDto> getSizes(List<PhotoFramesCommonDto> commonDtos) {
         List<Long> ids = new ArrayList<>();
         for (PhotoFramesCommonDto dto : commonDtos) {
             ids.add(dto.getSizeId());
@@ -241,9 +259,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return sizesService.getSizesById(ids);
     }
 
-    private List<ColorsDto> getColors(Long photoFrameId) {
-        List<PhotoFramesCommonDto> commonDtos =
-                photoFramesCommonService.getEntitiesByPhotoFrameId(photoFrameId);
+    private List<ColorsDto> getColors(List<PhotoFramesCommonDto> commonDtos) {
         List<Long> ids = new ArrayList<>();
         for (PhotoFramesCommonDto dto : commonDtos) {
             ids.add(dto.getColorId());

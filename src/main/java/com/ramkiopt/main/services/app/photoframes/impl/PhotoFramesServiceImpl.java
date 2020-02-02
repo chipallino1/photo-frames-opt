@@ -55,7 +55,7 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     @Override
     public PhotoFramesDto get(Long id) {
         PhotoFramesDto dto = readFromDb(id, new PhotoFramesDto());
-        if (dto == null || dto.getStatus().equals(RowStatus.DELETED)) {
+        if (dto == null || dto.getRowStatus().equals(RowStatus.DELETED)) {
             throw new EntityNotFoundException();
         }
         return dto;

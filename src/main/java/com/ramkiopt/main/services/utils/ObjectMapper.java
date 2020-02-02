@@ -81,6 +81,33 @@ public final class ObjectMapper {
         }
     }
 
+    public static <T> List<T> mapList(List src, Class<T> dtoClass) throws NoSuchMethodException, IllegalAccessException,
+            InvocationTargetException, InstantiationException {
+        List<T> dest = new ArrayList<>();
+        for (Object item : src) {
+            T destItem = dtoClass.getConstructor().newInstance();
+            mapCustom(item, destItem);
+            dest.add(destItem);
+        }
+        return dest;
+    }
+
+    public static <T, V> List<V> mapListLambda(List<T> src, Class<V> dtoClass) {
+        return src
+                .parallelStream()
+                .collect(ArrayList::new,
+                        (result, item) -> {
+                            V destItem = null;
+                            try {
+                                destItem = dtoClass.newInstance();
+                            } catch (InstantiationException | IllegalAccessException e) {
+                                e.printStackTrace();
+                            }
+                            mapCustom(item, destItem);
+                            result.add(destItem);
+                        }, ArrayList::addAll);
+    }
+
     public static void mapListMapToDto(List<Map<String, Object>> src, List dest, Class dtoClass)
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         for (int i = 0; i < src.size(); i++) {

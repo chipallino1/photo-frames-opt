@@ -5,8 +5,10 @@ import com.ramkiopt.main.entities.PhotoFramesCommon;
 import com.ramkiopt.main.repositories.PhotoFramesCommonRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.photoframescommon.PhotoFramesCommonService;
+import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,6 +48,6 @@ public class PhotoFramesCommonServiceImpl extends BaseServiceAbstract<PhotoFrame
 
     @Override
     public List<PhotoFramesCommonDto> getEntitiesByPhotoFrameId(Long id) {
-        return null;
+        return ObjectMapper.mapListLambda(commonRepository.findAllByPhotoFrameId(id), PhotoFramesCommonDto.class);
     }
 }

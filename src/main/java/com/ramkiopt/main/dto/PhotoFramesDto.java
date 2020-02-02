@@ -20,7 +20,7 @@ public class PhotoFramesDto implements Serializable, Identity {
     private Integer cost;
     private Long userId;
     private String description;
-    private RowStatus status;
+    private RowStatus rowStatus;
     private MultipartFile file;
     private List<String> photosSrcs;
     private List<Integer> costs;
@@ -114,6 +114,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.userId = userId;
     }
 
+    @NotNull(message = "{validation.photoframes.photosSrcs.message}")
+    @Size(min = 1, message = "{validation.photoframes.photosSrcs.message}")
     public List<String> getPhotosSrcs() {
         return photosSrcs;
     }
@@ -122,6 +124,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.photosSrcs = photosSrcs;
     }
 
+    @NotNull(message = "{validation.photoframes.costs.message}")
+    @Size(min = 1, message = "{validation.photoframes.costs.message}")
     public List<Integer> getCosts() {
         return costs;
     }
@@ -140,7 +144,7 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.colorsDtos = colorsDtos;
     }
 
-    @NotNull
+    @NotNull(message = "{validation.photoframes.sizesListSize.message}")
     @Size(min = 1, message = "{validation.photoframes.sizesListSize.message}")
     public List<SizesDto> getSizesDtos() {
         return sizesDtos;
@@ -150,12 +154,12 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.sizesDtos = sizesDtos;
     }
 
-    public RowStatus getStatus() {
-        return status;
+    public RowStatus getRowStatus() {
+        return rowStatus;
     }
 
-    public void setStatus(RowStatus status) {
-        this.status = status;
+    public void setStatus(RowStatus rowStatus) {
+        this.rowStatus = rowStatus;
     }
 
     public DiscountsDto getDiscountsDto() {

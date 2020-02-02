@@ -1,6 +1,7 @@
 package com.ramkiopt.main.controllers.exceptions;
 
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,5 +34,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolationExc(ConstraintViolationException ex) {
         return responseService.createErrorInfo(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    protected ResponseEntity<Object> handleJwtException(ExpiredJwtException ex) {
+        return responseService.createErrorInfo(ex, HttpStatus.UNAUTHORIZED);
     }
 }

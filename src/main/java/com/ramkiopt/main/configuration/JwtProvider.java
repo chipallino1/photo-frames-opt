@@ -3,8 +3,8 @@ package com.ramkiopt.main.configuration;
 import com.ramkiopt.main.services.security.CustomUserDetailsService;
 import com.ramkiopt.main.services.security.UserRole;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,11 +67,7 @@ public class JwtProvider {
     }
 
     boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtException("Expired or invalid JWT token");
-        }
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        return !claims.getBody().getExpiration().before(new Date());
     }
 }
