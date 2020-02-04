@@ -3,6 +3,8 @@ package com.ramkiopt.main.services.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ReflectionUtilsService {
     public static <T> T createNewInstance(Class<T> tClass) throws NoSuchMethodException, IllegalAccessException,
@@ -24,5 +26,23 @@ public final class ReflectionUtilsService {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public static List<String> getNullProperties(Object object) {
+        Field[] fields = object.getClass().getDeclaredFields();
+        List<String> nullProperties = new ArrayList<>();
+        try {
+            for (Field field : fields) {
+                field.setAccessible(true);
+
+                if (field.get(object) == null) {
+                    nullProperties.add(field.getName());
+                }
+
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return nullProperties;
     }
 }

@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -15,7 +17,8 @@ public class Discounts {
     private Integer percentCount;
     private Timestamp startDate;
     private Timestamp endDate;
-    private Long photoFrameId;
+    private Long photoFrameCommonId;
+    private PhotoFramesCommon photoFramesCommonByPhotoFrameCommonId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,13 +62,13 @@ public class Discounts {
     }
 
     @Basic
-    @Column(name = "photo_frame_id")
-    public Long getPhotoFrameId() {
-        return photoFrameId;
+    @Column(name = "photo_frame_common_id")
+    public Long getPhotoFrameCommonId() {
+        return photoFrameCommonId;
     }
 
-    public void setPhotoFrameId(Long photoFrameId) {
-        this.photoFrameId = photoFrameId;
+    public void setPhotoFrameCommonId(Long photoFrameId) {
+        this.photoFrameCommonId = photoFrameId;
     }
 
     @Override
@@ -77,11 +80,21 @@ public class Discounts {
                 Objects.equals(percentCount, discounts.percentCount) &&
                 Objects.equals(startDate, discounts.startDate) &&
                 Objects.equals(endDate, discounts.endDate) &&
-                Objects.equals(photoFrameId, discounts.photoFrameId);
+                Objects.equals(photoFrameCommonId, discounts.photoFrameCommonId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, percentCount, startDate, endDate, photoFrameId);
+        return Objects.hash(id, percentCount, startDate, endDate, photoFrameCommonId);
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "photo_frame_common_id", referencedColumnName = "id", insertable = false, updatable = false)
+    public PhotoFramesCommon getPhotoFramesCommonByPhotoFrameCommonId() {
+        return photoFramesCommonByPhotoFrameCommonId;
+    }
+
+    public void setPhotoFramesCommonByPhotoFrameCommonId(PhotoFramesCommon photoFramesCommonByPhotoFrameCommonId) {
+        this.photoFramesCommonByPhotoFrameCommonId = photoFramesCommonByPhotoFrameCommonId;
     }
 }

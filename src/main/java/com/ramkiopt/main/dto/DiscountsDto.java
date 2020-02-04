@@ -1,14 +1,16 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class DiscountsDto implements Serializable {
+public class DiscountsDto implements Serializable, Identity {
     private Long id;
     private Integer percentCount;
     private Timestamp startDate;
     private Timestamp endDate;
-    private Long photoFrameId;
+    private Long photoFrameCommonId;
 
     public Long getId() {
         return id;
@@ -42,11 +44,11 @@ public class DiscountsDto implements Serializable {
         this.endDate = endDate;
     }
 
-    public Long getPhotoFrameId() {
-        return photoFrameId;
+    public Long getPhotoFrameCommonId() {
+        return photoFrameCommonId;
     }
 
-    public void setPhotoFrameId(Long photoFrameId) {
-        this.photoFrameId = photoFrameId;
+    public void setPhotoFrameCommonId(Long photoFrameCommonId) {
+        this.photoFrameCommonId = photoFrameCommonId;
     }
 }

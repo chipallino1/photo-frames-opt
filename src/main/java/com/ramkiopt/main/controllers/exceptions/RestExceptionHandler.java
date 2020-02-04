@@ -23,21 +23,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFoundExc(EntityNotFoundException ex) {
-        return responseService.createErrorInfo(ex, HttpStatus.NOT_FOUND);
+        return responseService.createErrorResponse(ex, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleBadCredentialsExc(BadCredentialsException ex) {
-        return responseService.createErrorInfo(ex, HttpStatus.UNAUTHORIZED);
+        return responseService.createErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<Object> handleConstraintViolationExc(ConstraintViolationException ex) {
-        return responseService.createErrorInfo(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+        return responseService.createErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     protected ResponseEntity<Object> handleJwtException(ExpiredJwtException ex) {
-        return responseService.createErrorInfo(ex, HttpStatus.UNAUTHORIZED);
+        return responseService.createErrorResponse(ex, HttpStatus.UNAUTHORIZED);
     }
 }

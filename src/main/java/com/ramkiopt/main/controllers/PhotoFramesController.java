@@ -4,6 +4,7 @@ import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.services.app.commons.PhotoFramesStructureService;
 import com.ramkiopt.main.services.utils.FileStorageService;
 import com.ramkiopt.main.services.utils.FilesUtils;
+import com.ramkiopt.main.services.utils.ReflectionUtilsService;
 import com.ramkiopt.main.services.utils.response.BaseResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -30,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin("http://localhost:3000")
@@ -51,7 +53,7 @@ public class PhotoFramesController {
     public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto,
                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return responseService.createErrorInfo(bindingResult.getAllErrors(), HttpStatus.BAD_REQUEST);
+            return responseService.createErrorResponse(bindingResult.getFieldErrors());
         }
         dto = photoFramesStructureService.createPhotoFrame(dto);
         return responseService.createResponseEntity(dto, HttpStatus.OK);
@@ -78,7 +80,13 @@ public class PhotoFramesController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity updatePhotoFrame(@RequestBody PhotoFramesDto photoFramesDto) {
+    public ResponseEntity updatePhotoFrame(@RequestBody @Valid PhotoFramesDto photoFramesDto,
+                                           BindingResult bindingResult) {
+        List<String> excludedProperties = ReflectionUtilsService.getNullProperties(photoFramesDto);
+        if (bindingResult.hasErrors()) {
+            return responseService.createErrorResponse(bindingResult.getFieldErrors(),
+                    excludedProperties.toArray(new String[0]));
+        }
         return responseService.createResponseEntity(photoFramesStructureService.updatePhotoFrame(photoFramesDto.getId(),
                 photoFramesDto), HttpStatus.OK);
     }

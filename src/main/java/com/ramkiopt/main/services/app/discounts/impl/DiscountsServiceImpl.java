@@ -1,5 +1,6 @@
 package com.ramkiopt.main.services.app.discounts.impl;
 
+
 import com.ramkiopt.main.dto.DiscountsDto;
 import com.ramkiopt.main.entities.Discounts;
 import com.ramkiopt.main.repositories.DiscountsRepository;
@@ -9,6 +10,7 @@ import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, DiscountsDto>
@@ -48,8 +50,8 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
     }
 
     @Override
-    public DiscountsDto getByPhotoFrameId(Long photoFrameId) {
-        Discounts discounts = discountsRepository.findFirstByPhotoFrameId(photoFrameId);
+    public DiscountsDto getByPhotoFrameCommonId(Long photoFrameId) {
+        Discounts discounts = discountsRepository.findFirstByPhotoFrameCommonId(photoFrameId);
         if (discounts == null) {
             return null;
         }
@@ -63,8 +65,13 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
     }
 
     @Override
+    public List<DiscountsDto> getByPhotoFrameCommonIds(Iterable<Long> ids) {
+        return ObjectMapper.mapListLambda(discountsRepository.findAllByPhotoFrameCommonIds(ids), DiscountsDto.class);
+    }
+
+    @Override
     public Boolean deleteByPhotoFrameId(Long id) {
-        Discounts discounts = discountsRepository.findFirstByPhotoFrameId(id);
+        Discounts discounts = discountsRepository.findFirstByPhotoFrameCommonId(id);
         if (discounts == null) {
             return true;
         }

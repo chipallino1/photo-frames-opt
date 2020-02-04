@@ -27,6 +27,11 @@ public class PhotoFramesCommonServiceImpl extends BaseServiceAbstract<PhotoFrame
     }
 
     @Override
+    public List<PhotoFramesCommonDto> createAll(Iterable<PhotoFramesCommonDto> dtos) {
+        return null;
+    }
+
+    @Override
     public PhotoFramesCommonDto get(Long id) {
         return readFromDb(id, new PhotoFramesCommonDto());
     }

@@ -8,7 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -23,6 +25,7 @@ public class PhotoFramesCommon implements Identity {
     private PhotoFrames photoFramesByPhotoFrameId;
     private Sizes sizesBySizeId;
     private Colors colorsByColorId;
+    private Collection<Discounts> discountsById;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -132,5 +135,14 @@ public class PhotoFramesCommon implements Identity {
 
     public void setColorsByColorId(Colors colorsByColorId) {
         this.colorsByColorId = colorsByColorId;
+    }
+
+    @OneToMany(mappedBy = "photoFramesCommonByPhotoFrameCommonId")
+    public Collection<Discounts> getDiscountsById() {
+        return discountsById;
+    }
+
+    public void setDiscountsById(Collection<Discounts> discountsById) {
+        this.discountsById = discountsById;
     }
 }

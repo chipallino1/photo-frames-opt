@@ -1,8 +1,10 @@
 package com.ramkiopt.main.dto;
 
+import com.ramkiopt.main.entities.Identity;
+
 import java.io.Serializable;
 
-public class PhotoFramesCommonDto implements Serializable {
+public class PhotoFramesCommonDto implements Serializable, Identity {
     private Long id;
     private String photoSrc;
     private Integer cost;
