@@ -53,6 +53,11 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     }
 
     @Override
+    public List<PhotoFramesDto> createAll(List<PhotoFramesDto> dtos) {
+        return null;
+    }
+
+    @Override
     public PhotoFramesDto get(Long id) {
         PhotoFramesDto dto = readFromDb(id, new PhotoFramesDto());
         if (dto == null || dto.getRowStatus().equals(RowStatus.DELETED)) {

@@ -8,11 +8,9 @@ import com.ramkiopt.main.services.app.sizes.SizesService;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +18,10 @@ import java.util.List;
 public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> implements SizesService<SizesDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SizesServiceImpl.class);
-    @Autowired
-    private SizesRepository sizesRepository;
+    private final SizesRepository sizesRepository;
 
-    @PostConstruct
-    public void init() {
+    public SizesServiceImpl(SizesRepository sizesRepository) {
+        this.sizesRepository = sizesRepository;
         setJpaRepository(sizesRepository);
     }
 
@@ -36,6 +33,11 @@ public class SizesServiceImpl extends BaseServiceAbstract<Sizes, SizesDto> imple
     @Override
     public SizesDto create(SizesDto dto) {
         return createInDb(new Sizes(), dto);
+    }
+
+    @Override
+    public List<SizesDto> createAll(List<SizesDto> dtos) {
+        return createAllInDb(dtos, Sizes.class, SizesDto.class);
     }
 
     @Override

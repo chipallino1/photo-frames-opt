@@ -5,7 +5,7 @@ import java.util.List;
 public interface BaseCrudService<T> {
     T create(T dto);
 
-    List<T> createAll(Iterable<T> dtos);
+    List<T> createAll(List<T> dtos);
 
     T get(Long id);
 

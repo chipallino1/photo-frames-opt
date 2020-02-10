@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 public class OrdersServiceImpl extends BaseServiceAbstract<Orders, OrdersDto> implements OrdersService<OrdersDto> {
@@ -18,10 +19,6 @@ public class OrdersServiceImpl extends BaseServiceAbstract<Orders, OrdersDto> im
 
     public OrdersServiceImpl(OrdersRepository ordersRepository) {
         this.ordersRepository = ordersRepository;
-    }
-
-    @PostConstruct
-    public void init() {
         setJpaRepository(ordersRepository);
     }
 
@@ -29,6 +26,11 @@ public class OrdersServiceImpl extends BaseServiceAbstract<Orders, OrdersDto> im
     public OrdersDto create(OrdersDto dto) {
         dto.setStatus(RowStatus.ENABLE);
         return createInDb(new Orders(), dto);
+    }
+
+    @Override
+    public List<OrdersDto> createAll(List<OrdersDto> dtos) {
+        return null;
     }
 
     @Override

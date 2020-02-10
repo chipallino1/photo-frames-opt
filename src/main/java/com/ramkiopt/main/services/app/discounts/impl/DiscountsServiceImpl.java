@@ -29,6 +29,11 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
     }
 
     @Override
+    public List<DiscountsDto> createAll(List<DiscountsDto> dtos) {
+        return createAllInDb(dtos, Discounts.class, DiscountsDto.class);
+    }
+
+    @Override
     public DiscountsDto get(Long id) {
         return readFromDb(id, new DiscountsDto());
     }

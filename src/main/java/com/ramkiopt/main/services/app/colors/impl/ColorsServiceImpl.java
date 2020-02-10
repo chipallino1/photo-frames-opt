@@ -23,10 +23,6 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> im
 
     public ColorsServiceImpl(ColorsRepository colorsRepository) {
         this.colorsRepository = colorsRepository;
-    }
-
-    @PostConstruct
-    public void init() {
         setJpaRepository(colorsRepository);
     }
 
@@ -38,6 +34,11 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> im
     @Override
     public ColorsDto create(ColorsDto dto) {
         return createInDb(new Colors(), dto);
+    }
+
+    @Override
+    public List<ColorsDto> createAll(List<ColorsDto> dtos) {
+        return createAllInDb(dtos, Colors.class, ColorsDto.class);
     }
 
     @Override

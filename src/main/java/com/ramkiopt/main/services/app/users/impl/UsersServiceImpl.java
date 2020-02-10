@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
-        implements UsersService<UsersDto> {
+public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto> implements UsersService<UsersDto> {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UsersServiceImpl.class);
     private final UsersRepository usersRepository;
@@ -39,6 +38,11 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
     public UsersDto create(UsersDto dto) {
         dto.setStatus(RowStatus.ENABLE);
         return createInDb(new Users(), dto);
+    }
+
+    @Override
+    public List<UsersDto> createAll(List<UsersDto> dtos) {
+        return null;
     }
 
     @Override
@@ -80,6 +84,6 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto>
 
     @Override
     public List<String> getRoles(String username) {
-        return usersOnRolesCriteriaRepository.getRoles(username,0,1);
+        return usersOnRolesCriteriaRepository.getRoles(username, 0, 1);
     }
 }

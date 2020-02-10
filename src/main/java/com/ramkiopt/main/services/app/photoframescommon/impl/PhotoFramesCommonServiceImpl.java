@@ -8,7 +8,6 @@ import com.ramkiopt.main.services.app.photoframescommon.PhotoFramesCommonService
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,8 +26,8 @@ public class PhotoFramesCommonServiceImpl extends BaseServiceAbstract<PhotoFrame
     }
 
     @Override
-    public List<PhotoFramesCommonDto> createAll(Iterable<PhotoFramesCommonDto> dtos) {
-        return null;
+    public List<PhotoFramesCommonDto> createAll(List<PhotoFramesCommonDto> dtos) {
+        return createAllInDb(dtos, PhotoFramesCommon.class, PhotoFramesCommonDto.class);
     }
 
     @Override

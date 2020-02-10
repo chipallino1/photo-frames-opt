@@ -46,7 +46,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         photoFramesService.create(dto);
         createEntities(dto.getSizesDtos(), sizesService);
         createEntities(dto.getColorsDtos(), colorsService);
-        createPhotoFramesCommon(dto);
+        List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(dto);
 
         if (dto.getDiscountsDtos() != null) {
             createEntities(dto.getDiscountsDtos(), discountsService);
@@ -54,7 +54,14 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return dto;
     }
 
-    private void createPhotoFramesCommon(PhotoFramesDto dto) {
+    private void setUpDiscounts(List<DiscountsDto> discountsDtos, List<PhotoFramesCommonDto> commonDtos) {
+        for (DiscountsDto d:
+             ) {
+            
+        }
+    }
+
+    private List<PhotoFramesCommonDto> createPhotoFramesCommon(PhotoFramesDto dto) {
         List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
         int i = 0;
         for (SizesDto sizesDto : dto.getSizesDtos()) {
@@ -69,7 +76,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
                 i++;
             }
         }
-        photoFramesCommonService.create()
+        return photoFramesCommonService.createAll(commonDtos);
     }
 
     @Override
