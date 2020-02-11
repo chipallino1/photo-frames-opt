@@ -189,14 +189,18 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     @Override
     public PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto) {
-        List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
-        if (dto.getColorsDtos() != null && dto.getSizesDtos() != null) {
-            List<ColorsDto> colorsDtos = createEntities(getColorsDtos(dto.getCommonDtos()), colorsService);
-            List<SizesDto> sizesDtos = createEntities(getSizesDtos(dto.getCommonDtos()), sizesService);
+        List<PhotoFramesCommonDto> commonDtos = dto.getCommonDtos();
+        List<ColorsDto> colorsDtos = getColorsDtos(commonDtos);
+        List<SizesDto> sizesDtos = getSizesDtos(commonDtos);
+        if (!colorsDtos.isEmpty() && !sizesDtos.isEmpty()) {
+            createEntities(colorsDtos, colorsService);
+            createEntities(sizesDtos, sizesService);
             commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, id);
         }
-        if (dto.getDiscountsDtos() != null) {
-            updatePhotoFrameDiscounts(getDiscountsDtos(commonDtos), dto.getId());
+
+        List<DiscountsDto> discountsDtos = getDiscountsDtos(commonDtos);
+        if (!discountsDtos.isEmpty()) {
+            updatePhotoFrameDiscounts(discountsDtos, dto.getId());
         }
         dto = photoFramesService.update(id, dto);
         return dto;
@@ -244,13 +248,6 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
             isValid = validateDiscounts(dto);
         }
         return isValid;
-    }
-
-    private <T extends Identity> List<T> updateEntities(List<T> dtos, BaseCrudService<T> baseCrudService) {
-        for (T dto : dtos) {
-            baseCrudService.update(dto.getId(), dto);
-        }
-        return dtos;
     }
 
     private List<String> getPhotosSrcs(List<PhotoFramesCommonDto> commonDtos) {
