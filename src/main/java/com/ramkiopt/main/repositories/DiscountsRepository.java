@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface DiscountsRepository extends JpaRepository<Discounts, Long> {
     Discounts findFirstByPhotoFrameCommonId(Long photoFrameId);
-    List<Discounts> findAllByPhotoFrameCommonIds(Iterable<Long> ids);
+    List<Discounts> findAllByPhotoFrameCommonId(Iterable<Long> ids);
 }

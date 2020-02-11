@@ -71,7 +71,7 @@ public class DiscountsServiceImpl extends BaseServiceAbstract<Discounts, Discoun
 
     @Override
     public List<DiscountsDto> getByPhotoFrameCommonIds(Iterable<Long> ids) {
-        return ObjectMapper.mapListLambda(discountsRepository.findAllByPhotoFrameCommonIds(ids), DiscountsDto.class);
+        return ObjectMapper.mapListLambda(discountsRepository.findAllByPhotoFrameCommonId(ids), DiscountsDto.class);
     }
 
     @Override

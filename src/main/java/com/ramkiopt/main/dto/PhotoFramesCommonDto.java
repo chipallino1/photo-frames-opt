@@ -13,7 +13,7 @@ public class PhotoFramesCommonDto implements Serializable, Identity {
     private Long colorId;
     private SizesDto sizesDto;
     private ColorsDto colorsDto;
-    private PhotoFramesDto photoFramesDto;
+    private DiscountsDto discountsDto;
 
     public Long getId() {
         return id;
@@ -79,11 +79,11 @@ public class PhotoFramesCommonDto implements Serializable, Identity {
         this.colorsDto = colorsDto;
     }
 
-    public PhotoFramesDto getPhotoFramesDto() {
-        return photoFramesDto;
+    public DiscountsDto getDiscountsDto() {
+        return discountsDto;
     }
 
-    public void setPhotoFramesDto(PhotoFramesDto photoFramesDto) {
-        this.photoFramesDto = photoFramesDto;
+    public void setDiscountsDto(DiscountsDto discountsDto) {
+        this.discountsDto = discountsDto;
     }
 }

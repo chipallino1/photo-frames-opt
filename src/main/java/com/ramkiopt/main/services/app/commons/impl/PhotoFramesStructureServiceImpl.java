@@ -44,34 +44,58 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
         photoFramesService.create(dto);
-        createEntities(dto.getSizesDtos(), sizesService);
-        createEntities(dto.getColorsDtos(), colorsService);
-        List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(dto);
-
-        if (dto.getDiscountsDtos() != null) {
-            createEntities(dto.getDiscountsDtos(), discountsService);
+        List<SizesDto> sizesDtos = createEntities(getSizesDtos(dto.getCommonDtos()), sizesService);
+        List<ColorsDto> colorsDtos = createEntities(getColorsDtos(dto.getCommonDtos()), colorsService);
+        List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, dto.getId());
+        List<DiscountsDto> discountsDtos = getDiscountsDtos(commonDtos);
+        if (validateDiscounts(discountsDtos)) {
+            createEntities(discountsDtos, discountsService);
         }
         return dto;
     }
 
-    private void setUpDiscounts(List<DiscountsDto> discountsDtos, List<PhotoFramesCommonDto> commonDtos) {
-        for (DiscountsDto d:
-             ) {
-            
-        }
+    private List<ColorsDto> getColorsDtos(List<PhotoFramesCommonDto> commonDtos) {
+        return commonDtos
+                .stream()
+                .collect(ArrayList::new, (list, item) -> {
+                    if (item.getColorsDto() != null) {
+                        list.add(item.getColorsDto());
+                    }
+                }, ArrayList::addAll);
     }
 
-    private List<PhotoFramesCommonDto> createPhotoFramesCommon(PhotoFramesDto dto) {
+    private List<SizesDto> getSizesDtos(List<PhotoFramesCommonDto> commonDtos) {
+        return commonDtos
+                .stream()
+                .collect(ArrayList::new, (list, item) -> {
+                    if (item.getSizesDto() != null) {
+                        list.add(item.getSizesDto());
+                    }
+                }, ArrayList::addAll);
+    }
+
+    private List<DiscountsDto> getDiscountsDtos(List<PhotoFramesCommonDto> commonDtos) {
+        return commonDtos
+                .stream()
+                .collect(ArrayList::new, (list, item) -> {
+                            if (item.getDiscountsDto() != null) {
+                                item.getDiscountsDto().setPhotoFrameCommonId(item.getId());
+                                list.add(item.getDiscountsDto());
+                            }
+                        },
+                        ArrayList::addAll);
+    }
+
+    private List<PhotoFramesCommonDto> createPhotoFramesCommon(List<ColorsDto> colorsDtos, List<SizesDto> sizesDtos,
+                                                               Long photoFrameId) {
         List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
         int i = 0;
-        for (SizesDto sizesDto : dto.getSizesDtos()) {
-            for (ColorsDto colorsDto : dto.getColorsDtos()) {
+        for (SizesDto sizesDto : sizesDtos) {
+            for (ColorsDto colorsDto : colorsDtos) {
                 PhotoFramesCommonDto commonDto = new PhotoFramesCommonDto();
                 commonDto.setSizeId(sizesDto.getId());
-                commonDto.setPhotoFrameId(dto.getId());
+                commonDto.setPhotoFrameId(photoFrameId);
                 commonDto.setColorId(colorsDto.getId());
-                commonDto.setCost(dto.getCosts().get(i));
-                commonDto.setPhotoSrc(dto.getPhotosSrcs().get(i));
                 commonDtos.add(commonDto);
                 i++;
             }
@@ -165,14 +189,14 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     @Override
     public PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto) {
-        if (dto.getColorsDtos() != null) {
-            createEntities(dto.getColorsDtos(), colorsService);
-        }
-        if (dto.getSizesDtos() != null) {
-            createEntities(dto.getSizesDtos(), sizesService);
+        List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
+        if (dto.getColorsDtos() != null && dto.getSizesDtos() != null) {
+            List<ColorsDto> colorsDtos = createEntities(getColorsDtos(dto.getCommonDtos()), colorsService);
+            List<SizesDto> sizesDtos = createEntities(getSizesDtos(dto.getCommonDtos()), sizesService);
+            commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, id);
         }
         if (dto.getDiscountsDtos() != null) {
-            updatePhotoFrameDiscounts(dto);
+            updatePhotoFrameDiscounts(getDiscountsDtos(commonDtos), dto.getId());
         }
         dto = photoFramesService.update(id, dto);
         return dto;
@@ -183,22 +207,43 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return photoFramesService.delete(id);
     }
 
-    private void updatePhotoFrameDiscounts(PhotoFramesDto dto) {
-
+    private void updatePhotoFrameDiscounts(List<DiscountsDto> discountsDtos, Long photoFrameCommonId) {
+        for (DiscountsDto discountsDto : discountsDtos) {
+            updatePhotoFrameDiscounts(discountsDto, photoFrameCommonId);
+        }
     }
 
-    private void validateDiscounts(DiscountsDto dto) {
-        if (dto.getPercentCount() == 0 || dto.getEndDate().before(new Date())) {
-            discountsService.deleteByPhotoFrameId(dto.getId());
-            return;
-        }
-        DiscountsDto discountsDto = discountsService.getByPhotoFrameCommonId(dto.getId());
-        if (discountsDto != null) {
-            discountsService.update(discountsDto.getId(), dto);
+    private void updatePhotoFrameDiscounts(DiscountsDto dto, Long photoFrameCommonId) {
+        if (validateDiscounts(dto)) {
+            dto.setPhotoFrameCommonId(photoFrameCommonId);
+            if (dto.getId() != null) {
+                discountsService.update(dto.getId(), dto);
+            } else {
+                discountsService.create(dto);
+            }
         } else {
-            dto.getDiscountsDtos().setPhotoFrameCommonId(dto.getId());
-            discountsService.create(dto.getDiscountsDtos());
+            if (dto.getId() != null) {
+                discountsService.delete(dto.getId());
+            } else {
+                // TODO: notify user about error.
+            }
         }
+    }
+
+    private boolean validateDiscounts(DiscountsDto dto) {
+        return dto.getPercentCount() != 0 || dto.getEndDate().after(new Date());
+    }
+
+    private boolean validateDiscounts(List<DiscountsDto> discountsDtos) {
+        if (discountsDtos.isEmpty()) {
+            return false;
+        }
+
+        boolean isValid = true;
+        for (DiscountsDto dto : discountsDtos) {
+            isValid = validateDiscounts(dto);
+        }
+        return isValid;
     }
 
     private <T extends Identity> List<T> updateEntities(List<T> dtos, BaseCrudService<T> baseCrudService) {
@@ -224,6 +269,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return costs;
     }
 
+    // TODO: move to the SizesService
     private List<SizesDto> getSizes(List<PhotoFramesCommonDto> commonDtos) {
         List<Long> ids = new ArrayList<>();
         for (PhotoFramesCommonDto dto : commonDtos) {

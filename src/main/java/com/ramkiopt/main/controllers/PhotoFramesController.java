@@ -50,7 +50,7 @@ public class PhotoFramesController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto,
+    public ResponseEntity<Object> createPhotoFrame(@RequestBody @Valid PhotoFramesDto dto,
                                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return responseService.createErrorResponse(bindingResult.getFieldErrors());
@@ -60,7 +60,7 @@ public class PhotoFramesController {
     }
 
     @PostMapping(value = "/addPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) {
+    public ResponseEntity<Object> createPhoto4PhotoFrame(@PathParam("id") Long id, @RequestParam MultipartFile file) {
         try {
             String imageSrc = fileStorageService.storeFile(file);
         } catch (IOException e) {
@@ -80,7 +80,7 @@ public class PhotoFramesController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity updatePhotoFrame(@RequestBody @Valid PhotoFramesDto photoFramesDto,
+    public ResponseEntity<Object> updatePhotoFrame(@RequestBody @Valid PhotoFramesDto photoFramesDto,
                                            BindingResult bindingResult) {
         List<String> excludedProperties = ReflectionUtilsService.getNullProperties(photoFramesDto);
         if (bindingResult.hasErrors()) {
@@ -92,12 +92,12 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity readPhotoFrame(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> readPhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.readPhotoFrame(id), HttpStatus.OK);
     }
 
     @GetMapping("/allByName")
-    public ResponseEntity readAllPhotoFrames(@PathParam("name") String name,
+    public ResponseEntity<Object> readAllPhotoFrames(@PathParam("name") String name,
                                              @PathParam("pageNumber") Integer pageNumber,
                                              @PathParam("offset") Integer offset) {
         Pageable pageable = PageRequest.of(pageNumber, offset);
@@ -106,7 +106,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/allOrderByCost")
-    public ResponseEntity readAllOrderByCost(@PathParam("name") String name,
+    public ResponseEntity<Object> readAllOrderByCost(@PathParam("name") String name,
                                              @PathParam("pageNumber") Integer pageNumber,
                                              @PathParam("offset") Integer offset) {
         Pageable pageable = PageRequest.of(pageNumber, offset);
@@ -115,7 +115,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/allOrderByCostDesc")
-    public ResponseEntity readAllOrderByCostDesc(@PathParam("name") String name,
+    public ResponseEntity<Object> readAllOrderByCostDesc(@PathParam("name") String name,
                                                  @PathParam("pageNumber") Integer pageNumber,
                                                  @PathParam("offset") Integer offset) {
         Pageable pageable = PageRequest.of(pageNumber, offset);
@@ -124,7 +124,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/allByNameOrderPopular")
-    public ResponseEntity readAllPhotoFramesOrderByPopularity(@PathParam("name") String name,
+    public ResponseEntity<Object> readAllPhotoFramesOrderByPopularity(@PathParam("name") String name,
                                                               @PathParam("pageNumber") Integer pageNumber,
                                                               @PathParam("offset") Integer offset) {
         Pageable pageable = PageRequest.of(pageNumber, offset);
@@ -134,7 +134,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/allWithDiscounts")
-    public ResponseEntity readAllWithDiscounts(@PathParam("pageNumber") Integer pageNumber,
+    public ResponseEntity<Object> readAllWithDiscounts(@PathParam("pageNumber") Integer pageNumber,
                                                @PathParam("offset") Integer offset) {
         return responseService
                 .createResponseEntity(photoFramesStructureService.readAllWithDiscounts(pageNumber, offset), HttpStatus.OK);
@@ -142,7 +142,7 @@ public class PhotoFramesController {
 
 
     @GetMapping("/allByColor")
-    public ResponseEntity readAllByColor(@PathParam("color") String color,
+    public ResponseEntity<Object> readAllByColor(@PathParam("color") String color,
                                          @PathParam("pageNumber") Integer pageNumber,
                                          @PathParam("offset") Integer offset) {
         return responseService.createResponseEntity(photoFramesStructureService.
@@ -150,7 +150,7 @@ public class PhotoFramesController {
     }
 
     @GetMapping("/allBySize")
-    public ResponseEntity readAllBySize(@PathParam("size") String size,
+    public ResponseEntity<Object> readAllBySize(@PathParam("size") String size,
                                         @PathParam("pageNumber") Integer pageNumber,
                                         @PathParam("offset") Integer offset) {
         return responseService.createResponseEntity(photoFramesStructureService.
@@ -159,7 +159,7 @@ public class PhotoFramesController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletePhotoFrame(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deletePhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.deletePhotoFrame(id), HttpStatus.OK);
     }
 }

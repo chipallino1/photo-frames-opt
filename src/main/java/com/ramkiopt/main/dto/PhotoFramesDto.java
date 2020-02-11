@@ -27,6 +27,9 @@ public class PhotoFramesDto implements Serializable, Identity {
     private List<ColorsDto> colorsDtos;
     private List<SizesDto> sizesDtos;
     private List<DiscountsDto> discountsDtos;
+
+    private List<PhotoFramesCommonDto> commonDtos;
+
     private Long popularity;
     private String imageSrc;
 
@@ -114,8 +117,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.userId = userId;
     }
 
-    @NotNull(message = "{validation.photoframes.photosSrcs.message}")
-    @Size(min = 1, message = "{validation.photoframes.photosSrcs.message}")
+    //@NotNull(message = "{validation.photoframes.photosSrcs.message}")
+    //@Size(min = 1, message = "{validation.photoframes.photosSrcs.message}")
     public List<String> getPhotosSrcs() {
         return photosSrcs;
     }
@@ -124,8 +127,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.photosSrcs = photosSrcs;
     }
 
-    @NotNull(message = "{validation.photoframes.costs.message}")
-    @Size(min = 1, message = "{validation.photoframes.costs.message}")
+    //@NotNull(message = "{validation.photoframes.costs.message}")
+    //@Size(min = 1, message = "{validation.photoframes.costs.message}")
     public List<Integer> getCosts() {
         return costs;
     }
@@ -134,8 +137,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.costs = costs;
     }
 
-    @NotNull(message = "{validation.photoframes.colorsListSize.message}")
-    @Size(min = 1, message = "{validation.photoframes.colorsListSize.message}")
+    //@NotNull(message = "{validation.photoframes.colorsListSize.message}")
+    //@Size(min = 1, message = "{validation.photoframes.colorsListSize.message}")
     public List<ColorsDto> getColorsDtos() {
         return colorsDtos;
     }
@@ -144,8 +147,8 @@ public class PhotoFramesDto implements Serializable, Identity {
         this.colorsDtos = colorsDtos;
     }
 
-    @NotNull(message = "{validation.photoframes.sizesListSize.message}")
-    @Size(min = 1, message = "{validation.photoframes.sizesListSize.message}")
+    //@NotNull(message = "{validation.photoframes.sizesListSize.message}")
+    //@Size(min = 1, message = "{validation.photoframes.sizesListSize.message}")
     public List<SizesDto> getSizesDtos() {
         return sizesDtos;
     }
@@ -192,5 +195,13 @@ public class PhotoFramesDto implements Serializable, Identity {
 
     public void setImageSrc(String imageSrc) {
         this.imageSrc = imageSrc;
+    }
+
+    public List<PhotoFramesCommonDto> getCommonDtos() {
+        return commonDtos;
+    }
+
+    public void setCommonDtos(List<PhotoFramesCommonDto> commonDtos) {
+        this.commonDtos = commonDtos;
     }
 }
