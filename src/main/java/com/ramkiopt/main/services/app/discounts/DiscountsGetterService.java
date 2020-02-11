@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface DiscountsGetterService<T> {
     T getByPhotoFrameCommonId(Long photoFrameId);
-    List<T> getByPhotoFrameCommonIds(Iterable<Long> ids);
+    List<T> getByPhotoFrameCommonIds(List<Long> ids);
 }
