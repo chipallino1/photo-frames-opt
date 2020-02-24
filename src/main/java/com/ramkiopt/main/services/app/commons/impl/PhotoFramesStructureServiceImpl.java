@@ -46,20 +46,24 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
         photoFramesService.create(dto);
-        createSizes(getSizesDtos(dto.getCommonDtos()));
-        createColors(getColorsDtos(dto.getCommonDtos()));
+        createPhotoFrameStructure(dto);
+        List<DiscountsDto> discountsDtos = getDiscountsDtos(dto.getCommonDtos());
+        if (validateDiscounts(discountsDtos)) {
+            createEntities(discountsDtos, discountsService);
+        }
+        return dto;
+    }
+
+    private void createPhotoFrameStructure(PhotoFramesDto dto){
+        List<PhotoFramesCommonDto> commonDtos = dto.getCommonDtos();
+        createSizes(getSizesDtos(commonDtos));
+        createColors(getColorsDtos(commonDtos));
         dto.getCommonDtos().forEach(item -> {
             item.setPhotoFrameId(dto.getId());
             item.setColorId(item.getColorId() != null ? item.getColorId() : item.getColorsDto().getId());
             item.setSizeId(item.getSizeId() != null ? item.getSizeId() : item.getSizesDto().getId());
         });
-        List<PhotoFramesCommonDto> commonDtos = createEntities(dto.getCommonDtos(), photoFramesCommonService);
-        //List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, dto.getId());
-        List<DiscountsDto> discountsDtos = getDiscountsDtos(commonDtos);
-        if (validateDiscounts(discountsDtos)) {
-            createEntities(discountsDtos, discountsService);
-        }
-        return dto;
+        createEntities(dto.getCommonDtos(), photoFramesCommonService);
     }
 
     private List<ColorsDto> getColorsDtos(List<PhotoFramesCommonDto> commonDtos) {
@@ -191,9 +195,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         List<ColorsDto> colorsDtos = getColorsDtos(commonDtos);
         List<SizesDto> sizesDtos = getSizesDtos(commonDtos);
         if (!colorsDtos.isEmpty() && !sizesDtos.isEmpty()) {
-            createEntities(colorsDtos, colorsService);
-            createEntities(sizesDtos, sizesService);
-            commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, id);
+            createPhotoFrameStructure(dto);
         }
 
         List<DiscountsDto> discountsDtos = getDiscountsDtos(commonDtos);
