@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureService {
@@ -44,9 +46,15 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public PhotoFramesDto createPhotoFrame(PhotoFramesDto dto) {
         photoFramesService.create(dto);
-        List<SizesDto> sizesDtos = createEntities(getSizesDtos(dto.getCommonDtos()), sizesService);
-        List<ColorsDto> colorsDtos = createEntities(getColorsDtos(dto.getCommonDtos()), colorsService);
-        List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, dto.getId());
+        createSizes(getSizesDtos(dto.getCommonDtos()));
+        createColors(getColorsDtos(dto.getCommonDtos()));
+        dto.getCommonDtos().forEach(item -> {
+            item.setPhotoFrameId(dto.getId());
+            item.setColorId(item.getColorId() != null ? item.getColorId() : item.getColorsDto().getId());
+            item.setSizeId(item.getSizeId() != null ? item.getSizeId() : item.getSizesDto().getId());
+        });
+        List<PhotoFramesCommonDto> commonDtos = createEntities(dto.getCommonDtos(), photoFramesCommonService);
+        //List<PhotoFramesCommonDto> commonDtos = createPhotoFramesCommon(colorsDtos, sizesDtos, dto.getId());
         List<DiscountsDto> discountsDtos = getDiscountsDtos(commonDtos);
         if (validateDiscounts(discountsDtos)) {
             createEntities(discountsDtos, discountsService);
@@ -57,21 +65,13 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     private List<ColorsDto> getColorsDtos(List<PhotoFramesCommonDto> commonDtos) {
         return commonDtos
                 .stream()
-                .collect(ArrayList::new, (list, item) -> {
-                    if (item.getColorsDto() != null) {
-                        list.add(item.getColorsDto());
-                    }
-                }, ArrayList::addAll);
+                .collect(ArrayList::new, (list, item) -> list.add(item.getColorsDto()), ArrayList::addAll);
     }
 
     private List<SizesDto> getSizesDtos(List<PhotoFramesCommonDto> commonDtos) {
         return commonDtos
                 .stream()
-                .collect(ArrayList::new, (list, item) -> {
-                    if (item.getSizesDto() != null) {
-                        list.add(item.getSizesDto());
-                    }
-                }, ArrayList::addAll);
+                .collect(ArrayList::new, (list, item) -> list.add(item.getSizesDto()), ArrayList::addAll);
     }
 
     private List<DiscountsDto> getDiscountsDtos(List<PhotoFramesCommonDto> commonDtos) {
@@ -89,7 +89,6 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     private List<PhotoFramesCommonDto> createPhotoFramesCommon(List<ColorsDto> colorsDtos, List<SizesDto> sizesDtos,
                                                                Long photoFrameId) {
         List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
-        int i = 0;
         for (SizesDto sizesDto : sizesDtos) {
             for (ColorsDto colorsDto : colorsDtos) {
                 PhotoFramesCommonDto commonDto = new PhotoFramesCommonDto();
@@ -97,7 +96,6 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
                 commonDto.setPhotoFrameId(photoFrameId);
                 commonDto.setColorId(colorsDto.getId());
                 commonDtos.add(commonDto);
-                i++;
             }
         }
         return photoFramesCommonService.createAll(commonDtos);
@@ -289,6 +287,30 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
                 baseCrudService.create(dto);
             }
         }
+        return dtos;
+    }
+
+    private List<ColorsDto> createColors(List<ColorsDto> dtos) {
+        Map<String, Long> existingColors = new HashMap<>();
+        dtos.forEach((item) -> {
+            item.setId(existingColors.get(item.getName()));
+            if (item.getId() == null) {
+                colorsService.create(item);
+                existingColors.put(item.getName(), item.getId());
+            }
+        });
+        return dtos;
+    }
+
+    private List<SizesDto> createSizes(List<SizesDto> dtos) {
+        Map<String, Long> existingSizes = new HashMap<>();
+        dtos.forEach((item) -> {
+            item.setId(existingSizes.get(item.getFormat()));
+            if (item.getId() == null) {
+                sizesService.create(item);
+                existingSizes.put(item.getFormat(), item.getId());
+            }
+        });
         return dtos;
     }
 }

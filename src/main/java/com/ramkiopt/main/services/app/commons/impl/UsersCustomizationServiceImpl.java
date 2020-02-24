@@ -43,7 +43,7 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
         dto.setRoles(dto.getRoles() == null ? Collections.singletonList(UserRole.USER) : dto.getRoles());
         dto.setPasswordEncrypted(dto.getPassword() == null ? null : passwordEncoder.encode(dto.getPassword()));
         dto = usersService.create(dto);
-        createUsersOnRoles(getRoles(), dto.getId());
+        createUsersOnRoles(getRolesIds(dto.getRoles()), dto.getId());
         return dto;
     }
 
@@ -55,9 +55,9 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
         return usersService.get(id);
     }
 
-    private List<Long> getRoles() {
-        return rolesRepository.findAll().parallelStream().collect(ArrayList::new,
-                (list, item) -> list.add(item.getId()), ArrayList::addAll);
+    private List<Long> getRolesIds(List<UserRole> userRoles) {
+        return userRoles.stream().collect(ArrayList::new,
+                (list, item) -> list.add(rolesRepository.findByName(item.name()).getId()), ArrayList::addAll);
     }
 
     private void createUsersOnRoles(List<Long> rolesIds, Long userId) {

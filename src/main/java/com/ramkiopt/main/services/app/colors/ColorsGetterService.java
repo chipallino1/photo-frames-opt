@@ -7,4 +7,5 @@ import java.util.List;
 public interface ColorsGetterService {
     List<ColorsDto> getColorsById(Iterable<Long> ids);
     List<String> getAllColorNamesDistinct();
+    ColorsDto getByName(String name);
 }

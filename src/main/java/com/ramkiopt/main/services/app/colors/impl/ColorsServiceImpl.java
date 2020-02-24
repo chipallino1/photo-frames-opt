@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,5 +78,12 @@ public class ColorsServiceImpl extends BaseServiceAbstract<Colors, ColorsDto> im
     @Override
     public List<String> getAllColorNamesDistinct() {
         return colorsRepository.findAllColorsNamesDistinct();
+    }
+
+    @Override
+    public ColorsDto getByName(String name) {
+        ColorsDto colorsDto = new ColorsDto();
+        ObjectMapper.mapCustom(colorsRepository.findByName(name), colorsDto);
+        return colorsDto;
     }
 }

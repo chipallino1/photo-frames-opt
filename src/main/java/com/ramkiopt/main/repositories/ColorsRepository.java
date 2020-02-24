@@ -11,4 +11,6 @@ import java.util.List;
 public interface ColorsRepository extends JpaRepository<Colors, Long> {
     @Query("SELECT DISTINCT c.name FROM Colors c")
     List<String> findAllColorsNamesDistinct();
+
+    List<Colors> findByName(String name);
 }

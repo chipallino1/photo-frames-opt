@@ -9,4 +9,5 @@ import java.util.List;
 
 @Repository
 public interface RolesRepository extends JpaRepository<Roles, Long> {
+    Roles findByName(String name);
 }
