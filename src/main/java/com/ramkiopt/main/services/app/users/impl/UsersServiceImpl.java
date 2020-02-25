@@ -7,6 +7,7 @@ import com.ramkiopt.main.repositories.UsersRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.users.UsersService;
+import com.ramkiopt.main.services.security.UserRole;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,6 +85,6 @@ public class UsersServiceImpl extends BaseServiceAbstract<Users, UsersDto> imple
 
     @Override
     public List<String> getRoles(String username) {
-        return usersOnRolesCriteriaRepository.getRoles(username, 0, 1);
+        return usersOnRolesCriteriaRepository.getRoles(username, 0, UserRole.values().length);
     }
 }

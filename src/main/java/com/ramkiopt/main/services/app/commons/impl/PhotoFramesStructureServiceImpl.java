@@ -54,7 +54,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return dto;
     }
 
-    private void createPhotoFrameStructure(PhotoFramesDto dto){
+    private void createPhotoFrameStructure(PhotoFramesDto dto) {
         List<PhotoFramesCommonDto> commonDtos = dto.getCommonDtos();
         createSizes(getSizesDtos(commonDtos));
         createColors(getColorsDtos(commonDtos));
@@ -88,21 +88,6 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
                             }
                         },
                         ArrayList::addAll);
-    }
-
-    private List<PhotoFramesCommonDto> createPhotoFramesCommon(List<ColorsDto> colorsDtos, List<SizesDto> sizesDtos,
-                                                               Long photoFrameId) {
-        List<PhotoFramesCommonDto> commonDtos = new ArrayList<>();
-        for (SizesDto sizesDto : sizesDtos) {
-            for (ColorsDto colorsDto : colorsDtos) {
-                PhotoFramesCommonDto commonDto = new PhotoFramesCommonDto();
-                commonDto.setSizeId(sizesDto.getId());
-                commonDto.setPhotoFrameId(photoFrameId);
-                commonDto.setColorId(colorsDto.getId());
-                commonDtos.add(commonDto);
-            }
-        }
-        return photoFramesCommonService.createAll(commonDtos);
     }
 
     @Override
@@ -176,13 +161,7 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     private void setUpPhotoFramesDto(PhotoFramesDto photoFramesDto) {
-        List<PhotoFramesCommonDto> commonDtos =
-                photoFramesCommonService.getEntitiesByPhotoFrameId(photoFramesDto.getId());
-        photoFramesDto.setPhotosSrcs(getPhotosSrcs(commonDtos));
-        photoFramesDto.setCosts(getCosts(commonDtos));
-        photoFramesDto.setSizesDtos(getSizes(commonDtos));
-        photoFramesDto.setColorsDtos(getColors(commonDtos));
-        photoFramesDto.setDiscountsDtos(discountsService.getByPhotoFrameCommonIds(getIds(commonDtos)));
+        photoFramesDto.setCommonDtos(photoFramesCommonService.getEntitiesByPhotoFrameId(photoFramesDto.getId()));
     }
 
     private <T extends Identity> List<Long> getIds(List<T> commonDtos) {

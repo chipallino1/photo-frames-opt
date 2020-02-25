@@ -60,6 +60,13 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
                 (list, item) -> list.add(rolesRepository.findByName(item.name()).getId()), ArrayList::addAll);
     }
 
+    private List<UserRole> getRolesByIds(List<Long> ids) {
+        return rolesRepository.findAllById(ids)
+                .stream()
+                .collect(ArrayList::new, (result, item) -> result.add(UserRole.valueOf(item.getName())),
+                        ArrayList::addAll);
+    }
+
     private void createUsersOnRoles(List<Long> rolesIds, Long userId) {
         usersOnRolesRepository.saveAll(rolesIds.parallelStream().collect(ArrayList::new,
                 (list, roleId) -> list.add(createUsersOnRoles(roleId, userId)), ArrayList::addAll));
@@ -75,7 +82,12 @@ public class UsersCustomizationServiceImpl implements UsersCustomizationService 
 
     @Override
     public UsersDto readUserByEmail(String email) {
-        return usersService.getByEmail(email);
+        UsersDto usersDto = usersService.getByEmail(email);
+        List<Long> rolesIds = usersOnRolesRepository.findAllByUserId(usersDto.getId())
+                .stream()
+                .collect(ArrayList::new, (result, item) -> result.add(item.getRoleId()), ArrayList::addAll);
+        usersDto.setRoles(getRolesByIds(rolesIds));
+        return usersDto;
     }
 
     @Override

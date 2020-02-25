@@ -1,6 +1,9 @@
 package com.ramkiopt.main.services.app.photoframescommon.impl;
 
+import com.ramkiopt.main.dto.ColorsDto;
+import com.ramkiopt.main.dto.DiscountsDto;
 import com.ramkiopt.main.dto.PhotoFramesCommonDto;
+import com.ramkiopt.main.dto.SizesDto;
 import com.ramkiopt.main.entities.PhotoFramesCommon;
 import com.ramkiopt.main.repositories.PhotoFramesCommonRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
@@ -52,6 +55,33 @@ public class PhotoFramesCommonServiceImpl extends BaseServiceAbstract<PhotoFrame
 
     @Override
     public List<PhotoFramesCommonDto> getEntitiesByPhotoFrameId(Long id) {
-        return ObjectMapper.mapListLambda(commonRepository.findAllByPhotoFrameId(id), PhotoFramesCommonDto.class);
+        List<PhotoFramesCommon> commons = commonRepository.findAllByPhotoFrameId(id);
+        List<PhotoFramesCommonDto> commonDtos = ObjectMapper.mapListLambda(commons, PhotoFramesCommonDto.class);
+        for (int i = 0; i < commonDtos.size(); i++) {
+            setColorsDto(commons.get(i), commonDtos.get(i));
+            setSizesDto(commons.get(i), commonDtos.get(i));
+            if (commons.get(i).getDiscountsById() != null) {
+                setDiscountsDto(commons.get(i), commonDtos.get(i));
+            }
+        }
+        return commonDtos;
+    }
+
+    private void setColorsDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        ColorsDto colorsDto = new ColorsDto();
+        ObjectMapper.mapCustom(common.getColorsByColorId(), colorsDto);
+        commonDto.setColorsDto(colorsDto);
+    }
+
+    private void setSizesDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        SizesDto sizesDto = new SizesDto();
+        ObjectMapper.mapCustom(common.getSizesBySizeId(), sizesDto);
+        commonDto.setSizesDto(sizesDto);
+    }
+
+    private void setDiscountsDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        DiscountsDto discountsDto = new DiscountsDto();
+        ObjectMapper.mapCustom(common.getDiscountsById(), discountsDto);
+        commonDto.setDiscountsDto(discountsDto);
     }
 }
