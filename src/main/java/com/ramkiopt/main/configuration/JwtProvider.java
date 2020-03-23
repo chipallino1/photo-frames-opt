@@ -66,7 +66,7 @@ public class JwtProvider {
         return null;
     }
 
-    boolean validateToken(String token) {
+    boolean validateToken(String token) throws ExpiredJwtException {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         return !claims.getBody().getExpiration().before(new Date());
     }

@@ -3,6 +3,7 @@ package com.ramkiopt.main.configuration;
 
 import com.google.gson.Gson;
 import com.ramkiopt.main.services.security.CustomUserDetailsService;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,27 +30,32 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    //TODO refactored
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String jwt = getJwtFromRequest(request);
         jwt = request.getParameter("token") == null ? jwt : request.getParameter("token");
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            String username = tokenProvider.getUsername(jwt);
+        try {
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                String username = tokenProvider.getUsername(jwt);
 
-            UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authentication
-                    = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken authentication
+                        = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            if (request.getParameter("token") != null) {
-                response.setContentType("application/json");
-                Map<Object, Object> model = new HashMap<>();
-                model.put("username", username);
-                model.put("token", jwt);
-                response.getOutputStream().print(new Gson().toJson(model));
-                return;
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (request.getParameter("token") != null) {
+                    response.setContentType("application/json");
+                    Map<Object, Object> model = new HashMap<>();
+                    model.put("username", username);
+                    model.put("token", jwt);
+                    response.getOutputStream().print(new Gson().toJson(model));
+                    return;
+                }
             }
+        } catch (ExpiredJwtException ex) {
+
         }
 
         filterChain.doFilter(request, response);
