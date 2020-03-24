@@ -1,12 +1,14 @@
 package com.ramkiopt.main.dto;
 
 import com.ramkiopt.main.entities.Identity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 
 public class PhotoFramesCommonDto implements Serializable, Identity {
     private Long id;
     private String photoSrc;
+    private String imageFile;
     private Integer cost;
     private Long photoFrameId;
     private Long sizeId;
@@ -21,6 +23,14 @@ public class PhotoFramesCommonDto implements Serializable, Identity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getImageFile() {
+        return imageFile;
+    }
+
+    public void setImageFile(String imageFile) {
+        this.imageFile = imageFile;
     }
 
     public String getPhotoSrc() {

@@ -7,7 +7,9 @@ import java.io.IOException;
 
 public interface FileStorageService {
 
-    String storeFile(MultipartFile file) throws IOException;
+    String storeFile(MultipartFile file);
+
+    String storeFile(String base64File);
 
     Resource loadFileAsResource(String fileName) throws Exception;
 }

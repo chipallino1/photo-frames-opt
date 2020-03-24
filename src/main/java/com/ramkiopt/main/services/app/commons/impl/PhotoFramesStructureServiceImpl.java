@@ -13,6 +13,7 @@ import com.ramkiopt.main.services.app.discounts.DiscountsService;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
 import com.ramkiopt.main.services.app.photoframescommon.PhotoFramesCommonService;
 import com.ramkiopt.main.services.app.sizes.SizesService;
+import com.ramkiopt.main.services.utils.FileStorageService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,21 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     private final SizesService<SizesDto> sizesService;
     private final DiscountsService<DiscountsDto> discountsService;
     private final PhotoFramesCommonService<PhotoFramesCommonDto> photoFramesCommonService;
+    private final FileStorageService fileStorageService;
 
     public PhotoFramesStructureServiceImpl(
             PhotoFramesService<PhotoFramesDto> photoFramesService,
             ColorsService<ColorsDto> colorsService,
             SizesService<SizesDto> sizesService,
             DiscountsService<DiscountsDto> discountsService,
-            PhotoFramesCommonService<PhotoFramesCommonDto> photoFramesCommonService) {
+            PhotoFramesCommonService<PhotoFramesCommonDto> photoFramesCommonService,
+            FileStorageService fileStorageService) {
         this.photoFramesService = photoFramesService;
         this.colorsService = colorsService;
         this.sizesService = sizesService;
         this.discountsService = discountsService;
         this.photoFramesCommonService = photoFramesCommonService;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -59,12 +63,14 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         createSizes(getSizesDtos(commonDtos));
         createColors(getColorsDtos(commonDtos));
         dto.getCommonDtos().forEach(item -> {
+            item.setPhotoSrc(fileStorageService.storeFile(item.getImageFile()));
             item.setPhotoFrameId(dto.getId());
             item.setColorId(item.getColorId() != null ? item.getColorId() : item.getColorsDto().getId());
             item.setSizeId(item.getSizeId() != null ? item.getSizeId() : item.getSizesDto().getId());
         });
         createEntities(dto.getCommonDtos(), photoFramesCommonService);
     }
+
 
     private List<ColorsDto> getColorsDtos(List<PhotoFramesCommonDto> commonDtos) {
         return commonDtos
