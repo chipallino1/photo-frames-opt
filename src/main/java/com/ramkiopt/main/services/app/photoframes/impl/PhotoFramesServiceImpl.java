@@ -167,4 +167,14 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
         ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
         return photoFramesDtos;
     }
+
+    @Override
+    public List<String> readAllInsideMaterials() {
+        return photoFramesRepository.findAllInsideMaterials();
+    }
+
+    @Override
+    public List<String> readAllBorderMaterials() {
+        return photoFramesRepository.findAllBorderMaterials();
+    }
 }

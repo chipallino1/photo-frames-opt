@@ -1,7 +1,6 @@
 package com.ramkiopt.main.dto;
 
 import com.ramkiopt.main.entities.Identity;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 

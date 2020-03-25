@@ -24,6 +24,10 @@ public interface PhotoFramesStructureService {
 
     List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize);
 
+    List<String> readAllInsideMaterials();
+
+    List<String> readAllBorderMaterials();
+
     PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto);
 
     Boolean deletePhotoFrame(Long id);

@@ -157,4 +157,14 @@ public class PhotoFramesController {
     public ResponseEntity<Object> deletePhotoFrame(@PathVariable("id") Long id) {
         return responseService.createResponseEntity(photoFramesStructureService.deletePhotoFrame(id), HttpStatus.OK);
     }
+
+    @GetMapping("/insideMaterials")
+    public ResponseEntity<Object> getInsideMaterials() {
+        return responseService.createResponseEntity(photoFramesStructureService.readAllInsideMaterials(), HttpStatus.OK);
+    }
+
+    @GetMapping("/borderMaterials")
+    public ResponseEntity<Object> getBorderMaterials() {
+        return responseService.createResponseEntity(photoFramesStructureService.readAllBorderMaterials(), HttpStatus.OK);
+    }
 }

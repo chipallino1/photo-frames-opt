@@ -166,6 +166,16 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
         return photoFramesDtos;
     }
 
+    @Override
+    public List<String> readAllInsideMaterials() {
+        return photoFramesService.readAllInsideMaterials();
+    }
+
+    @Override
+    public List<String> readAllBorderMaterials() {
+        return photoFramesService.readAllBorderMaterials();
+    }
+
     private void setUpPhotoFramesDto(PhotoFramesDto photoFramesDto) {
         photoFramesDto.setCommonDtos(photoFramesCommonService.getEntitiesByPhotoFrameId(photoFramesDto.getId()));
     }
