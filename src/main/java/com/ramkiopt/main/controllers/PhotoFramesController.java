@@ -153,12 +153,31 @@ public class PhotoFramesController {
     public ResponseEntity<Object> readAllBySize(@PathParam("sizes") String sizes,
                                                 @PathParam("pageNumber") Integer pageNumber,
                                                 @PathParam("offset") Integer offset) {
-        List<String> sizesName = sizes.contains(",") ? Arrays.asList(sizes.split(","))
+        List<String> sizeNames = sizes.contains(",") ? Arrays.asList(sizes.split(","))
                 : Collections.singletonList(sizes);
         return responseService.createResponseEntity(photoFramesStructureService.
-                readAllBySizes(sizesName, pageNumber, offset), HttpStatus.OK);
+                readAllBySizes(sizeNames, pageNumber, offset), HttpStatus.OK);
     }
 
+    @GetMapping("/allByAllParams")
+    public ResponseEntity<Object> readAllBySize(@PathParam("colors") String colors,
+                                                @PathParam("sizes") String sizes,
+                                                @PathParam("insideMaterials") String insideMaterials,
+                                                @PathParam("borderMaterials") String borderMaterials,
+                                                @PathParam("pageNumber") Integer pageNumber,
+                                                @PathParam("offset") Integer offset) {
+        List<String> colorNames = colors.contains(",") ? Arrays.asList(colors.split(","))
+                : Collections.singletonList(colors);
+        List<String> sizeNames = sizes.contains(",") ? Arrays.asList(sizes.split(","))
+                : Collections.singletonList(sizes);
+        List<String> insideMaterialNames = insideMaterials.contains(",") ?
+                Arrays.asList(insideMaterials.split(",")) : Collections.singletonList(insideMaterials);
+        List<String> borderMaterialNames = borderMaterials.contains(",") ?
+                Arrays.asList(borderMaterials.split(",")) : Collections.singletonList(borderMaterials);
+        return responseService.createResponseEntity(
+                photoFramesStructureService.readAllByAllParams(colorNames, sizeNames, insideMaterialNames,
+                        borderMaterialNames, pageNumber, offset), HttpStatus.OK);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deletePhotoFrame(@PathVariable("id") Long id) {

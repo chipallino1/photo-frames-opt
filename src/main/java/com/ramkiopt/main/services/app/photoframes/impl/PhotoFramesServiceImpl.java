@@ -8,7 +8,6 @@ import com.ramkiopt.main.repositories.PhotoFramesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
 import com.ramkiopt.main.services.app.base.RowStatus;
 import com.ramkiopt.main.services.app.photoframes.PhotoFramesService;
-import com.ramkiopt.main.services.utils.JpaCollections;
 import com.ramkiopt.main.services.utils.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,14 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
                                   PhotoFramesCriteriaRepository photoFramesCriteriaRepository) {
         this.photoFramesRepository = photoFramesRepository;
         this.photoFramesCriteriaRepository = photoFramesCriteriaRepository;
+    }
+
+    private Iterable<Long> getIterableByPhotoFrameId(List<PhotoFramesCommon> list) {
+        List<Long> iterable = new ArrayList<>();
+        list.forEach(item -> {
+            iterable.add(item.getPhotoFrameId());
+        });
+        return iterable;
     }
 
     @PostConstruct
@@ -104,12 +111,19 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
 
     @Override
     public List<PhotoFramesDto> getBySizes(List<String> sizes, Integer pageNum, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findBySize(sizes, pageNum, pageSize));
+        return getAllByIds(photoFramesCriteriaRepository.findBySizes(sizes, pageNum, pageSize));
+    }
+
+    @Override
+    public List<PhotoFramesDto> getByAllParameters(List<String> colors, List<String> sizes, List<String> insideMaterials,
+                                                   List<String> borderMaterials, Integer pageNumber, Integer pageSize) {
+        return getAllByIds(photoFramesCriteriaRepository.findByAllParameters(colors, sizes, insideMaterials,
+                borderMaterials, pageNumber, pageSize));
     }
 
     private List<PhotoFramesDto> getAllByIds(List<PhotoFramesCommon> photoFramesCommon) {
         List<PhotoFrames> photoFrames =
-                photoFramesRepository.findAllById(JpaCollections.getIterableById(photoFramesCommon));
+                photoFramesRepository.findAllById(getIterableByPhotoFrameId(photoFramesCommon));
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
         for (int i = 0; i < photoFrames.size(); i++) {
             photoFramesDtos.add(new PhotoFramesDto());

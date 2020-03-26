@@ -167,6 +167,17 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     @Override
+    public List<PhotoFramesDto> readAllByAllParams(List<String> colors, List<String> sizes, List<String> insideMaterials,
+                                                   List<String> borderMaterials, Integer pageNumber, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByAllParameters(colors, sizes, insideMaterials,
+                borderMaterials, pageNumber, pageSize);
+        for (PhotoFramesDto dto : photoFramesDtos) {
+            setUpPhotoFramesDto(dto);
+        }
+        return photoFramesDtos;
+    }
+
+    @Override
     public List<String> readAllInsideMaterials() {
         return photoFramesService.readAllInsideMaterials();
     }

@@ -24,6 +24,9 @@ public interface PhotoFramesStructureService {
 
     List<PhotoFramesDto> readAllBySizes(List<String> sizes, Integer pageNum, Integer pageSize);
 
+    List<PhotoFramesDto> readAllByAllParams(List<String> colors, List<String> sizes, List<String> insideMaterials,
+                                            List<String> borderMaterials, Integer pageNumber, Integer pageSize);
+
     List<String> readAllInsideMaterials();
 
     List<String> readAllBorderMaterials();

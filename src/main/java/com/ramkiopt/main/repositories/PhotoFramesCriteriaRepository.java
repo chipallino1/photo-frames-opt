@@ -11,9 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -36,7 +34,7 @@ public class PhotoFramesCriteriaRepository {
                 .getResultList();
     }
 
-    public List<PhotoFramesCommon> findBySize(List<String> sizes, Integer pageNumber, Integer pageSize) {
+    public List<PhotoFramesCommon> findBySizes(List<String> sizes, Integer pageNumber, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
         Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
@@ -48,6 +46,23 @@ public class PhotoFramesCriteriaRepository {
                 .getResultList();
     }
 
+    public List<PhotoFramesCommon> findByAllParameters(List<String> colors, List<String> sizes,
+                                                       List<String> insideMaterials, List<String> borderMaterials,
+                                                       Integer pageNumber, Integer pageSize) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
+        Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
+        Join<PhotoFramesCommon, Sizes> joinSizes = root.join("sizesBySizeId");
+        Join<PhotoFramesCommon, Sizes> joinColors = root.join("colorsByColorId");
+        Join<PhotoFramesCommon, Sizes> joinPhotoFrames = root.join("photoFramesByPhotoFrameId");
+        query.select(root).where(criteriaBuilder.and(joinColors.get("name").in(colors),
+                joinSizes.get("format").in(sizes), joinPhotoFrames.get("insideMaterial").in(insideMaterials),
+                joinPhotoFrames.get("borderMaterial").in(borderMaterials)));
+        return entityManager.createQuery(query)
+                .setFirstResult((pageNumber - 1) * pageSize)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
 
     public List<PhotoFrames> findWithDiscounts(Integer pageNumber, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
