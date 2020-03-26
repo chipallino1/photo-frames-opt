@@ -98,8 +98,8 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     }
 
     @Override
-    public List<PhotoFramesDto> getByColor(String color, Integer pageNum, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findByColor(color, pageNum, pageSize));
+    public List<PhotoFramesDto> getByColors(List<String> color, Integer pageNum, Integer pageSize) {
+        return getAllByIds(photoFramesCriteriaRepository.findByColors(color, pageNum, pageSize));
     }
 
     @Override

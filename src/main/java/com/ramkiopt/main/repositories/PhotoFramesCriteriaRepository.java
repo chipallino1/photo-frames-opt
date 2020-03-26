@@ -11,7 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -22,12 +24,12 @@ public class PhotoFramesCriteriaRepository {
         this.entityManager = entityManager;
     }
 
-    public List<PhotoFramesCommon> findByColor(String color, Integer pageNumber, Integer pageSize) {
+    public List<PhotoFramesCommon> findByColors(List<String> colorNames, Integer pageNumber, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
         Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
-        Join<PhotoFramesCommon, Colors> join = root.join(Colors.class.getTypeName());
-        query.select(root).where(criteriaBuilder.equal(join.get("name"), color));
+        Join<PhotoFramesCommon, Colors> join = root.join("colorsByColorId");
+        query.select(root).where(join.get("name").in(colorNames));
         return entityManager.createQuery(query)
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)
@@ -45,6 +47,7 @@ public class PhotoFramesCriteriaRepository {
                 .setMaxResults(pageSize)
                 .getResultList();
     }
+
 
     public List<PhotoFrames> findWithDiscounts(Integer pageNumber, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

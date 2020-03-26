@@ -7,7 +7,7 @@ import java.util.List;
 public interface PhotoFramesGetterService<T> {
     List<T> getAllByName(String name, Pageable pageable);
 
-    List<T> getByColor(String color, Integer pageNum, Integer pageSize);
+    List<T> getByColors(List<String> colorNames, Integer pageNum, Integer pageSize);
 
     List<T> getBySize(String size, Integer pageNum, Integer pageSize);
 

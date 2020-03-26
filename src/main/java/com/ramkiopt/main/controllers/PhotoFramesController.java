@@ -30,6 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -132,16 +134,19 @@ public class PhotoFramesController {
     public ResponseEntity<Object> readAllWithDiscounts(@PathParam("pageNumber") Integer pageNumber,
                                                        @PathParam("offset") Integer offset) {
         return responseService
-                .createResponseEntity(photoFramesStructureService.readAllWithDiscounts(pageNumber, offset), HttpStatus.OK);
+                .createResponseEntity(photoFramesStructureService.readAllWithDiscounts(pageNumber, offset),
+                        HttpStatus.OK);
     }
 
 
     @GetMapping("/allByColor")
-    public ResponseEntity<Object> readAllByColor(@PathParam("color") String color,
+    public ResponseEntity<Object> readAllByColor(@PathParam("colors") String colors,
                                                  @PathParam("pageNumber") Integer pageNumber,
                                                  @PathParam("offset") Integer offset) {
+        List<String> colorNames = colors.contains(",") ? Arrays.asList(colors.split(","))
+                : Collections.singletonList(colors);
         return responseService.createResponseEntity(photoFramesStructureService.
-                readAllByColor(color, pageNumber, offset), HttpStatus.OK);
+                readAllByColors(colorNames, pageNumber, offset), HttpStatus.OK);
     }
 
     @GetMapping("/allBySize")

@@ -149,8 +149,8 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     @Override
-    public List<PhotoFramesDto> readAllByColor(String color, Integer pageNum, Integer pageSize) {
-        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByColor(color, pageNum, pageSize);
+    public List<PhotoFramesDto> readAllByColors(List<String> colorNames, Integer pageNum, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByColors(colorNames, pageNum, pageSize);
         for (PhotoFramesDto dto : photoFramesDtos) {
             setUpPhotoFramesDto(dto);
         }
