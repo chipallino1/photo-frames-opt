@@ -139,7 +139,7 @@ public class PhotoFramesController {
     }
 
 
-    @GetMapping("/allByColor")
+    @GetMapping("/allByColors")
     public ResponseEntity<Object> readAllByColor(@PathParam("colors") String colors,
                                                  @PathParam("pageNumber") Integer pageNumber,
                                                  @PathParam("offset") Integer offset) {
@@ -149,12 +149,14 @@ public class PhotoFramesController {
                 readAllByColors(colorNames, pageNumber, offset), HttpStatus.OK);
     }
 
-    @GetMapping("/allBySize")
-    public ResponseEntity<Object> readAllBySize(@PathParam("size") String size,
+    @GetMapping("/allBySizes")
+    public ResponseEntity<Object> readAllBySize(@PathParam("sizes") String sizes,
                                                 @PathParam("pageNumber") Integer pageNumber,
                                                 @PathParam("offset") Integer offset) {
+        List<String> sizesName = sizes.contains(",") ? Arrays.asList(sizes.split(","))
+                : Collections.singletonList(sizes);
         return responseService.createResponseEntity(photoFramesStructureService.
-                readAllBySize(size, pageNumber, offset), HttpStatus.OK);
+                readAllBySizes(sizesName, pageNumber, offset), HttpStatus.OK);
     }
 
 

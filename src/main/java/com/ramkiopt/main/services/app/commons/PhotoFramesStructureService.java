@@ -22,7 +22,7 @@ public interface PhotoFramesStructureService {
 
     List<PhotoFramesDto> readAllByColors(List<String> colorNames, Integer pageNum, Integer pageSize);
 
-    List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize);
+    List<PhotoFramesDto> readAllBySizes(List<String> sizes, Integer pageNum, Integer pageSize);
 
     List<String> readAllInsideMaterials();
 

@@ -103,8 +103,8 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     }
 
     @Override
-    public List<PhotoFramesDto> getBySize(String size, Integer pageNum, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findBySize(size, pageNum, pageSize));
+    public List<PhotoFramesDto> getBySizes(List<String> sizes, Integer pageNum, Integer pageSize) {
+        return getAllByIds(photoFramesCriteriaRepository.findBySize(sizes, pageNum, pageSize));
     }
 
     private List<PhotoFramesDto> getAllByIds(List<PhotoFramesCommon> photoFramesCommon) {

@@ -36,12 +36,12 @@ public class PhotoFramesCriteriaRepository {
                 .getResultList();
     }
 
-    public List<PhotoFramesCommon> findBySize(String size, Integer pageNumber, Integer pageSize) {
+    public List<PhotoFramesCommon> findBySize(List<String> sizes, Integer pageNumber, Integer pageSize) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PhotoFramesCommon> query = criteriaBuilder.createQuery(PhotoFramesCommon.class);
         Root<PhotoFramesCommon> root = query.from(PhotoFramesCommon.class);
-        Join<PhotoFramesCommon, Sizes> join = root.join(Sizes.class.getTypeName());
-        query.select(root).where(criteriaBuilder.equal(join.get("format"), size));
+        Join<PhotoFramesCommon, Sizes> join = root.join("sizesBySizeId");
+        query.select(root).where(join.get("format").in(sizes));
         return entityManager.createQuery(query)
                 .setFirstResult((pageNumber - 1) * pageSize)
                 .setMaxResults(pageSize)

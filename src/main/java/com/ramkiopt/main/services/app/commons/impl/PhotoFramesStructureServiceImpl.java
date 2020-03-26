@@ -158,8 +158,8 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     }
 
     @Override
-    public List<PhotoFramesDto> readAllBySize(String size, Integer pageNum, Integer pageSize) {
-        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getBySize(size, pageNum, pageSize);
+    public List<PhotoFramesDto> readAllBySizes(List<String> sizes, Integer pageNum, Integer pageSize) {
+        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getBySizes(sizes, pageNum, pageSize);
         for (PhotoFramesDto dto : photoFramesDtos) {
             setUpPhotoFramesDto(dto);
         }

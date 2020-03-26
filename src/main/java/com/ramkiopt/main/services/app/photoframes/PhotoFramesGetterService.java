@@ -9,7 +9,7 @@ public interface PhotoFramesGetterService<T> {
 
     List<T> getByColors(List<String> colorNames, Integer pageNum, Integer pageSize);
 
-    List<T> getBySize(String size, Integer pageNum, Integer pageSize);
+    List<T> getBySizes(List<String> sizes, Integer pageNum, Integer pageSize);
 
     List<T> getAllByNameOrderByPopularityDesc(String name, Pageable pageable);
 
