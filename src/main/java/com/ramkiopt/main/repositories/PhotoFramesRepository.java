@@ -20,6 +20,10 @@ public interface PhotoFramesRepository extends JpaRepository<PhotoFrames, Long> 
 
     Page<PhotoFrames> findAllByNameLikeAndRowStatusOrderByCost(String name, RowStatus status, Pageable pageable);
 
+    Page<PhotoFrames> findAllByBorderMaterialIsIn(List<String> borderMaterials, Pageable pageable);
+
+    Page<PhotoFrames> findAllByInsideMaterialIsIn(List<String> insideMaterials, Pageable pageable);
+
     Page<PhotoFrames> findAllByBorderMaterialLikeAndRowStatus(String borderMaterial, RowStatus status, Pageable pageable);
 
     @Query("SELECT DISTINCT p.insideMaterial FROM PhotoFrames p")

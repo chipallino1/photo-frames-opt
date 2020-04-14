@@ -11,6 +11,10 @@ public interface PhotoFramesGetterService<T> {
 
     List<T> getBySizes(List<String> sizes, Integer pageNum, Integer pageSize);
 
+    List<T> getByBorderMaterials(List<String> borderMaterials, Pageable pageable);
+
+    List<T> getByInsideMaterials(List<String> insideMaterials, Pageable pageable);
+
     List<T> getByAllParameters(List<String> colors, List<String> sizes, List<String> insideMaterials,
                                List<String> borderMaterials, Integer pageNumber, Integer pageSize);
 

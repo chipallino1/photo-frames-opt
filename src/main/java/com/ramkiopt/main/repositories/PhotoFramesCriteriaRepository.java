@@ -29,7 +29,7 @@ public class PhotoFramesCriteriaRepository {
         Join<PhotoFramesCommon, Colors> join = root.join("colorsByColorId");
         query.select(root).where(join.get("name").in(colorNames));
         return entityManager.createQuery(query)
-                .setFirstResult((pageNumber - 1) * pageSize)
+                .setFirstResult(pageNumber * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
     }
@@ -41,7 +41,7 @@ public class PhotoFramesCriteriaRepository {
         Join<PhotoFramesCommon, Sizes> join = root.join("sizesBySizeId");
         query.select(root).where(join.get("format").in(sizes));
         return entityManager.createQuery(query)
-                .setFirstResult((pageNumber - 1) * pageSize)
+                .setFirstResult(pageNumber * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
     }
@@ -59,7 +59,7 @@ public class PhotoFramesCriteriaRepository {
                 joinSizes.get("format").in(sizes), joinPhotoFrames.get("insideMaterial").in(insideMaterials),
                 joinPhotoFrames.get("borderMaterial").in(borderMaterials)));
         return entityManager.createQuery(query)
-                .setFirstResult((pageNumber - 1) * pageSize)
+                .setFirstResult(pageNumber * pageSize)
                 .setMaxResults(pageSize)
                 .getResultList();
     }

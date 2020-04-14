@@ -159,6 +159,28 @@ public class PhotoFramesController {
                 readAllBySizes(sizeNames, pageNumber, offset), HttpStatus.OK);
     }
 
+    @GetMapping("/allByBorderMaterials")
+    public ResponseEntity<Object> readAllByBorderMaterials(@PathParam("borderMaterials") String borderMaterials,
+                                                           @PathParam("pageNumber") Integer pageNumber,
+                                                           @PathParam("offset") Integer offset) {
+        Pageable pageable = PageRequest.of(pageNumber, offset);
+        List<String> borderMaterialNames = borderMaterials.contains(",") ? Arrays.asList(borderMaterials.split(","))
+                : Collections.singletonList(borderMaterials);
+        return responseService.createResponseEntity(photoFramesStructureService.
+                readAllByBorderMaterials(borderMaterialNames, pageable), HttpStatus.OK);
+    }
+
+    @GetMapping("/allByInsideMaterials")
+    public ResponseEntity<Object> readAllByInsideMaterials(@PathParam("insideMaterials") String insideMaterials,
+                                                           @PathParam("pageNumber") Integer pageNumber,
+                                                           @PathParam("offset") Integer offset) {
+        Pageable pageable = PageRequest.of(pageNumber, offset);
+        List<String> insideMaterialNames = insideMaterials.contains(",") ? Arrays.asList(insideMaterials.split(","))
+                : Collections.singletonList(insideMaterials);
+        return responseService.createResponseEntity(photoFramesStructureService.
+                readAllByInsideMaterials(insideMaterialNames, pageable), HttpStatus.OK);
+    }
+
     @GetMapping("/allByAllParams")
     public ResponseEntity<Object> readAllBySize(@PathParam("colors") String colors,
                                                 @PathParam("sizes") String sizes,

@@ -150,31 +150,19 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
 
     @Override
     public List<PhotoFramesDto> readAllByColors(List<String> colorNames, Integer pageNum, Integer pageSize) {
-        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByColors(colorNames, pageNum, pageSize);
-        for (PhotoFramesDto dto : photoFramesDtos) {
-            setUpPhotoFramesDto(dto);
-        }
-        return photoFramesDtos;
+        return photoFramesService.getByColors(colorNames, pageNum, pageSize);
     }
 
     @Override
     public List<PhotoFramesDto> readAllBySizes(List<String> sizes, Integer pageNum, Integer pageSize) {
-        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getBySizes(sizes, pageNum, pageSize);
-        for (PhotoFramesDto dto : photoFramesDtos) {
-            setUpPhotoFramesDto(dto);
-        }
-        return photoFramesDtos;
+        return photoFramesService.getBySizes(sizes, pageNum, pageSize);
     }
 
     @Override
     public List<PhotoFramesDto> readAllByAllParams(List<String> colors, List<String> sizes, List<String> insideMaterials,
                                                    List<String> borderMaterials, Integer pageNumber, Integer pageSize) {
-        List<PhotoFramesDto> photoFramesDtos = photoFramesService.getByAllParameters(colors, sizes, insideMaterials,
+        return photoFramesService.getByAllParameters(colors, sizes, insideMaterials,
                 borderMaterials, pageNumber, pageSize);
-        for (PhotoFramesDto dto : photoFramesDtos) {
-            setUpPhotoFramesDto(dto);
-        }
-        return photoFramesDtos;
     }
 
     @Override
@@ -215,6 +203,16 @@ public class PhotoFramesStructureServiceImpl implements PhotoFramesStructureServ
     @Override
     public Boolean deletePhotoFrame(Long id) {
         return photoFramesService.delete(id);
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllByBorderMaterials(List<String> borderMaterials, Pageable pageable) {
+        return photoFramesService.getByBorderMaterials(borderMaterials, pageable);
+    }
+
+    @Override
+    public List<PhotoFramesDto> readAllByInsideMaterials(List<String> borderMaterials, Pageable pageable) {
+        return photoFramesService.getByInsideMaterials(borderMaterials, pageable);
     }
 
     private void updatePhotoFrameDiscounts(List<DiscountsDto> discountsDtos, Long photoFrameCommonId) {

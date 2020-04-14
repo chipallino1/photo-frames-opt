@@ -34,4 +34,8 @@ public interface PhotoFramesStructureService {
     PhotoFramesDto updatePhotoFrame(Long id, PhotoFramesDto dto);
 
     Boolean deletePhotoFrame(Long id);
+
+    List<PhotoFramesDto> readAllByBorderMaterials(List<String> borderMaterials, Pageable pageable);
+
+    List<PhotoFramesDto> readAllByInsideMaterials(List<String> borderMaterials, Pageable pageable);
 }

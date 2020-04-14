@@ -1,6 +1,10 @@
 package com.ramkiopt.main.services.app.photoframes.impl;
 
+import com.ramkiopt.main.dto.ColorsDto;
+import com.ramkiopt.main.dto.DiscountsDto;
+import com.ramkiopt.main.dto.PhotoFramesCommonDto;
 import com.ramkiopt.main.dto.PhotoFramesDto;
+import com.ramkiopt.main.dto.SizesDto;
 import com.ramkiopt.main.entities.PhotoFrames;
 import com.ramkiopt.main.entities.PhotoFramesCommon;
 import com.ramkiopt.main.repositories.PhotoFramesCriteriaRepository;
@@ -19,7 +23,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, PhotoFramesDto>
@@ -38,7 +44,9 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     private Iterable<Long> getIterableByPhotoFrameId(List<PhotoFramesCommon> list) {
         List<Long> iterable = new ArrayList<>();
         list.forEach(item -> {
-            iterable.add(item.getPhotoFrameId());
+            if (!iterable.contains(item.getPhotoFrameId())) {
+                iterable.add(item.getPhotoFrameId());
+            }
         });
         return iterable;
     }
@@ -115,6 +123,18 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
     }
 
     @Override
+    public List<PhotoFramesDto> getByBorderMaterials(List<String> borderMaterials, Pageable pageable) {
+        return ObjectMapper.mapListLambda(photoFramesRepository
+                .findAllByBorderMaterialIsIn(borderMaterials, pageable).getContent(), PhotoFramesDto.class);
+    }
+
+    @Override
+    public List<PhotoFramesDto> getByInsideMaterials(List<String> insideMaterials, Pageable pageable) {
+        return ObjectMapper.mapListLambda(photoFramesRepository
+                .findAllByBorderMaterialIsIn(insideMaterials, pageable).getContent(), PhotoFramesDto.class);
+    }
+
+    @Override
     public List<PhotoFramesDto> getByAllParameters(List<String> colors, List<String> sizes, List<String> insideMaterials,
                                                    List<String> borderMaterials, Integer pageNumber, Integer pageSize) {
         return getAllByIds(photoFramesCriteriaRepository.findByAllParameters(colors, sizes, insideMaterials,
@@ -125,11 +145,54 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
         List<PhotoFrames> photoFrames =
                 photoFramesRepository.findAllById(getIterableByPhotoFrameId(photoFramesCommon));
         List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
-        for (int i = 0; i < photoFrames.size(); i++) {
-            photoFramesDtos.add(new PhotoFramesDto());
+        List<PhotoFramesCommonDto> commonDtos = setUpPhotoFramesCommonDto(photoFramesCommon);
+        for (PhotoFrames photoFrame : photoFrames) {
+            PhotoFramesDto photoFramesDto = new PhotoFramesDto();
+            photoFramesDtos.add(photoFramesDto);
+            photoFramesDto.setCommonDtos(
+                    Collections.singletonList(findFirstByPhotoFrameId(photoFrame.getId(), commonDtos)));
         }
         ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
         return photoFramesDtos;
+    }
+
+    private PhotoFramesCommonDto findFirstByPhotoFrameId(Long photoFrameId, List<PhotoFramesCommonDto> commonDtos) {
+        for (PhotoFramesCommonDto commonDto : commonDtos) {
+            if (Objects.equals(commonDto.getPhotoFrameId(), photoFrameId)) {
+                return commonDto;
+            }
+        }
+        return null;
+    }
+
+    private List<PhotoFramesCommonDto> setUpPhotoFramesCommonDto(List<PhotoFramesCommon> commons) {
+        List<PhotoFramesCommonDto> commonDtos = ObjectMapper.mapListLambda(commons, PhotoFramesCommonDto.class);
+        for (int i = 0; i < commonDtos.size(); i++) {
+            setColorsDto(commons.get(i), commonDtos.get(i));
+            setSizesDto(commons.get(i), commonDtos.get(i));
+            if (commons.get(i).getDiscountsById() != null) {
+                setDiscountsDto(commons.get(i), commonDtos.get(i));
+            }
+        }
+        return commonDtos;
+    }
+
+    private void setColorsDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        ColorsDto colorsDto = new ColorsDto();
+        ObjectMapper.mapCustom(common.getColorsByColorId(), colorsDto);
+        commonDto.setColorsDto(colorsDto);
+    }
+
+    private void setSizesDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        SizesDto sizesDto = new SizesDto();
+        ObjectMapper.mapCustom(common.getSizesBySizeId(), sizesDto);
+        commonDto.setSizesDto(sizesDto);
+    }
+
+    private void setDiscountsDto(PhotoFramesCommon common, PhotoFramesCommonDto commonDto) {
+        DiscountsDto discountsDto = new DiscountsDto();
+        ObjectMapper.mapCustom(common.getDiscountsById(), discountsDto);
+        commonDto.setDiscountsDto(discountsDto);
     }
 
     @Override
