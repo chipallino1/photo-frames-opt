@@ -7,6 +7,7 @@ import com.ramkiopt.main.dto.PhotoFramesDto;
 import com.ramkiopt.main.dto.SizesDto;
 import com.ramkiopt.main.entities.PhotoFrames;
 import com.ramkiopt.main.entities.PhotoFramesCommon;
+import com.ramkiopt.main.repositories.PhotoFramesCommonRepository;
 import com.ramkiopt.main.repositories.PhotoFramesCriteriaRepository;
 import com.ramkiopt.main.repositories.PhotoFramesRepository;
 import com.ramkiopt.main.services.app.base.BaseServiceAbstract;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, PhotoFramesDto>
@@ -33,22 +35,29 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
 
     private final Logger LOGGER = LoggerFactory.getLogger(PhotoFramesServiceImpl.class);
     private final PhotoFramesRepository photoFramesRepository;
+    private final PhotoFramesCommonRepository photoFramesCommonRepository;
     private final PhotoFramesCriteriaRepository photoFramesCriteriaRepository;
 
     public PhotoFramesServiceImpl(PhotoFramesRepository photoFramesRepository,
+                                  PhotoFramesCommonRepository photoFramesCommonRepository,
                                   PhotoFramesCriteriaRepository photoFramesCriteriaRepository) {
         this.photoFramesRepository = photoFramesRepository;
+        this.photoFramesCommonRepository = photoFramesCommonRepository;
         this.photoFramesCriteriaRepository = photoFramesCriteriaRepository;
     }
 
-    private Iterable<Long> getIterableByPhotoFrameId(List<PhotoFramesCommon> list) {
-        List<Long> iterable = new ArrayList<>();
+    private Iterable<Long> getIterableByCommons(List<PhotoFramesCommon> list) {
+        return list.stream()
+                .map(PhotoFramesCommon::getPhotoFrameId)
+                .distinct()
+                .collect(Collectors.toList());
+        /*List<Long> iterable = new ArrayList<>();
         list.forEach(item -> {
             if (!iterable.contains(item.getPhotoFrameId())) {
                 iterable.add(item.getPhotoFrameId());
             }
         });
-        return iterable;
+        return iterable;*/
     }
 
     @PostConstruct
@@ -114,46 +123,52 @@ public class PhotoFramesServiceImpl extends BaseServiceAbstract<PhotoFrames, Pho
 
     @Override
     public List<PhotoFramesDto> getByColors(List<String> color, Integer pageNum, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findByColors(color, pageNum, pageSize));
+        return getPhotoFramesByCommons(photoFramesCriteriaRepository.findByColors(color, pageNum, pageSize));
     }
 
     @Override
     public List<PhotoFramesDto> getBySizes(List<String> sizes, Integer pageNum, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findBySizes(sizes, pageNum, pageSize));
+        return getPhotoFramesByCommons(photoFramesCriteriaRepository.findBySizes(sizes, pageNum, pageSize));
     }
 
     @Override
     public List<PhotoFramesDto> getByBorderMaterials(List<String> borderMaterials, Pageable pageable) {
-        return ObjectMapper.mapListLambda(photoFramesRepository
-                .findAllByBorderMaterialIsIn(borderMaterials, pageable).getContent(), PhotoFramesDto.class);
+        return getPhotoFramesWithCommons(photoFramesRepository
+                .findAllByBorderMaterialIsIn(borderMaterials, pageable).getContent());
     }
 
     @Override
     public List<PhotoFramesDto> getByInsideMaterials(List<String> insideMaterials, Pageable pageable) {
-        return ObjectMapper.mapListLambda(photoFramesRepository
-                .findAllByBorderMaterialIsIn(insideMaterials, pageable).getContent(), PhotoFramesDto.class);
+        return getPhotoFramesWithCommons(photoFramesRepository
+                .findAllByBorderMaterialIsIn(insideMaterials, pageable).getContent());
     }
 
     @Override
     public List<PhotoFramesDto> getByAllParameters(List<String> colors, List<String> sizes, List<String> insideMaterials,
                                                    List<String> borderMaterials, Integer pageNumber, Integer pageSize) {
-        return getAllByIds(photoFramesCriteriaRepository.findByAllParameters(colors, sizes, insideMaterials,
+        return getPhotoFramesByCommons(photoFramesCriteriaRepository.findByAllParameters(colors, sizes, insideMaterials,
                 borderMaterials, pageNumber, pageSize));
     }
 
-    private List<PhotoFramesDto> getAllByIds(List<PhotoFramesCommon> photoFramesCommon) {
+    private List<PhotoFramesDto> getPhotoFramesWithCommons(List<PhotoFrames> photoFrames) {
+        return ObjectMapper.mapListLambda(photoFrames, PhotoFramesDto.class).stream()
+                .peek(item -> item.setCommonDtos(getCommonDtoByPhotoFrameId(item.getId())))
+                .collect(Collectors.toList());
+    }
+
+    private List<PhotoFramesCommonDto> getCommonDtoByPhotoFrameId(Long id) {
+        return ObjectMapper.mapListLambda(photoFramesCommonRepository.findAllByPhotoFrameId(id),
+                PhotoFramesCommonDto.class);
+    }
+
+    private List<PhotoFramesDto> getPhotoFramesByCommons(List<PhotoFramesCommon> photoFramesCommon) {
         List<PhotoFrames> photoFrames =
-                photoFramesRepository.findAllById(getIterableByPhotoFrameId(photoFramesCommon));
-        List<PhotoFramesDto> photoFramesDtos = new ArrayList<>();
+                photoFramesRepository.findAllById(getIterableByCommons(photoFramesCommon));
         List<PhotoFramesCommonDto> commonDtos = setUpPhotoFramesCommonDto(photoFramesCommon);
-        for (PhotoFrames photoFrame : photoFrames) {
-            PhotoFramesDto photoFramesDto = new PhotoFramesDto();
-            photoFramesDtos.add(photoFramesDto);
-            photoFramesDto.setCommonDtos(
-                    Collections.singletonList(findFirstByPhotoFrameId(photoFrame.getId(), commonDtos)));
-        }
-        ObjectMapper.mapListCustom(photoFrames, photoFramesDtos);
-        return photoFramesDtos;
+        return ObjectMapper.mapListLambda(photoFrames, PhotoFramesDto.class).stream()
+                .peek(item -> item.setCommonDtos(
+                        Collections.singletonList(findFirstByPhotoFrameId(item.getId(), commonDtos))))
+                .collect(Collectors.toList());
     }
 
     private PhotoFramesCommonDto findFirstByPhotoFrameId(Long photoFrameId, List<PhotoFramesCommonDto> commonDtos) {

@@ -2,17 +2,25 @@ package com.ramkiopt.main.dto;
 
 import com.ramkiopt.main.entities.Identity;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 public class PhotoFramesCommonDto implements Serializable, Identity {
     private Long id;
     private String photoSrc;
+    @NotBlank
     private String imageFile;
+    @NotNull
+    @Min(1)
     private Integer cost;
     private Long photoFrameId;
     private Long sizeId;
     private Long colorId;
+    @NotNull
     private SizesDto sizesDto;
+    @NotNull
     private ColorsDto colorsDto;
     private DiscountsDto discountsDto;
 

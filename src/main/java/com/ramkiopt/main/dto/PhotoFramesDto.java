@@ -2,8 +2,12 @@ package com.ramkiopt.main.dto;
 
 import com.ramkiopt.main.entities.Identity;
 import com.ramkiopt.main.services.app.base.RowStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -11,11 +15,19 @@ import java.util.List;
 
 public class PhotoFramesDto implements Serializable, Identity {
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String vendorCode;
+    @NotBlank
     private String borderMaterial;
+    @NotBlank
     private String insideMaterial;
+    @NotNull
+    @Min(0)
     private Integer borderWidth;
+    @NotNull
+    @Min(0)
     private Integer thickness;
     private Integer cost;
     private Long userId;
@@ -28,7 +40,8 @@ public class PhotoFramesDto implements Serializable, Identity {
     private List<SizesDto> sizesDtos;
     private List<DiscountsDto> discountsDtos;
 
-    private List<PhotoFramesCommonDto> commonDtos;
+    @Size(min = 1, message = "{validation.photoframes.photosSrcs.message}")
+    private List<@Valid PhotoFramesCommonDto> commonDtos;
 
     private Long popularity;
     private String imageSrc;
